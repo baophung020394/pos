@@ -1,12 +1,17 @@
 import { User } from '@models/auth';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: User = {
+interface AuthState extends User {
+    error: string | null; // Thêm trạng thái error
+}
+
+const initialState: AuthState = {
     isAuthenticated: localStorage.getItem('token') === 'true',
     fullName: '',
     refreshToken: '',
     token: '',
     userId: '',
+    error: null,
 };
 
 export const authSlice = createSlice({
@@ -14,16 +19,21 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<User>) => {
-            return { ...action.payload, isAuthenticated: true }; // Spread the payload and set isAuthenticated to true
+            return { ...action.payload, isAuthenticated: true, error: null };
         },
-        logoutUser: (state) => {
-            console.log(state);
-            // Reset state to initial state on logout
-            return initialState;
+        setError: (state, action: PayloadAction<string>) => {
+            state.error = action.payload; // Cập nhật error từ action payload
+        },
+        clearError: (state) => {
+            state.error = null; // Xóa error
+        },
+        logoutUser: () => initialState, // Reset state to initial state on logout
+        logout: (state) => {
+            state.isAuthenticated = false;
         },
     },
 });
 
-export const { setUser, logoutUser } = authSlice.actions;
+export const { setUser, setError, clearError, logoutUser, logout } = authSlice.actions;
 
 export default authSlice.reducer;

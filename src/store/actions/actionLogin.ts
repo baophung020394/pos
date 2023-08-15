@@ -1,7 +1,7 @@
 // actions/login.ts
 import axiosClient from '@apis/axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { setUser } from '@store/authSlice';
+import { setError, setUser } from '@store/authSlice';
 // import { setUser } from '@stores/userSlice';
 import { LoginResponse, User } from 'src/models/auth';
 
@@ -21,12 +21,17 @@ export const loginUser = createAsyncThunk<void, LoginUser, { rejectValue: string
         // }
 
         // Save token in localStorage after successful login
-        const userInfo: User = JSON.parse(response.data.data);
-        localStorage.setItem('token', userInfo.token);
-        localStorage.setItem('user', JSON.stringify(userInfo));
-
-        // // Dispatch setUser action to update the user state
-        thunkAPI.dispatch(setUser(userInfo)); // Pass the entire params as payload
+        if (response.data.success) {
+            const userInfo: User = JSON.parse(response.data.data);
+            localStorage.setItem('token', userInfo.token);
+            localStorage.setItem('user', JSON.stringify(userInfo));
+            // // Dispatch setUser action to update the user state
+            thunkAPI.dispatch(setUser(userInfo)); // Pass the entire params as payload
+        } else {
+            //dípatch error
+            const errorMessage = response.data.errors[0];
+            thunkAPI.dispatch(setError(errorMessage)); // Dispatch error action
+        }
     } catch (error) {
         console.error(error); // Log the error to see more details
         return thunkAPI.rejectWithValue('Failed to log in');

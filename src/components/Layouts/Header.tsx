@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { toggleSidebar } from '../../store/themeConfigSlice';
 import i18next from 'i18next';
 import Dropdown from '../Dropdown';
+import { logout } from '@store/authSlice';
 
 const Header = () => {
     const location = useLocation();
@@ -604,7 +605,7 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li className="border-t border-white-light dark:border-white-light/10">
-                                        <Link to="/auth/boxed-signin" className="text-danger !py-3">
+                                        {/* <Link to="/auth/boxed-signin" className="text-danger !py-3">
                                             <svg className="ltr:mr-2 rtl:ml-2 rotate-90" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     opacity="0.5"
@@ -615,8 +616,19 @@ const Header = () => {
                                                 />
                                                 <path d="M12 15L12 2M12 2L15 5.5M12 2L9 5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
+                                        </Link> */}
+                                        <button
+                                            className="text-danger"
+                                            onClick={() => {
+                                                // Clear localStorage and dispatch logout action
+                                                localStorage.removeItem('token');
+                                                localStorage.removeItem('user');
+                                                dispatch(logout());
+                                            }}
+                                        >
+                                            {' '}
                                             Sign Out
-                                        </Link>
+                                        </button>
                                     </li>
                                 </ul>
                             </Dropdown>

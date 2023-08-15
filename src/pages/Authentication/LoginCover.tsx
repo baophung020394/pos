@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import InputFieldLoginForm from '@components/InputFieldLoginForm';
 import { loginUser } from '@store/actions/actionLogin';
 import { setPageTitle } from '../../store/themeConfigSlice';
+import { IRootState } from '@store/index';
 
 interface FormData {
     Username: string | '';
@@ -13,6 +14,7 @@ interface FormData {
 
 const LoginCover = () => {
     const { handleSubmit, register } = useForm<FormData>();
+    const error = useSelector((state: IRootState) => state.auth.error);
     const dispatch = useDispatch<any>();
     useEffect(() => {
         dispatch(setPageTitle('Login Cover'));
@@ -21,7 +23,9 @@ const LoginCover = () => {
 
     const submitForm = async (data: FormData) => {
         await dispatch(loginUser({ Username: data?.Username, Password: data.Password }));
-        navigate('/');
+        if (!error) {
+            navigate('/');
+        }
     };
 
     return (
@@ -39,13 +43,14 @@ const LoginCover = () => {
                     <p className="mb-7">Enter your email and password to login</p>
                     <form className="space-y-5" onSubmit={handleSubmit(submitForm)}>
                         <div>
-                            <label htmlFor="email">Email</label>
+                            <label htmlFor="email">Phone</label>
                             {/* <InputFieldLoginForm name="phone" placeholder="Phone" control={control} type="text" className="form-input" /> */}
-                            <input id="name" type="text" className="form-input" placeholder="Enter Email" {...register('Username')} />
+                            <input id="username" type="text" className="form-input" placeholder="Enter username" {...register('Username')} />
                         </div>
                         <div>
                             <label htmlFor="password">Password</label>
                             <input id="password" type="password" className="form-input" placeholder="Enter Password" {...register('Password')} />
+                            {error ? <div className={`${error ? 'text-red-600' : 'text-green-600'}`}>{error}</div> : null}
                             {/* <InputFieldLoginForm name="password" className="form-input" placeholder="Password" control={control} type="password" /> */}
                         </div>
                         <div>
