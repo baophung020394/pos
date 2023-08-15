@@ -20,13 +20,9 @@
             "@apis/*": ["src/apis/*"],
             "@models/*": ["src/models/*"],
             "@store/*": ["src/store/*"],
-            "@components/*": ["src/components/*"]
-            // "@pages/*": ["src/pages/*"],
-            // "@components/*": ["src/components/*"],
-            // "@features/*": ["src/features/*"],
-            // "@hooks/*": ["src/hooks/*"],
-            // "@constant/*": ["src/constant/*"],
-            // "@types/react-hook-form": ["node_modules/@types/react-hook-form"]
+            "@components/*": ["src/components/*"],
+            "@features/*": ["src/features/*"],
+            "@pages/*": ["src/pages/*"]
         }
     },
     "include": ["src"],
