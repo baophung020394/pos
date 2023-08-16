@@ -23,7 +23,7 @@ export const loginUser = createAsyncThunk<void, LoginUser, { rejectValue: string
         // Save token in localStorage after successful login
         if (response.data.success) {
             const userInfo: User = JSON.parse(response.data.data);
-            localStorage.setItem('token', userInfo.token);
+            localStorage.setItem('token', userInfo?.token);
             localStorage.setItem('user', JSON.stringify(userInfo));
             // // Dispatch setUser action to update the user state
             thunkAPI.dispatch(setUser(userInfo)); // Pass the entire params as payload

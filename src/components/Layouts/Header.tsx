@@ -626,7 +626,6 @@ const Header = () => {
                                                 dispatch(logout());
                                             }}
                                         >
-                                            {' '}
                                             Sign Out
                                         </button>
                                     </li>

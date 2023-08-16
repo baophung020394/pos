@@ -9,7 +9,6 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
-    // const isAuthenticated = localStorage.getItem('token');
     const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
     const location = useLocation();
     return isAuthenticated ? element : <Navigate to="/auth/cover-login" state={{ from: location }} replace />;
