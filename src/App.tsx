@@ -9,7 +9,7 @@ function App({ children }: PropsWithChildren) {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
     const dispatch = useDispatch();
     const isAuthenticated = localStorage.getItem('token');
-    // const user = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user') || '');
+    const user = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user') || '');
 
     useEffect(() => {
         dispatch(toggleTheme(localStorage.getItem('theme') || themeConfig.theme));
@@ -22,11 +22,11 @@ function App({ children }: PropsWithChildren) {
         dispatch(toggleSemidark(localStorage.getItem('semidark') || themeConfig.semidark));
     }, [dispatch, themeConfig.theme, themeConfig.menu, themeConfig.layout, themeConfig.rtlClass, themeConfig.animation, themeConfig.navbar, themeConfig.locale, themeConfig.semidark]);
 
-    // useEffect(() => {
-    //     if (isAuthenticated != null && user?.token === isAuthenticated) {
-    //         dispatch(setUser(user));
-    //     }
-    // }, [isAuthenticated, dispatch, user]);
+    useEffect(() => {
+        if (isAuthenticated != null && user?.token === isAuthenticated) {
+            dispatch(setUser(user));
+        }
+    }, [isAuthenticated, dispatch, user]);
 
     return (
         <div

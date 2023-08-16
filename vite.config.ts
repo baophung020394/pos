@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import sassPlugin from 'vite-plugin-sass'; // Chú ý cài đặt plugin này
+// import sassPlugin from 'vite-plugin-sass'; // Chú ý cài đặt plugin này
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), sassPlugin()],
+    plugins: [react()],
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
