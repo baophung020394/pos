@@ -20,7 +20,7 @@ const Sidebar = () => {
             return oldValue === value ? '' : value;
         });
     };
-
+    console.log('update');
     useEffect(() => {
         const selector = document.querySelector('.sidebar ul a[href="' + window.location.pathname + '"]');
         if (selector) {
