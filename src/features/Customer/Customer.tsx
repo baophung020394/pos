@@ -1,7 +1,9 @@
 import CustomButton from '@components/Button';
 import LazyImage from '@components/Image';
 import { Box, MenuItem, Pagination, PaginationItem, Paper, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from '@mui/material';
+import { IRootState } from '@store/index';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { CustomerDetail } from 'src/models/customer';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
@@ -47,9 +49,10 @@ const columns: { field: keyof CustomerDetail; label: string }[] = [
     { field: 'status', label: 'Trạng thái' },
 ];
 
-const pageSizeOptions = [10, 25, 50];
+const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const Customer: React.FC = () => {
+    const currentCustomer = useSelector((state: IRootState) => state.customer.currentCustomer);
     const [value, setValue] = React.useState(0);
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -131,13 +134,13 @@ const Customer: React.FC = () => {
     };
     return (
         <Box className="customer-detail">
-            <Box className="customer-detail__heading">
-                <Typography component="p">Trần Minh Uy</Typography>
-            </Box>
+            {/* <Box className="customer-detail__heading">
+                <Typography component="p">{currentCustomer?.customerName}</Typography>
+            </Box> */}
             <Box className="customer-detail__information">
                 <Box className="customer-detail__information__person">
                     <Box className="heading">
-                        <Typography component="p">Thông tin cá nhân</Typography>
+                        <Typography component="p">{currentCustomer?.customerName}</Typography>
                         <Box className="open-new-tab">
                             <Typography component="p">Chỉnh sửa</Typography>
                             <LazyImage src={OpenNewTabIcon} alt="Open new tab" />
@@ -153,11 +156,11 @@ const Customer: React.FC = () => {
                                 <Typography component="p">Tag : </Typography>
                             </Box>
                             <Box className="left-content">
-                                <Typography component="p">0978654231 </Typography>
-                                <Typography component="p">Nam </Typography>
-                                <Typography component="p"> ... </Typography>
-                                <Typography component="p"> ... </Typography>
-                                <Typography component="p"> ... </Typography>
+                                <Typography component="p">{currentCustomer?.phoneNumber} </Typography>
+                                <Typography component="p">{currentCustomer?.gender} </Typography>
+                                <Typography component="p"> {currentCustomer?.email} </Typography>
+                                <Typography component="p"> {currentCustomer?.facebookLink} </Typography>
+                                <Typography component="p"> {currentCustomer?.hastag} </Typography>
                             </Box>
                         </Box>
                         <Box className="right">
@@ -170,21 +173,21 @@ const Customer: React.FC = () => {
                             </Box>
                             <Box className="right-content">
                                 <Typography component="p" className="status">
-                                    Đang hoạt động
+                                    {currentCustomer?.statusName}
                                 </Typography>
                                 <Typography component="p" className="customer-id">
-                                    Khách lẻ
+                                    {currentCustomer?.customerGroupName}
                                 </Typography>
-                                <Typography component="p"> KH00001 </Typography>
-                                <Typography component="p"> ... </Typography>
-                                <Typography component="p"> Phạm Linh </Typography>
+                                <Typography component="p"> {currentCustomer?.customerCode} </Typography>
+                                <Typography component="p"> {currentCustomer?.taxCode} </Typography>
+                                <Typography component="p"> {currentCustomer?.createdByName} </Typography>
                             </Box>
                         </Box>
                     </Box>
                 </Box>
                 <Box className="customer-detail__information__trade">
                     <Box className="heading">
-                        <Typography component="p">Thông tin cá nhân</Typography>
+                        <Typography component="p">Thông tin giao dịch</Typography>
                         <Box className="open-new-tab">
                             <Typography component="p">Chỉnh sửa</Typography>
                             <LazyImage src={OpenNewTabIcon} alt="Open new tab" />
@@ -193,38 +196,32 @@ const Customer: React.FC = () => {
                     <Box className="table">
                         <Box className="left">
                             <Box className="left-title">
-                                <Typography component="p">Số điện thoại : </Typography>
-                                <Typography component="p">Giới tính : </Typography>
-                                <Typography component="p">Email : </Typography>
-                                <Typography component="p">Facebook : </Typography>
-                                <Typography component="p">Tag : </Typography>
+                                <Typography component="p">Tổng chi tiêu : </Typography>
+                                <Typography component="p">Số lượng đơn hàng : </Typography>
+                                <Typography component="p">Số phiếu sửa chữa : </Typography>
+                                <Typography component="p">Ngày cuối mua hàng : </Typography>
+                                <Typography component="p">Ngày cuối sửa chữa : </Typography>
                             </Box>
                             <Box className="left-content">
-                                <Typography component="p">0978654231 </Typography>
-                                <Typography component="p">Nam </Typography>
-                                <Typography component="p"> ... </Typography>
-                                <Typography component="p"> ... </Typography>
-                                <Typography component="p"> ... </Typography>
+                                <Typography component="p">5,850,000 </Typography>
+                                <Typography component="p">15 </Typography>
+                                <Typography component="p"> 34 </Typography>
+                                <Typography component="p"> 03/04/2023 </Typography>
+                                <Typography component="p"> 03/04/2023 </Typography>
                             </Box>
                         </Box>
                         <Box className="right">
                             <Box className="right-title">
-                                <Typography component="p">Trạng thái : </Typography>
-                                <Typography component="p">Nhóm khách hàng :</Typography>
-                                <Typography component="p">Mã khách hàng :</Typography>
-                                <Typography component="p">Mã số thuế : </Typography>
-                                <Typography component="p">Người tạo : </Typography>
+                                <Typography component="p">Công nợ mua hàng : </Typography>
+                                <Typography component="p">Công nợ sửa chữa :</Typography>
                             </Box>
                             <Box className="right-content">
                                 <Typography component="p" className="status">
-                                    Đang hoạt động
+                                    0
                                 </Typography>
                                 <Typography component="p" className="customer-id">
-                                    Khách lẻ
+                                    0
                                 </Typography>
-                                <Typography component="p"> KH00001 </Typography>
-                                <Typography component="p"> ... </Typography>
-                                <Typography component="p"> Phạm Linh </Typography>
                             </Box>
                         </Box>
                     </Box>
@@ -232,7 +229,7 @@ const Customer: React.FC = () => {
             </Box>
 
             <Box className="customer-detail__tables">
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Box>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab label="Lịch sử mua hàng" {...a11yProps(0)} />
                         <Tab label="Lịch sử sửa chữa" {...a11yProps(1)} />
@@ -352,4 +349,4 @@ const Customer: React.FC = () => {
     );
 };
 
-export default Customer;
+export default React.memo(Customer);

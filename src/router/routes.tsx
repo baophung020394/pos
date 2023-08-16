@@ -3,16 +3,21 @@ import PublicRoute from '@components/PublicRoute';
 import { lazy } from 'react';
 const Index = lazy(() => import('../pages/Index'));
 const CustomerPage = lazy(() => import('../pages/CustomerPage'));
+const Customer = lazy(() => import('../features/Customer/Customer'));
 const LoginCover = lazy(() => import('../pages/Authentication/LoginCover'));
 const RegisterCover = lazy(() => import('../pages/Authentication/RegisterCover'));
 const RecoverIdCover = lazy(() => import('../pages/Authentication/RecoverIdCover'));
 const UnlockCover = lazy(() => import('../pages/Authentication/UnlockCover'));
 
 const routes = [
-    // dashboard
+    // customer
     {
-        path: '/',
+        path: '/customers',
         element: <PrivateRoute element={<CustomerPage />} />,
+    },
+    {
+        path: '/customers/:id',
+        element: <PrivateRoute element={<Customer />} />,
     },
 
     //Authentication
@@ -39,7 +44,7 @@ const routes = [
     },
     {
         path: '*',
-        element: <PrivateRoute element={<Index />} />,
+        element: <PrivateRoute element={<CustomerPage />} />,
     },
 ];
 

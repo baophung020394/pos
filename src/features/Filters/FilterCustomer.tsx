@@ -1,12 +1,23 @@
 import CustomButton from '@components/Button';
-import { Box, Typography } from '@mui/material';
+import LazyImage from '@components/Image';
+import Search from '@components/Search';
+import { Typography } from '@mui/material';
 import React from 'react';
 import AddIcon from '../../assets/images/customer/add.svg';
-import Search from '@components/Search';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
-import LazyImage from '@components/Image';
+import ImportIcon from '../../assets/images/customer/import.svg';
+import ExportIcon from '../../assets/images/customer/export.svg';
 
-const FilterCustomer: React.FC = () => {
+type FilterCustomerProps = {
+    getValueSearch?: (value: string) => void;
+};
+
+const FilterCustomer: React.FC<FilterCustomerProps> = ({ getValueSearch }) => {
+    const onSearch = (value: string) => {
+        if (!getValueSearch) return;
+        getValueSearch(value);
+    };
+
     return (
         <div className="customer-page__list__filters">
             <div className="filters--filter-top">
@@ -21,9 +32,19 @@ const FilterCustomer: React.FC = () => {
                     icon={AddIcon}
                     className="btn-add-cus"
                 />
+                <Search placeholder="Tìm kiếm theo mã khách hàng, tên khách hàng và số điện thoại" onSearch={onSearch} />
             </div>
             <div className="filters--filter-bottom">
-                <Search placeholder="Tìm kiếm theo mã khách hàng, tên khách hàng và số điện thoại" />
+                <div className="filters--filter-bottom__files">
+                    <div className="file">
+                        <Typography component="p">Nhập file</Typography>
+                        <LazyImage src={ImportIcon} alt="" />
+                    </div>
+                    <div className="file">
+                        <Typography component="p">Xuất file</Typography>
+                        <LazyImage src={ExportIcon} alt="" />
+                    </div>
+                </div>
                 <div className="filters--filter-bottom__options">
                     <div className="option">
                         <Typography component="p">Nhóm KH</Typography>

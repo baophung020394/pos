@@ -1,6 +1,6 @@
 import CustomButton from '@components/Button';
 import FilterCustomer from '@features/Filters/FilterCustomer';
-import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,9 @@ import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
 import ColumnConfig from './ColumnConfig';
 import useApi from '@hooks/useApi';
 import './customer.scss';
+import ModelCustom from '@components/ModelCustom';
+import { useDispatch } from 'react-redux';
+import { setCurrentCus } from '@store/customerSlice';
 
 const columns: { field: keyof Customer; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -43,7 +46,7 @@ const columns: { field: keyof Customer; label: string }[] = [
     { field: 'modifiedByName', label: 'Người sửa' },
 ];
 
-const pageSizeOptions = [10, 25, 50];
+const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerList: React.FC = () => {
     console.log('CustomerList');
@@ -53,10 +56,14 @@ const CustomerList: React.FC = () => {
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
     const [isOpenConfig, setIsOpenConfig] = useState<boolean>(false);
+    const [valueSearch, setValueSearch] = useState<string>('');
     const apiUrl = '/api/Customer/list'; // Đường dẫn cụ thể đến API
     const { data, loading, error } = useApi<CustomerResponse>(apiUrl);
-
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const handleOpenConfigColumn = () => setIsOpenConfig(!isOpenConfig);
+    const handleCloseConfigColumn = () => setIsOpenConfig(false);
 
     const handleColumnToggle = (field: keyof Customer) => {
         if (visibleColumns.includes(field)) {
@@ -101,19 +108,47 @@ const CustomerList: React.FC = () => {
         setVisibleColumns(updatedVisibleColumns);
     };
 
+    const handleSearch = (value: string) => {
+        setValueSearch(value);
+    };
+
+    const handleGoPageDetail = (customer: Customer, column: string) => {
+        if (column === 'customerName') {
+            navigate(`/customers/${customer['customerId']}`);
+            dispatch(setCurrentCus(customer));
+        }
+    };
+
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
-    const visibleCustomers = data ? data.data.slice(startIndex, endIndex) : [];
+    const visibleCustomers = data
+        ? data.data
+              .filter(
+                  (customer) =>
+                      customer.customerCode.toLowerCase().includes(valueSearch.toLowerCase()) ||
+                      customer.customerName.toLowerCase().includes(valueSearch.toLowerCase()) ||
+                      customer.phoneNumber.toLowerCase().includes(valueSearch.toLowerCase())
+              )
+              .slice(startIndex, endIndex)
+        : [];
     const lastPage = data ? Math.ceil(data.data.length / pageSize) : 0;
 
     return (
         <div className="customer-page__list">
-            <FilterCustomer />
+            <FilterCustomer getValueSearch={handleSearch} />
             <DragDropContext onDragEnd={handleColumnReorder}>
-                {isOpenConfig ? (
+                <ModelCustom
+                    isOpen={isOpenConfig}
+                    onClose={handleCloseConfigColumn}
+                    title=""
+                    okButtonText=""
+                    cancelButtonText=""
+                    onCancel={handleCloseConfigColumn}
+                    className="customer-page__list__modal"
+                >
                     <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
-                ) : null}
+                </ModelCustom>
 
                 <div className="customer-page__list__tables">
                     <TableContainer component={Paper}>
@@ -132,7 +167,7 @@ const CustomerList: React.FC = () => {
                                             borderRadius="50%"
                                             icon={SettingColIcon}
                                             className="btn-open-setting"
-                                            onClick={() => setIsOpenConfig(!isOpenConfig)}
+                                            onClick={handleOpenConfigColumn}
                                         />
                                     </TableCell>
                                     <TableCell className="custom-cell">
@@ -146,10 +181,12 @@ const CustomerList: React.FC = () => {
                                     </TableCell>
                                     {visibleColumns.map((column) => (
                                         <TableCell key={column}>
-                                            {columns.find((col) => col.field === column)?.label}{' '}
-                                            <button>
-                                                <img src={SortIcon} alt="" />
-                                            </button>{' '}
+                                            <div className="table-head">
+                                                <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
+                                                <button>
+                                                    <img src={SortIcon} alt="" />
+                                                </button>
+                                            </div>
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -169,13 +206,7 @@ const CustomerList: React.FC = () => {
                                         </TableCell>
                                         {visibleColumns.map((column) => {
                                             return (
-                                                <TableCell
-                                                    className={`${column === 'customerName' ? 'color-name' : ''}`}
-                                                    key={column}
-                                                    onClick={() => {
-                                                        navigate(`/customers/${customer['customerId']}`);
-                                                    }}
-                                                >
+                                                <TableCell className={`${column === 'customerName' ? 'color-name' : ''}`} key={column} onClick={() => handleGoPageDetail(customer, column)}>
                                                     {customer[column]}
                                                 </TableCell>
                                             );

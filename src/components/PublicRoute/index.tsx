@@ -11,7 +11,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ element }) => {
 
     const location = useLocation();
 
-    return !isAuthenticated ? element : <Navigate to="/" state={{ from: location }} replace />;
+    return !isAuthenticated ? element : <Navigate to="/customers" state={{ from: location }} replace />;
 };
 
 export default PublicRoute;

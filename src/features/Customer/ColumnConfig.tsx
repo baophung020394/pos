@@ -29,7 +29,17 @@ const ColumnConfig: React.FC<ColumnConfigProps> = ({
                 <Typography variant="h2" component="h2">
                     Điều chỉnh cột hiển thị
                 </Typography>
-                <CustomButton text="" backgroundColor="transparent" backgroundColorHover="transparent" borderRadius="50%" icon={CloseIcon} className="btn-close" onClick={() => setIsOpen(false)} />
+                <CustomButton
+                    text=""
+                    width="25px"
+                    height="25px"
+                    backgroundColor="transparent"
+                    backgroundColorHover="transparent"
+                    borderRadius="50%"
+                    icon={CloseIcon}
+                    className="btn-close"
+                    onClick={() => setIsOpen(false)}
+                />
             </div>
             <div className="config-col__cols">
                 <div className="config-col__cols__add">
@@ -71,8 +81,8 @@ const ColumnConfig: React.FC<ColumnConfigProps> = ({
                                                     {columns.find((col) => col.field === column)?.label}
                                                     <CustomButton
                                                         text=""
-                                                        minHeight={25}
-                                                        minWidth={25}
+                                                        width="20px"
+                                                        height="20px"
                                                         backgroundColor="transparent"
                                                         backgroundColorHover="transparent"
                                                         borderRadius="50%"
