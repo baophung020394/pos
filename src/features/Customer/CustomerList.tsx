@@ -4,7 +4,7 @@ import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, T
 import React, { useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
-import { Customer } from 'src/models/customer';
+import { Customer, CustomerResponse } from 'src/models/customer';
 import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
@@ -15,152 +15,46 @@ import SettingColIcon from '../../assets/images/customer/setting-col.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
 import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
 import ColumnConfig from './ColumnConfig';
+import useApi from '@hooks/useApi';
 import './customer.scss';
 
 const columns: { field: keyof Customer; label: string }[] = [
-    { field: 'customerId', label: 'Mã khách hàng' },
+    // { field: 'customerId', label: 'Mã khách hàng' },
     { field: 'customerName', label: 'Tên khách hàng' },
-    { field: 'customerTel', label: 'Số điện thoại' },
-    { field: 'retailCustomers', label: 'Khách lẻ' },
-    { field: 'purchaseDebts', label: 'Công nợ mua hàng' },
-    { field: 'repairDebts', label: 'Công nợ sữa chữa' },
-    { field: 'orderQuantity', label: 'Số lượng đơn hàng' },
-    { field: 'orderReceiptDate', label: 'Ngày nhận đơn' },
-    { field: 'orderReturnDate', label: 'Ngày trả đơn' },
+    { field: 'customerGroupName', label: 'Nhóm khách hàng' },
+    { field: 'customerCode', label: 'Mã Khách Hàng' },
+    { field: 'gender', label: 'Giới tính' },
+    { field: 'phoneNumber', label: 'Số điện thoại' },
+    { field: 'birthDay', label: 'Sinh nhật' },
+    { field: 'email', label: 'Ngày nhận đơn' },
+    { field: 'address', label: 'Địa chỉ' },
+    { field: 'note', label: 'Ghi chú' },
+    { field: 'statusName', label: 'Trạng thái' },
+    { field: 'taxCode', label: 'Mã số thuế' },
+    { field: 'hastag', label: 'Tag' },
+    { field: 'facebookLink', label: 'Link facebook' },
+    { field: 'debt', label: 'Debt' },
+    { field: 'areaCityName', label: 'areaCityName' },
+    { field: 'areaDistrictName', label: 'areaDistrictName' },
+    { field: 'areaCommuneName', label: 'areaCommuneName' },
+    { field: 'createdDate', label: 'Ngày tạo' },
+    { field: 'createdByName', label: 'Người tạo' },
+    { field: 'modifiedDate', label: 'Ngày sửa' },
+    { field: 'modifiedByName', label: 'Người sửa' },
 ];
 
 const pageSizeOptions = [10, 25, 50];
 
 const CustomerList: React.FC = () => {
-    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>(['customerId', 'customerName']);
+    console.log('CustomerList');
+    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>(['customerCode', 'customerName', 'phoneNumber', 'customerGroupName', 'createdDate', 'statusName']);
     const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
     const [isOpenConfig, setIsOpenConfig] = useState<boolean>(false);
-    const sampleCustomers: Customer[] = [
-        {
-            customerId: 'KH00001',
-            customerName: 'Trần Minh Uy',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00003',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00004',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00005',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00006',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00007',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00008',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00009',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00010',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00011',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-        {
-            customerId: 'KH00012',
-            customerName: 'Nguyen Van A',
-            customerTel: '0978654231',
-            orderQuantity: 15,
-            orderReceiptDate: '03/04/2023',
-            orderReturnDate: '07/08/2023',
-            purchaseDebts: '0',
-            repairDebts: '0',
-            retailCustomers: 'Khách lẻ',
-        },
-    ];
+    const apiUrl = '/api/Customer/list'; // Đường dẫn cụ thể đến API
+    const { data, loading, error } = useApi<CustomerResponse>(apiUrl);
 
     const navigate = useNavigate();
 
@@ -209,9 +103,9 @@ const CustomerList: React.FC = () => {
 
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = Math.min(startIndex + pageSize, sampleCustomers.length);
-    const visibleCustomers = sampleCustomers.slice(startIndex, endIndex);
-    const lastPage = Math.ceil(sampleCustomers.length / pageSize);
+    const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
+    const visibleCustomers = data ? data.data.slice(startIndex, endIndex) : [];
+    const lastPage = data ? Math.ceil(data.data.length / pageSize) : 0;
 
     return (
         <div className="customer-page__list">
@@ -274,7 +168,6 @@ const CustomerList: React.FC = () => {
                                             />
                                         </TableCell>
                                         {visibleColumns.map((column) => {
-                                            console.log('column', column);
                                             return (
                                                 <TableCell
                                                     className={`${column === 'customerName' ? 'color-name' : ''}`}
@@ -297,7 +190,7 @@ const CustomerList: React.FC = () => {
             <div className="customer-page__list__pagination">
                 <div className="customer-page__list__pagination__select">
                     <p>
-                        Hiển thị 1 - {pageSize} của {sampleCustomers.length}
+                        Hiển thị 1 - {data?.data.length} của {data?.data.length}
                     </p>
                     <Select
                         className="select-option"
@@ -320,50 +213,52 @@ const CustomerList: React.FC = () => {
                     </Select>
                 </div>
 
-                <div className="customer-page__list__pagination__number">
-                    <CustomButton
-                        text=""
-                        maxHeight={40}
-                        maxWidth={40}
-                        minHeight={40}
-                        minWidth={40}
-                        backgroundColor="transparent"
-                        backgroundColorHover="transparent"
-                        borderRadius="50%"
-                        icon={FirstPageIcon}
-                        className="btn-first"
-                        onClick={() => setCurrentPage(1)}
-                    />
-                    <Pagination
-                        count={Math.ceil(sampleCustomers.length / pageSize)}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        className="pagination-list"
-                        renderItem={(item) => {
-                            const isPrevious = item.type === 'previous';
-                            const isNext = item.type === 'next';
-                            const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
+                {data?.success ? (
+                    <div className="customer-page__list__pagination__number">
+                        <CustomButton
+                            text=""
+                            maxHeight={40}
+                            maxWidth={40}
+                            minHeight={40}
+                            minWidth={40}
+                            backgroundColor="transparent"
+                            backgroundColorHover="transparent"
+                            borderRadius="50%"
+                            icon={FirstPageIcon}
+                            className="btn-first"
+                            onClick={() => setCurrentPage(1)}
+                        />
+                        <Pagination
+                            count={Math.ceil(data?.data.length / pageSize)}
+                            page={currentPage}
+                            onChange={handlePageChange}
+                            className="pagination-list"
+                            renderItem={(item) => {
+                                const isPrevious = item.type === 'previous';
+                                const isNext = item.type === 'next';
+                                const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
 
-                            return <PaginationItem {...item} className={iconClassName} />;
-                        }}
-                    />
-                    <CustomButton
-                        text=""
-                        maxHeight={40}
-                        maxWidth={40}
-                        minHeight={40}
-                        minWidth={40}
-                        backgroundColor="transparent"
-                        backgroundColorHover="transparent"
-                        borderRadius="50%"
-                        icon={LastPageIcon}
-                        className="btn-last"
-                        onClick={() => setCurrentPage(lastPage)}
-                    />
-                </div>
+                                return <PaginationItem {...item} className={iconClassName} />;
+                            }}
+                        />
+                        <CustomButton
+                            text=""
+                            maxHeight={40}
+                            maxWidth={40}
+                            minHeight={40}
+                            minWidth={40}
+                            backgroundColor="transparent"
+                            backgroundColorHover="transparent"
+                            borderRadius="50%"
+                            icon={LastPageIcon}
+                            className="btn-last"
+                            onClick={() => setCurrentPage(lastPage)}
+                        />
+                    </div>
+                ) : null}
             </div>
         </div>
     );
 };
 
-export default CustomerList;
+export default React.memo(CustomerList);
