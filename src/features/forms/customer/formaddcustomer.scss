@@ -1,0 +1,141 @@
+@import '../../../assets/styles/app.scss';
+
+.form-add-customer {
+    .heading--primary {
+        max-height: 63px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $color-f2f9ff;
+        margin-bottom: 30px;
+
+        h3 {
+            font-weight: $font-weight-semi-bold;
+            font-size: $font-16;
+        }
+
+        .btn-submit {
+            text-transform: initial;
+            font-size: $font-14;
+            font-weight: $font-weight-bold;
+            max-height: 35px;
+            padding: 6px 14px;
+            border-radius: 3px;
+            margin-right: 35px;
+        }
+
+        .btn-close {
+            padding: 0;
+        }
+    }
+
+    .information {
+        padding: 1rem;
+        h3 {
+            border-bottom: 1px solid $color-d9d9d9;
+            padding: 17px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            margin-bottom: 16px;
+        }
+
+        &--form-control {
+            width: 48%;
+            margin-bottom: 20px;
+            &.textarea {
+                .MuiFormControl-root {
+                    max-height: 100%;
+                    .MuiInputBase-root {
+                        max-height: 100%;
+                    }
+                }
+            }
+            label {
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                margin-bottom: 3px;
+            }
+            .MuiFormControl-root {
+                max-height: 39px;
+                input {
+                    padding: 10px 24px;
+                }
+                fieldset {
+                    border: 1px solid $color-d9d9d9;
+                }
+            }
+
+            .MuiInputBase-root {
+                max-height: 39px;
+                svg {
+                    display: none;
+                }
+                fieldset {
+                    border: 1px solid $color-d9d9d9;
+                }
+            }
+        }
+        .information--col {
+            margin-bottom: 21px;
+            .information--form-control {
+                width: 100%;
+            }
+        }
+        .information--cols {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    .information-add {
+        padding: 1rem;
+
+        h3 {
+            border-bottom: 1px solid $color-d9d9d9;
+            padding: 17px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            margin-bottom: 16px;
+        }
+
+        &--columns {
+            display: flex;
+            justify-content: space-between;
+        }
+        &__left {
+            width: 48%;
+            .information-add--cols {
+                .information--form-control {
+                    width: 100%;
+                }
+            }
+
+            .input-date {
+                width: 100%;
+                min-height: 39px;
+                max-height: 39px;
+                border-radius: 3px;
+                border: 1px solid $color-d9d9d9;
+                padding: 1rem;
+                box-sizing: border-box;
+            }
+        }
+
+        &__right {
+            width: 48%;
+            .information--form-control {
+                width: 100%;
+
+                &.textarea-note {
+                    .MuiFormControl-root {
+                        max-height: 100%;
+                        .MuiInputBase-root {
+                            max-height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,7 +1,7 @@
 import CustomButton from '@components/Button';
 import FilterCustomer from '@features/Filters/FilterCustomer';
 import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useNavigate } from 'react-router-dom';
 import { Customer, CustomerResponse } from 'src/models/customer';
@@ -20,6 +20,8 @@ import './customer.scss';
 import ModelCustom from '@components/ModelCustom';
 import { useDispatch } from 'react-redux';
 import { setCurrentCus } from '@store/customerSlice';
+import axiosClient from '@apis/axios';
+import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
 
 const columns: { field: keyof Customer; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -49,7 +51,6 @@ const columns: { field: keyof Customer; label: string }[] = [
 const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerList: React.FC = () => {
-    console.log('CustomerList');
     const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>(['customerCode', 'customerName', 'phoneNumber', 'customerGroupName', 'createdDate', 'statusName']);
     const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
@@ -57,6 +58,7 @@ const CustomerList: React.FC = () => {
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
     const [isOpenConfig, setIsOpenConfig] = useState<boolean>(false);
     const [valueSearch, setValueSearch] = useState<string>('');
+    const [isOpenAddCus, setIsOpenAddCus] = useState<boolean>(false);
     const apiUrl = '/api/Customer/list'; // Đường dẫn cụ thể đến API
     const { data, loading, error } = useApi<CustomerResponse>(apiUrl);
     const dispatch = useDispatch();
@@ -64,6 +66,7 @@ const CustomerList: React.FC = () => {
 
     const handleOpenConfigColumn = () => setIsOpenConfig(!isOpenConfig);
     const handleCloseConfigColumn = () => setIsOpenConfig(false);
+    const handleCloseAddCus = () => setIsOpenAddCus(false);
 
     const handleColumnToggle = (field: keyof Customer) => {
         if (visibleColumns.includes(field)) {
@@ -119,6 +122,10 @@ const CustomerList: React.FC = () => {
         }
     };
 
+    const handleOnClick = useCallback(() => {
+        setIsOpenAddCus(!isOpenAddCus);
+    }, []);
+
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
@@ -126,9 +133,9 @@ const CustomerList: React.FC = () => {
         ? data.data
               .filter(
                   (customer) =>
-                      customer.customerCode.toLowerCase().includes(valueSearch.toLowerCase()) ||
-                      customer.customerName.toLowerCase().includes(valueSearch.toLowerCase()) ||
-                      customer.phoneNumber.toLowerCase().includes(valueSearch.toLowerCase())
+                      customer?.customerCode?.toLowerCase().includes(valueSearch.toLowerCase()) ||
+                      customer?.customerName?.toLowerCase().includes(valueSearch.toLowerCase()) ||
+                      customer?.phoneNumber?.toLowerCase().includes(valueSearch.toLowerCase())
               )
               .slice(startIndex, endIndex)
         : [];
@@ -136,7 +143,7 @@ const CustomerList: React.FC = () => {
 
     return (
         <div className="customer-page__list">
-            <FilterCustomer getValueSearch={handleSearch} />
+            <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} />
             <DragDropContext onDragEnd={handleColumnReorder}>
                 <ModelCustom
                     isOpen={isOpenConfig}
@@ -148,6 +155,37 @@ const CustomerList: React.FC = () => {
                     className="customer-page__list__modal"
                 >
                     <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
+                </ModelCustom>
+
+                <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-page__list__modal">
+                    <FormAddCustomer handleCloseAddCus={handleCloseAddCus} />
+                    {/* <h1>Form Add</h1>
+                    <button
+                        onClick={async () => {
+                            const object: any = {
+                                CustomerCode: 'KH12343',
+                                customerName: 'baophung',
+                                Gender: 'Nam',
+                                PhoneNumber: '0123123123',
+                                BirthDay: '02/03/1994',
+                                Email: 'baomap@gmail.com',
+                                Address: '192 Ham Tu',
+                                Note: 'Test',
+                                Status: 'Dang hoat dong',
+                                TaxCode: 'taxcode',
+                                Hastag: 'hastag',
+                                FacebookLink: 'facebook',
+                                Debt: '1000000',
+                                AreaCityId: 'hochiminh',
+                                AreaDistrictId: '11',
+                                CustomerGroupId: 'dai ly',
+                            };
+                            const response = await axiosClient.post<any>('/api/Customer/save', null, { params: object });
+                            console.log('response', response);
+                        }}
+                    >
+                        Add
+                    </button> */}
                 </ModelCustom>
 
                 <div className="customer-page__list__tables">

@@ -1,29 +1,53 @@
 export interface Customer {
     customerId: string;
+    customerGroupId?: string;
     customerGroupName: string;
     customerCode: string;
     customerName: string;
     gender: string;
     phoneNumber: string;
-    birthDay: null;
+    birthDay: string;
     email: string;
     address: string;
     note: string;
-    statusName: null;
-    taxCode: null;
-    hastag: null;
-    facebookLink: null;
-    debt: number;
-    areaCityName: null;
-    areaDistrictName: null;
-    areaCommuneName: null;
+    statusName: string;
+    status?: string;
+    taxCode: string;
+    hastag: string;
+    facebookLink: string;
+    debt: string | number;
+    areaCityId?: string;
+    areaCityName: string;
+    areaDistrictName: string;
+    areaDistrictId?: string;
+    areaCommuneName: string;
     createdDate: string;
-    createdByName: null;
+    createdByName: string;
     modifiedDate: string;
-    modifiedByName: null;
+    modifiedByName: string;
     selected?: boolean;
 }
 
+export interface CustomerReq {
+    CustomerCode: string;
+    CustomerName: string;
+    Gender: string;
+    PhoneNumber: string;
+    BirthDay: string;
+    Email: string;
+    Address: string;
+    Note: string;
+    Status: string;
+    TaxCode: string;
+    Hastag: string;
+    FacebookLink: string;
+    Debt: string;
+    AreaCityId: string;
+    AreaDistrictId: string;
+    CustomerGroupId: string;
+    CustomerGroupName: string;
+    email: string;
+}
 export interface CustomerResponse {
     success: boolean;
     data: Customer[];

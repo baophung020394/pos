@@ -10,19 +10,24 @@ import ExportIcon from '../../assets/images/customer/export.svg';
 
 type FilterCustomerProps = {
     getValueSearch?: (value: string) => void;
+    onClick?: (value: boolean) => void;
 };
 
-const FilterCustomer: React.FC<FilterCustomerProps> = ({ getValueSearch }) => {
+const FilterCustomer: React.FC<FilterCustomerProps> = ({ onClick, getValueSearch }) => {
     const onSearch = (value: string) => {
         if (!getValueSearch) return;
         getValueSearch(value);
+    };
+    const handleOnClickAddCus = () => {
+        if (!onClick) return;
+        onClick(true);
     };
 
     return (
         <div className="customer-page__list__filters">
             <div className="filters--filter-top">
                 <CustomButton
-                    text="Thêm khách hàng mới"
+                    text="Thêm khách hàng"
                     maxHeight={45}
                     minHeight={32}
                     minWidth={32}
@@ -31,6 +36,7 @@ const FilterCustomer: React.FC<FilterCustomerProps> = ({ getValueSearch }) => {
                     borderRadius="50%"
                     icon={AddIcon}
                     className="btn-add-cus"
+                    onClick={handleOnClickAddCus}
                 />
                 <Search placeholder="Tìm kiếm theo mã khách hàng, tên khách hàng và số điện thoại" onSearch={onSearch} />
             </div>

@@ -1,5 +1,5 @@
 import axiosClient from '@apis/axios';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse, Method } from 'axios';
 import React, { useEffect, useState } from 'react';
 
 interface ApiResponse<T> {
@@ -8,18 +8,32 @@ interface ApiResponse<T> {
     error: AxiosError<unknown> | null;
 }
 
-function useApi<T>(url: string): ApiResponse<T> {
-    const [data, setData] = useState<T | null>(null);
+function useApi<T>(url: string, method: Method = 'get', data?: T): ApiResponse<T> {
+    const [responseData, setResponseData] = useState<T | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError<unknown> | null>(null);
 
     useEffect(() => {
-        console.log('calApi', url);
+        console.log('callApi', url);
         if (url.length > 0) {
             async function fetchData() {
                 try {
-                    const response: AxiosResponse<T> = await axiosClient.get(url);
-                    setData(response.data);
+                    let response: AxiosResponse<T>;
+
+                    switch (method) {
+                        case 'get':
+                            response = await axiosClient.get(url);
+                            break;
+                        case 'post':
+                            response = await axiosClient.post(url, null, data);
+                            break;
+                        // Thêm các phương thức khác tùy ý
+                        default:
+                            response = await axiosClient.get(url);
+                            break;
+                    }
+
+                    setResponseData(response.data);
                 } catch (err) {
                     setError(err as any);
                 } finally {
@@ -29,9 +43,9 @@ function useApi<T>(url: string): ApiResponse<T> {
 
             fetchData();
         }
-    }, [url]);
+    }, [url, method, data]);
 
-    return { data, loading, error };
+    return { data: responseData, loading, error };
 }
 
 export default useApi;

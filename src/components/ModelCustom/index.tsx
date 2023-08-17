@@ -18,7 +18,7 @@ const ModelCustom: React.FC<ModelCustomProps> = ({ isOpen, onClose, children, ti
         <Dialog open={isOpen} onClose={onClose} className={className}>
             {title && <DialogTitle>{title}</DialogTitle>}
             <DialogContent>
-                <DialogContentText>{children}</DialogContentText>
+                <div>{children}</div>
             </DialogContent>
             {(onOk || onCancel) && (
                 <DialogActions>
