@@ -2,7 +2,7 @@ import CustomButton from '@components/Button';
 import ModelCustom from '@components/ModelCustom';
 import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
 import useApi from '@hooks/useApi';
-import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { setCurrentCus } from '@store/customerSlice';
 import React, { useCallback, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
@@ -18,7 +18,9 @@ import PrevIcon from '../../assets/images/customer/prev.svg';
 import SettingColIcon from '../../assets/images/customer/setting-col.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
 import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
+import AddIcon from '../../assets/images/customer/add.svg';
 import './customer-group.scss';
+import FormAddCusGroup from '@features/forms/customerGroup/FormAddCusGroup';
 
 const columns: { field: keyof CustomerGroup; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -37,17 +39,15 @@ const CustomerGroupList: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
-    const [isOpenConfig, setIsOpenConfig] = useState<boolean>(false);
     const [valueSearch, setValueSearch] = useState<string>('');
-    const [isOpenAddCus, setIsOpenAddCus] = useState<boolean>(false);
+    const [isOpenAddCusGroup, setIsOpenAddCusGroup] = useState<boolean>(false);
     const apiUrl = '/api/CustomerGroup/list'; // Đường dẫn cụ thể đến API
     const { data, loading, error } = useApi<CustomerGroupResponse>(apiUrl);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleOpenConfigColumn = () => setIsOpenConfig(!isOpenConfig);
-    const handleCloseConfigColumn = () => setIsOpenConfig(false);
-    const handleCloseAddCus = () => setIsOpenAddCus(false);
+    const handleOpenAddCusGroup = () => setIsOpenAddCusGroup(true);
+    const handleCloseAddCusGroup = () => setIsOpenAddCusGroup(false);
 
     const handleColumnToggle = (field: keyof CustomerGroup) => {
         if (visibleColumns.includes(field)) {
@@ -103,33 +103,41 @@ const CustomerGroupList: React.FC = () => {
         }
     };
 
-    const handleOnClick = useCallback(() => {
-        setIsOpenAddCus(!isOpenAddCus);
-    }, []);
-
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
-    // const visibleCustomers = data
-    //     ? data.data
-    //           .filter(
-    //               (customer) =>
-    //                   customer?.customerCode?.toLowerCase()?.includes(valueSearch.toLowerCase()) ||
-    //                   customer?.customerName?.toLowerCase()?.includes(valueSearch.toLowerCase()) ||
-    //                   customer?.phoneNumber?.toLowerCase()?.includes(valueSearch.toLowerCase())
-    //           )
-    //           .slice(startIndex, endIndex)
-    //     : [];
     const visibleCustomers = data ? data.data : [];
     const lastPage = data ? Math.ceil(data.data.length / pageSize) : 0;
 
     return (
         <div className="customer-group-page__list">
-            <DragDropContext onDragEnd={handleColumnReorder}>
-                <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-group-page__list__modal">
-                    <FormAddCustomer handleCloseAddCus={handleCloseAddCus} />
-                </ModelCustom>
+            <Box className="btn-add">
+                <CustomButton
+                    text="Thêm nhóm khách hàng"
+                    maxHeight={45}
+                    minHeight={32}
+                    minWidth={32}
+                    backgroundColor="#007AFF"
+                    backgroundColorHover="#007AFF"
+                    borderRadius="50%"
+                    icon={AddIcon}
+                    className="btn-add-cus"
+                    onClick={handleOpenAddCusGroup}
+                />
+            </Box>
 
+            <ModelCustom
+                isOpen={isOpenAddCusGroup}
+                onClose={handleCloseAddCusGroup}
+                title=""
+                okButtonText=""
+                cancelButtonText=""
+                onCancel={handleCloseAddCusGroup}
+                className="customer-page__list__modal"
+            >
+                <FormAddCusGroup onClose={handleCloseAddCusGroup} />
+            </ModelCustom>
+            <DragDropContext onDragEnd={handleColumnReorder}>
                 <div className="customer-group-page__list__tables">
                     <TableContainer component={Paper}>
                         <Table>

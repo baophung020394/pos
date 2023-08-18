@@ -13,12 +13,22 @@ export interface CustomerGroup {
     modifiedName: string | null;
     discription: string | null;
 }
+
+export interface CustomerGroupReq {
+    CustomerGroupCode: string | null;
+    CustomerGroupName: string | null;
+    Discount: number | 0;
+    PricePolicyName: string | null;
+    Note: string | null;
+}
+
 export interface CustomerGroupResponse {
     success: boolean;
     data: CustomerGroup[];
     statusCode: number;
     errors: string[];
 }
+
 export interface Customer {
     customerId: string;
     customerGroupId?: string;

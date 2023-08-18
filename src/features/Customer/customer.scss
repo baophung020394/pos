@@ -446,6 +446,7 @@
                                     font-size: $font-14;
                                     font-weight: $font-weight-semi-bold;
                                     margin-right: 8px;
+                                    color: #000000;
                                 }
                             }
                             .custom-checkbox {
@@ -644,6 +645,7 @@
         }
     }
 
+    /* Customer detail */
     &__tables {
         border-radius: 6px;
         background-color: $white;
@@ -683,14 +685,6 @@
             thead {
                 tr {
                     position: relative;
-                    // &::before {
-                    //     content: '';
-                    //     position: absolute;
-                    //     width: 100%;
-                    //     height: 100%;
-                    //     background-color: #d9d9d9;
-                    //     opacity: 0.2;
-                    // }
                     th {
                         font-family: 'Manrope', sans-serif !important;
                         position: relative;

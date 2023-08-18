@@ -1,24 +1,21 @@
 import CustomButton from '@components/Button';
 import ModelCustom from '@components/ModelCustom';
-import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
+import FormAddPolicy from '@features/forms/policy/FormAddPolicy';
 import useApi from '@hooks/useApi';
 import { Policy, PolicyResponse } from '@models/policy';
 import { Box, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { setCurrentCus } from '@store/customerSlice';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Customer, CustomerGroup, CustomerGroupResponse } from 'src/models/customer';
+import AddIcon from '../../assets/images/customer/add.svg';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
 import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
-import AddIcon from '../../assets/images/customer/add.svg';
 import './policy.scss';
-import FormAddPolicy from '@features/forms/policy/FormAddPolicy';
 
 const columns: { field: keyof Policy; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -36,12 +33,9 @@ const CustomerGroupList: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
-    const [valueSearch, setValueSearch] = useState<string>('');
     const [isOpenAddPolicy, setIsOpenAddPolicy] = useState<boolean>(false);
     const apiUrl = '/api/PricePolicy/list'; // Đường dẫn cụ thể đến API
     const { data, loading, error } = useApi<PolicyResponse>(apiUrl);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleCloseAddPolicy = () => setIsOpenAddPolicy(false);
 
