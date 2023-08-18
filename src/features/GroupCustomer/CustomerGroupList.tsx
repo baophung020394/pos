@@ -26,7 +26,7 @@ const columns: { field: keyof CustomerGroup; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
     { field: 'customerGroupCode', label: 'Mã nhóm' },
     { field: 'customerGroupName', label: 'Tên nhóm' },
-    { field: 'discription', label: 'Mô tả' },
+    { field: 'note', label: 'Mô tả' },
     { field: 'pricePolicyName', label: 'Chính sách giá' },
     { field: 'totalCustomer', label: 'Số lượng khách hàng' },
 ];
@@ -34,7 +34,7 @@ const columns: { field: keyof CustomerGroup; label: string }[] = [
 const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerGroupList: React.FC = () => {
-    const [visibleColumns, setVisibleColumns] = useState<Array<keyof CustomerGroup>>(['customerGroupCode', 'customerGroupName', 'discription', 'pricePolicyName', 'totalCustomer']);
+    const [visibleColumns, setVisibleColumns] = useState<Array<keyof CustomerGroup>>(['customerGroupCode', 'customerGroupName', 'note', 'pricePolicyName', 'totalCustomer']);
     const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [selectedRows, setSelectedRows] = useState<string[]>([]);

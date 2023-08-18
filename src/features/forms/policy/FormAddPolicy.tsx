@@ -81,7 +81,7 @@ const FormAddPolicy: React.FC<FormAddPolicyProps> = ({ onClose }) => {
                     backgroundColorHover="#007AFF"
                     boxShadow="none"
                     icon={SaveIcon}
-                    className={`${!formState.isValid ? 'disabled' : ''} btn-submit`}
+                    className={`btn-submit`}
                     type="submit"
                     disabled={loading}
                     minHeight={35}
