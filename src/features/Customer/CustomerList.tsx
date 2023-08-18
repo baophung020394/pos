@@ -158,7 +158,7 @@ const CustomerList: React.FC = () => {
                 </ModelCustom>
 
                 <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-page__list__modal">
-                    <FormAddCustomer handleCloseAddCus={handleCloseAddCus} />
+                    {/* <FormAddCustomer handleCloseAddCus={handleCloseAddCus} /> */}
                     {/* <h1>Form Add</h1>
                     <button
                         onClick={async () => {
