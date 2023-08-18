@@ -25,7 +25,7 @@ function useApi<T>(url: string, method: Method = 'get', data?: T): ApiResponse<T
                             response = await axiosClient.get(url);
                             break;
                         case 'post':
-                            response = await axiosClient.post(url, null, data);
+                            response = await axiosClient.post(url, data);
                             break;
                         // Thêm các phương thức khác tùy ý
                         default:
