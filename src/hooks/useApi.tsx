@@ -9,7 +9,7 @@ interface ApiResponse<T> {
 }
 
 function useApi<T>(url: string, method: Method = 'get', data?: T): ApiResponse<T> {
-    const [responseData, setResponseData] = useState<T | null>(null);
+    const [responseData, setResponseData] = useState<T | undefined>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<AxiosError<unknown> | null>(null);
 
@@ -45,7 +45,7 @@ function useApi<T>(url: string, method: Method = 'get', data?: T): ApiResponse<T
         }
     }, [url, method, data]);
 
-    return { data, loading, error };
+    return { data: responseData, loading, error };
 }
 
 export default useApi;
