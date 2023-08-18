@@ -29,6 +29,15 @@
             padding: 0;
         }
     }
+    // .information--form-control {
+    //     input {
+    // &::placeholder {
+    //     font-size: $font-14;
+    //     font-weight: $font-weight-medium;
+    //     color: $color-939393;
+    // }
+    //     }
+    // }
 
     .information {
         padding: 1rem;
@@ -49,6 +58,17 @@
                     .MuiInputBase-root {
                         max-height: 100%;
                     }
+
+                    textarea {
+                        font-size: $font-14;
+                        font-weight: $font-weight-medium;
+                        color: $color-191919;
+                        &::placeholder {
+                            font-size: $font-14;
+                            font-weight: $font-weight-medium;
+                            color: $color-939393;
+                        }
+                    }
                 }
             }
             label {
@@ -56,10 +76,25 @@
                 font-weight: $font-weight-medium;
                 margin-bottom: 3px;
             }
+            input {
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                color: $color-191919;
+                &::placeholder {
+                    font-size: $font-14;
+                    font-weight: $font-weight-medium;
+                    color: $color-939393;
+                }
+            }
             .MuiFormControl-root {
                 max-height: 39px;
                 input {
                     padding: 10px 24px;
+                    &::placeholder {
+                        font-size: $font-14;
+                        font-weight: $font-weight-medium;
+                        color: $color-939393;
+                    }
                 }
                 fieldset {
                     border: 1px solid $color-d9d9d9;

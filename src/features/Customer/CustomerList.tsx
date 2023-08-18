@@ -3,8 +3,10 @@ import ModelCustom from '@components/ModelCustom';
 import FilterCustomer from '@features/Filters/FilterCustomer';
 import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
 import useApi from '@hooks/useApi';
+import useFormatDate from '@hooks/useFormatDate';
 import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { setCurrentCus } from '@store/customerSlice';
+import { format } from 'date-fns';
 import React, { useCallback, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
@@ -158,33 +160,6 @@ const CustomerList: React.FC = () => {
 
                 <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-page__list__modal">
                     <FormAddCustomer handleCloseAddCus={handleCloseAddCus} />
-                    {/* <h1>Form Add</h1>
-                    <button
-                        onClick={async () => {
-                            const object: any = {
-                                CustomerCode: 'KH12343',
-                                customerName: 'baophung',
-                                Gender: 'Nam',
-                                PhoneNumber: '0123123123',
-                                BirthDay: '02/03/1994',
-                                Email: 'baomap@gmail.com',
-                                Address: '192 Ham Tu',
-                                Note: 'Test',
-                                Status: 'Dang hoat dong',
-                                TaxCode: 'taxcode',
-                                Hastag: 'hastag',
-                                FacebookLink: 'facebook',
-                                Debt: '1000000',
-                                AreaCityId: 'hochiminh',
-                                AreaDistrictId: '11',
-                                CustomerGroupId: 'dai ly',
-                            };
-                            const response = await axiosClient.post<any>('/api/Customer/save', null, { params: object });
-                            console.log('response', response);
-                        }}
-                    >
-                        Add
-                    </button> */}
                 </ModelCustom>
 
                 <div className="customer-page__list__tables">
@@ -242,9 +217,11 @@ const CustomerList: React.FC = () => {
                                             />
                                         </TableCell>
                                         {visibleColumns.map((column) => {
+                                            const date = new Date(customer['createdDate']);
+                                            const convertDate = format(date, 'dd/MM/yyyy');
                                             return (
                                                 <TableCell className={`${column === 'customerName' ? 'color-name' : ''}`} key={column} onClick={() => handleGoPageDetail(customer, column)}>
-                                                    {customer[column]}
+                                                    {column === 'createdDate' ? convertDate : customer[column]}
                                                 </TableCell>
                                             );
                                         })}

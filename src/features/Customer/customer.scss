@@ -565,26 +565,31 @@
             }
             .table {
                 padding: 30px 37px;
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                // grid-template-columns: max-content max-content;
+                gap: 5px;
+                width: 100%;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(5, auto);
+
                 p {
                     font-size: $font-14;
                     font-weight: 500;
                     padding: 10px 0;
                     min-height: 40px;
                 }
-                .left {
-                    display: flex;
-                    justify-content: space-between;
-                    max-width: 46%;
-                    width: 100%;
-                }
-                .right {
-                    display: flex;
-                    justify-content: space-between;
-                    max-width: 46%;
-                    width: 100%;
-                }
+                // .left {
+                //     display: flex;
+                //     justify-content: space-between;
+                //     max-width: 46%;
+                //     width: 100%;
+                // }
+                // .right {
+                //     display: flex;
+                //     justify-content: space-between;
+                //     max-width: 46%;
+                //     width: 100%;
+                // }
             }
         }
 
@@ -623,24 +628,17 @@
             }
             .table {
                 padding: 30px 37px;
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: max-content max-content;
+                gap: 16px;
+                width: 100%;
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(5, auto);
+
                 p {
                     font-size: $font-14;
                     font-weight: 500;
                     padding: 10px 0;
-                }
-                .left {
-                    display: flex;
-                    justify-content: space-between;
-                    max-width: 46%;
-                    width: 100%;
-                }
-                .right {
-                    display: flex;
-                    justify-content: space-between;
-                    max-width: 46%;
-                    width: 100%;
                 }
             }
         }
@@ -650,6 +648,18 @@
         border-radius: 6px;
         background-color: $white;
         box-shadow: -4px -4px 10px 0px rgba(168, 168, 168, 0.1), 4px 4px 10px 0px rgba(168, 168, 168, 0.1);
+        table {
+            thead {
+                tr {
+                    th {
+                        &:nth-child(2) {
+                            min-width: 200px;
+                            max-width: 100%;
+                        }
+                    }
+                }
+            }
+        }
         .MuiTabs-root {
             background-color: #f2f9ff;
             margin-bottom: 16px;

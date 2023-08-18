@@ -132,6 +132,7 @@ const Customer: React.FC = () => {
         'Đã trả khách': 'status-return-cus',
         'Hoàn thành': 'status-completed',
     };
+
     return (
         <Box className="customer-detail">
             {/* <Box className="customer-detail__heading">
@@ -147,42 +148,16 @@ const Customer: React.FC = () => {
                         </Box>
                     </Box>
                     <Box className="table">
-                        <Box className="left">
-                            <Box className="left-title">
-                                <Typography component="p">Số điện thoại : </Typography>
-                                <Typography component="p">Giới tính : </Typography>
-                                <Typography component="p">Email : </Typography>
-                                <Typography component="p">Facebook : </Typography>
-                                <Typography component="p">Tag : </Typography>
-                            </Box>
-                            <Box className="left-content">
-                                <Typography component="p">{currentCustomer?.phoneNumber} </Typography>
-                                <Typography component="p">{currentCustomer?.gender} </Typography>
-                                <Typography component="p"> {currentCustomer?.email} </Typography>
-                                <Typography component="p"> {currentCustomer?.facebookLink} </Typography>
-                                <Typography component="p"> {currentCustomer?.hastag} </Typography>
-                            </Box>
-                        </Box>
-                        <Box className="right">
-                            <Box className="right-title">
-                                <Typography component="p">Trạng thái : </Typography>
-                                <Typography component="p">Nhóm khách hàng :</Typography>
-                                <Typography component="p">Mã khách hàng :</Typography>
-                                <Typography component="p">Mã số thuế : </Typography>
-                                <Typography component="p">Người tạo : </Typography>
-                            </Box>
-                            <Box className="right-content">
-                                <Typography component="p" className="status">
-                                    {currentCustomer?.statusName}
-                                </Typography>
-                                <Typography component="p" className="customer-id">
-                                    {currentCustomer?.customerGroupName}
-                                </Typography>
-                                <Typography component="p"> {currentCustomer?.customerCode} </Typography>
-                                <Typography component="p"> {currentCustomer?.taxCode} </Typography>
-                                <Typography component="p"> {currentCustomer?.createdByName} </Typography>
-                            </Box>
-                        </Box>
+                        <Typography component="p">Số điện thoại : {currentCustomer?.phoneNumber} </Typography>
+                        <Typography component="p">Giới tính : {currentCustomer?.gender} </Typography>
+                        <Typography component="p">Email : {currentCustomer?.email}</Typography>
+                        <Typography component="p">Facebook : {currentCustomer?.facebookLink} </Typography>
+                        <Typography component="p">Tag : {currentCustomer?.hastag} </Typography>
+                        <Typography component="p">Trạng thái : {currentCustomer?.statusName}</Typography>
+                        <Typography component="p">Nhóm khách hàng : {currentCustomer?.customerGroupName}</Typography>
+                        <Typography component="p">Mã khách hàng : {currentCustomer?.customerCode}</Typography>
+                        <Typography component="p">Mã số thuế : {currentCustomer?.taxCode}</Typography>
+                        <Typography component="p">Người tạo : {currentCustomer?.createdByName}</Typography>
                     </Box>
                 </Box>
                 <Box className="customer-detail__information__trade">
@@ -194,36 +169,13 @@ const Customer: React.FC = () => {
                         </Box>
                     </Box>
                     <Box className="table">
-                        <Box className="left">
-                            <Box className="left-title">
-                                <Typography component="p">Tổng chi tiêu : </Typography>
-                                <Typography component="p">Số lượng đơn hàng : </Typography>
-                                <Typography component="p">Số phiếu sửa chữa : </Typography>
-                                <Typography component="p">Ngày cuối mua hàng : </Typography>
-                                <Typography component="p">Ngày cuối sửa chữa : </Typography>
-                            </Box>
-                            <Box className="left-content">
-                                <Typography component="p">5,850,000 </Typography>
-                                <Typography component="p">15 </Typography>
-                                <Typography component="p"> 34 </Typography>
-                                <Typography component="p"> 03/04/2023 </Typography>
-                                <Typography component="p"> 03/04/2023 </Typography>
-                            </Box>
-                        </Box>
-                        <Box className="right">
-                            <Box className="right-title">
-                                <Typography component="p">Công nợ mua hàng : </Typography>
-                                <Typography component="p">Công nợ sửa chữa :</Typography>
-                            </Box>
-                            <Box className="right-content">
-                                <Typography component="p" className="status">
-                                    0
-                                </Typography>
-                                <Typography component="p" className="customer-id">
-                                    0
-                                </Typography>
-                            </Box>
-                        </Box>
+                        <Typography component="p">Tổng chi tiêu : 5,850,000</Typography>
+                        <Typography component="p">Số lượng đơn hàng : 15</Typography>
+                        <Typography component="p">Số phiếu sửa chữa : 34</Typography>
+                        <Typography component="p">Ngày cuối mua hàng : 03/04/2023 </Typography>
+                        <Typography component="p">Ngày cuối sửa chữa : 03/04/2023 </Typography>
+                        <Typography component="p">Công nợ mua hàng :0 </Typography>
+                        <Typography component="p">Công nợ sửa chữa :0</Typography>
                     </Box>
                 </Box>
             </Box>

@@ -39,6 +39,8 @@ $color-dcdcdc: #dcdcdc;
 $color-fafbfa: #fafbfa;
 $color-46515f: #46515f;
 $color-d9d9d9: #d9d9d9;
+$color-939393: #939393;
+$color-191919: #191919;
 /*
   * VARIABLES FONT-WEIGHT
   */
@@ -107,4 +109,8 @@ h6 {
     border: 2px solid #4361ee !important;
     padding: 2px;
     margin-right: 23px;
+}
+
+.loading-form {
+    // display: none;
 }

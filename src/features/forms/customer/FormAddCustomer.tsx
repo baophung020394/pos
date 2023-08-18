@@ -6,9 +6,10 @@ import SelectCustomCity from '@components/SelectCustomCity';
 import SelectCustomDistrict from '@components/SelectCustomDistrict';
 import SelectFields from '@components/SelectFields';
 import TextareaFields from '@components/TextareaFields';
+import useApi from '@hooks/useApi';
 import { CustomerReq } from '@models/customer';
 import { Typography } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CloseIcon from '../../../assets/images/customer/close.svg';
 import DropdownIcon from '../../../assets/images/customer/dropdown.svg';
@@ -20,17 +21,16 @@ interface FormAddCustomerProps {
 }
 const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) => {
     const { handleSubmit, control, setValue } = useForm<CustomerReq>();
-
+    const [loading, setLoading] = useState<boolean>(false);
     const onSubmit = async (data: CustomerReq) => {
-        // if (!data) return;
-        console.log('data');
+        setLoading(true);
         const url = '/api/Customer/save';
         const response: any = await axiosClient.post(url, null, { params: data });
         console.log('response', response);
         if (response?.data.success) {
             handleCloseAddCus();
+            setLoading(false);
         }
-        // const postData = useApi<CustomerReq>(url, 'post', data);
     };
 
     const handleDateChange = (event: any) => {
@@ -44,8 +44,8 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                     Thêm mới khách hàng
                 </Typography>
                 <div className="heading--option">
-                    <CustomButton text="Lưu" backgroundColor="#007AFF" backgroundColorHover="#007AFF" boxShadow="none" icon={SaveIcon} className="btn-submit" type="submit" />
-                    <CustomButton text="" backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" icon={CloseIcon} className="btn-close" />
+                    <CustomButton text="Lưu" backgroundColor="#007AFF" backgroundColorHover="#007AFF" boxShadow="none" icon={SaveIcon} className="btn-submit" type="submit" disabled={loading} />
+                    <CustomButton text="" backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" icon={CloseIcon} className="btn-close" onClick={handleCloseAddCus} />
                 </div>
             </div>
 
@@ -56,13 +56,13 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                 <div className="information--col">
                     <div className="information--form-control">
                         <label>Tên khách hàng</label>
-                        <Input name="CustomerName" label="" control={control} />
+                        <Input name="CustomerName" label="" control={control} placeholder="Nhập tên khách hàng" />
                     </div>
                 </div>
                 <div className="information--cols">
                     <div className="information--form-control">
                         <label>Số điện thoại</label>
-                        <Input name="PhoneNumber" label="" control={control} />
+                        <Input name="PhoneNumber" label="" control={control} placeholder="Nhập mã khách hàng" />
                     </div>
                     <div className="information--form-control">
                         <label>Nhóm khách hàng</label>
@@ -76,7 +76,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                     </div>
                     <div className="information--form-control">
                         <label>Email</label>
-                        <Input name="email" label="" control={control} />
+                        <Input name="email" label="" control={control} placeholder="Nhập địa chỉ Email" />
                     </div>
                 </div>
                 <div className="information--cols">
@@ -92,7 +92,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                 <div className="information--col">
                     <div className="information--form-control textarea">
                         <label>Địa chỉ cụ thể</label>
-                        <TextareaFields name="Address" label="" control={control} rows={2} />
+                        <TextareaFields name="Address" label="" control={control} rows={2} placeholder="Nhập địa chỉ" />
                     </div>
                 </div>
             </div>
@@ -141,6 +141,11 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                     </div>
                 </div>
             </div>
+            {/* <div className="loading-form">
+                <div className="min-h-[325px] grid place-content-center bg-white-light/30 dark:bg-dark dark:bg-opacity-[0.08] ">
+                    <span className="animate-spin border-2 border-black dark:border-white !border-l-transparent  rounded-full w-5 h-5 inline-flex"></span>
+                </div>
+            </div> */}
         </form>
     );
 };
