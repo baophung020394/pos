@@ -3,7 +3,7 @@ import { AxiosError, AxiosResponse, Method } from 'axios';
 import React, { useEffect, useState } from 'react';
 
 interface ApiResponse<T> {
-    data: T | null;
+    data: T | undefined;
     loading: boolean;
     error: AxiosError<unknown> | null;
 }
@@ -45,7 +45,7 @@ function useApi<T>(url: string, method: Method = 'get', data?: T): ApiResponse<T
         }
     }, [url, method, data]);
 
-    return { data: responseData, loading, error };
+    return { data, loading, error };
 }
 
 export default useApi;
