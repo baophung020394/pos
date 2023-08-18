@@ -3,18 +3,39 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
-interface InputProps<T> {
-    name: keyof T;
-    label?: string;
-    className?: string;
-    placeholder?: string;
-    control: Control<T>;
-    type?: 'text' | 'password' | 'date';
-    startIcon?: React.ReactNode | string;
-    endIcon?: React.ReactNode | string;
+interface FormData {
+    CustomerCode: string;
+    CustomerName: string;
+    Gender: string;
+    PhoneNumber: string;
+    BirthDay: string;
+    Email: string;
+    Address: string;
+    Note: string;
+    Status: string;
+    TaxCode: string;
+    Hastag: string;
+    FacebookLink: string;
+    Debt: string;
+    AreaCityId: string;
+    AreaDistrictId: string;
+    CustomerGroupId: string;
+    CustomerGroupName: string;
+    email: string;
 }
 
-function Input<T>({ name, label, control, type, startIcon, endIcon, placeholder, className }: InputProps<T>) {
+interface InputFieldLoginFormProps {
+    name: keyof FormData;
+    label?: string;
+    placeholder?: string;
+    control: Control<FormData>;
+    type?: 'text' | 'password';
+    startIcon?: React.ReactNode | string;
+    endIcon?: React.ReactNode | string;
+    className?: string;
+}
+
+const InputFieldLoginForm: React.FC<InputFieldLoginFormProps> = ({ name, className, label, control, type = 'text', startIcon, endIcon, placeholder }) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -44,9 +65,7 @@ function Input<T>({ name, label, control, type, startIcon, endIcon, placeholder,
     return (
         <Controller
             control={control}
-            // @ts-ignore
             name={name}
-            // @ts-ignore
             defaultValue=""
             render={({ field }) => (
                 <TextField
@@ -55,7 +74,7 @@ function Input<T>({ name, label, control, type, startIcon, endIcon, placeholder,
                     label={label}
                     fullWidth
                     placeholder={placeholder}
-                    type={type}
+                    type={type === 'password' && !passwordVisible ? 'password' : 'text'}
                     InputProps={{
                         startAdornment: renderAdornment('start'),
                         endAdornment: renderAdornment('end'),
@@ -64,6 +83,6 @@ function Input<T>({ name, label, control, type, startIcon, endIcon, placeholder,
             )}
         />
     );
-}
+};
 
-export default Input;
+export default InputFieldLoginForm;

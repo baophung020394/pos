@@ -56,13 +56,13 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                 <div className="information--col">
                     <div className="information--form-control">
                         <label>Tên khách hàng</label>
-                        <Input<CustomerReq> name="CustomerName" label="" control={control} />
+                        <Input name="CustomerName" label="" control={control} />
                     </div>
                 </div>
                 <div className="information--cols">
                     <div className="information--form-control">
                         <label>Số điện thoại</label>
-                        <Input<CustomerReq> name="PhoneNumber" label="" control={control} />
+                        <Input name="PhoneNumber" label="" control={control} />
                     </div>
                     <div className="information--form-control">
                         <label>Nhóm khách hàng</label>
@@ -72,11 +72,11 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                 <div className="information--cols">
                     <div className="information--form-control">
                         <label>Mã khách hàng</label>
-                        <Input<CustomerReq> name="CustomerCode" label="" control={control} />
+                        <Input name="CustomerCode" label="" control={control} />
                     </div>
                     <div className="information--form-control">
                         <label>Email</label>
-                        <Input<CustomerReq> name="email" label="" control={control} />
+                        <Input name="email" label="" control={control} />
                     </div>
                 </div>
                 <div className="information--cols">
@@ -92,7 +92,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                 <div className="information--col">
                     <div className="information--form-control textarea">
                         <label>Địa chỉ cụ thể</label>
-                        <TextareaFields<CustomerReq> name="Address" label="" control={control} rows={2} />
+                        <TextareaFields name="Address" label="" control={control} rows={2} />
                     </div>
                 </div>
             </div>
@@ -117,26 +117,26 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                         <div className="information-add--cols">
                             <div className="information--form-control">
                                 <label>Mã số thuế</label>
-                                <Input<CustomerReq> name="TaxCode" label="" control={control} />
+                                <Input name="TaxCode" label="" control={control} />
                             </div>
                             <div className="information--form-control">
                                 <label>Công nợ</label>
-                                <Input<CustomerReq> name="Debt" label="" control={control} />
+                                <Input name="Debt" label="" control={control} />
                             </div>
                         </div>
                     </div>
                     <div className="information-add__right">
                         <div className="information--form-control textarea-note">
                             <label>Ghi chú</label>
-                            <TextareaFields<CustomerReq> name="Note" label="" control={control} rows={4} />
+                            <TextareaFields name="Note" label="" control={control} rows={4} />
                         </div>
                         <div className="information--form-control">
                             <label>Tag</label>
-                            <Input<CustomerReq> name="Hastag" label="" control={control} />
+                            <Input name="Hastag" label="" control={control} />
                         </div>
                         <div className="information--form-control">
                             <label>Facebook</label>
-                            <Input<CustomerReq> name="FacebookLink" label="" control={control} />
+                            <Input name="FacebookLink" label="" control={control} />
                         </div>
                     </div>
                 </div>

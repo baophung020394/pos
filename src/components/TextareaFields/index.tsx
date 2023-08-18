@@ -2,17 +2,40 @@ import { TextField, InputAdornment } from '@mui/material';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 
-interface TextareaProps<T> {
-    name: keyof T;
-    label?: string;
-    control: Control<T>;
-    startIcon?: React.ReactNode | string;
-    endIcon?: React.ReactNode | string;
-    onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
-    rows?: number; // Thêm thuộc tính rows
+interface FormData {
+    CustomerCode: string;
+    CustomerName: string;
+    Gender: string;
+    PhoneNumber: string;
+    BirthDay: string;
+    Email: string;
+    Address: string;
+    Note: string;
+    Status: string;
+    TaxCode: string;
+    Hastag: string;
+    FacebookLink: string;
+    Debt: string;
+    AreaCityId: string;
+    AreaDistrictId: string;
+    CustomerGroupId: string;
+    CustomerGroupName: string;
+    email: string;
 }
 
-function TextareaFields<T>({ name, label, control, startIcon, endIcon, onKeyDown, rows }: TextareaProps<T>) {
+interface TextareaProps {
+    name: keyof FormData;
+    label?: string;
+    placeholder?: string;
+    control: Control<FormData>;
+    startIcon?: React.ReactNode | string;
+    endIcon?: React.ReactNode | string;
+    type?: string;
+    rows?: number;
+    onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
+}
+
+const Textarea: React.FC<TextareaProps> = ({ name, label, control, startIcon, endIcon, placeholder, onKeyDown, rows }) => {
     const renderAdornment = (position: 'start' | 'end') => {
         const icon = position === 'start' ? startIcon : endIcon;
 
@@ -26,26 +49,25 @@ function TextareaFields<T>({ name, label, control, startIcon, endIcon, onKeyDown
     return (
         <Controller
             control={control}
-            // @ts-ignore
             name={name}
-            // @ts-ignore
             defaultValue=""
             render={({ field }) => (
                 <TextField
+                    rows={rows}
                     {...field}
                     label={label}
                     fullWidth
+                    placeholder={placeholder}
                     multiline
-                    rows={rows} // Sử dụng thuộc tính rows ở đây
-                    onKeyDown={onKeyDown}
+                    onKeyDown={onKeyDown} // Được thêm vào đây
                     InputProps={{
                         startAdornment: renderAdornment('start'),
                         endAdornment: renderAdornment('end'),
                     }}
-                />
+                ></TextField>
             )}
         />
     );
-}
+};
 
-export default TextareaFields;
+export default Textarea;

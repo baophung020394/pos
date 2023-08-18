@@ -1,8 +1,13 @@
 import CustomButton from '@components/Button';
+import ModelCustom from '@components/ModelCustom';
 import FilterCustomer from '@features/Filters/FilterCustomer';
+import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
+import useApi from '@hooks/useApi';
 import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { setCurrentCus } from '@store/customerSlice';
 import React, { useCallback, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Customer, CustomerResponse } from 'src/models/customer';
 import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
@@ -15,13 +20,7 @@ import SettingColIcon from '../../assets/images/customer/setting-col.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
 import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
 import ColumnConfig from './ColumnConfig';
-import useApi from '@hooks/useApi';
 import './customer.scss';
-import ModelCustom from '@components/ModelCustom';
-import { useDispatch } from 'react-redux';
-import { setCurrentCus } from '@store/customerSlice';
-import axiosClient from '@apis/axios';
-import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
 
 const columns: { field: keyof Customer; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -158,7 +157,7 @@ const CustomerList: React.FC = () => {
                 </ModelCustom>
 
                 <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-page__list__modal">
-                    {/* <FormAddCustomer handleCloseAddCus={handleCloseAddCus} /> */}
+                    <FormAddCustomer handleCloseAddCus={handleCloseAddCus} />
                     {/* <h1>Form Add</h1>
                     <button
                         onClick={async () => {
