@@ -2,16 +2,38 @@ import { Select, MenuItem, InputAdornment } from '@mui/material';
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 
-interface SelectFieldsProps<T> {
-    name: keyof T;
-    label?: string;
-    control: Control<T>;
-    startIcon?: React.ReactNode | string;
-    endIcon?: React.ReactNode | string;
-    options: string[];
+interface FormData {
+    CustomerCode: string;
+    CustomerName: string;
+    Gender: string;
+    PhoneNumber: string;
+    BirthDay: string;
+    Email: string;
+    Address: string;
+    Note: string;
+    Status: string;
+    TaxCode: string;
+    Hastag: string;
+    FacebookLink: string;
+    Debt: string;
+    AreaCityId: string;
+    AreaDistrictId: string;
+    CustomerGroupId: string;
+    CustomerGroupName: string;
+    email: string;
 }
 
-function SelectFields<T>({ name, label, control, startIcon, endIcon, options }: SelectFieldsProps<T>) {
+interface SelectFieldsProps {
+    name: keyof FormData;
+    label?: string;
+    control: Control<FormData>;
+    startIcon?: React.ReactNode | string;
+    endIcon?: React.ReactNode | string;
+    options: string[]; // Đây là mảng options bạn cần truyền vào
+    className?: string;
+}
+
+const SelectFields: React.FC<SelectFieldsProps> = ({ name, label, control, startIcon, endIcon, options, className }) => {
     const renderAdornment = (position: 'start' | 'end') => {
         const icon = position === 'start' ? startIcon : endIcon;
 
@@ -25,12 +47,10 @@ function SelectFields<T>({ name, label, control, startIcon, endIcon, options }: 
     return (
         <Controller
             control={control}
-            // @ts-ignore
             name={name}
-            // @ts-ignore
             defaultValue=""
             render={({ field }) => (
-                <Select {...field} label={label} fullWidth startAdornment={renderAdornment('start')} endAdornment={renderAdornment('end')}>
+                <Select {...field} label={label} fullWidth className={className} startAdornment={renderAdornment('start')} endAdornment={renderAdornment('end')}>
                     {options.map((option: string, index: number) => (
                         <MenuItem key={index} value={option}>
                             {option}
@@ -40,6 +60,6 @@ function SelectFields<T>({ name, label, control, startIcon, endIcon, options }: 
             )}
         />
     );
-}
+};
 
 export default SelectFields;

@@ -107,7 +107,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
                         <div className="information-add--cols">
                             <div className="information--form-control">
                                 <label>Giới tính</label>
-                                <SelectFields<CustomerReq> name="Gender" label="" control={control} endIcon={DropdownIcon} options={['Nam', 'Nữ', 'Khác']} />
+                                <SelectFields name="Gender" label="" control={control} endIcon={DropdownIcon} options={['Nam', 'Nữ', 'Khác']} />
                             </div>
                             <div className="information--form-control">
                                 <label>Ngày sinh</label>

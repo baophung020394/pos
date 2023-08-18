@@ -1,50 +1,57 @@
-import { Select, MenuItem, InputAdornment, IconButton } from '@mui/material';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import React, { useState } from 'react';
+import useApi from '@hooks/useApi';
+import { Select, MenuItem, InputAdornment } from '@mui/material';
+import React from 'react';
 import { Control, Controller } from 'react-hook-form';
-import useApi from '@hooks/useApi'; // Đường dẫn đến useApi
 
-interface SelectCustomDistrictProps<T> {
-    name: keyof T;
+interface FormData {
+    CustomerCode: string;
+    CustomerName: string;
+    Gender: string;
+    PhoneNumber: string;
+    BirthDay: string;
+    Email: string;
+    Address: string;
+    Note: string;
+    Status: string;
+    TaxCode: string;
+    Hastag: string;
+    FacebookLink: string;
+    Debt: string;
+    AreaCityId: string;
+    AreaDistrictId: string;
+    CustomerGroupId: string;
+    CustomerGroupName: string;
+    email: string;
+}
+interface SelectCustomDistrictProps {
+    name: keyof FormData; // Chỉnh sửa ở đây
     label?: string;
-    control: Control<T>;
-    endpoint: string; // Đường dẫn API endpoint
+    control: Control<FormData>;
+    startIcon?: React.ReactNode | string;
     endIcon?: React.ReactNode | string;
+    className?: string;
+    endpoint: string; // Đường dẫn API endpoint
 }
 
-interface Option {
-    value: string;
-    label: string;
-}
-
-const SelectCustomDistrict: React.FC<SelectCustomDistrictProps<any>> = ({ name, label, control, endpoint, endIcon }) => {
+const SelectCustomDistrict: React.FC<SelectCustomDistrictProps> = ({ endpoint, name, label, control, startIcon, endIcon, className }) => {
     const { data, loading, error } = useApi<any>(endpoint);
+    const renderAdornment = (position: 'start' | 'end') => {
+        const icon = position === 'start' ? startIcon : endIcon;
 
-    const renderAdornment = () => {
-        if (endIcon) {
-            return <InputAdornment position="end">{typeof endIcon === 'string' ? <img src={endIcon} alt={label} /> : endIcon}</InputAdornment>;
+        if (icon) {
+            return <InputAdornment position={position}>{typeof icon === 'string' ? <img src={icon} alt={label} /> : <span>{icon}</span>}</InputAdornment>;
         }
 
         return null;
     };
 
-    if (loading) {
-        // Xử lý khi đang loading
-    }
-
-    if (error) {
-        // Xử lý khi có lỗi
-    }
-    console.log('data', data);
-
     return (
         <Controller
             control={control}
-            //@ts-ignore
             name={name}
             defaultValue=""
             render={({ field }) => (
-                <Select {...field} label={label} fullWidth endAdornment={renderAdornment()}>
+                <Select {...field} label={label} fullWidth className={className} startAdornment={renderAdornment('start')} endAdornment={renderAdornment('end')}>
                     {data &&
                         data?.data.map((option: any, index: number) => (
                             <MenuItem key={index} value={option.districtName}>
