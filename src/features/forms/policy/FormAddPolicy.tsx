@@ -1,19 +1,12 @@
 import axiosClient from '@apis/axios';
 import CustomButton from '@components/Button';
-import Input from '@components/InputFields';
 import InputFieldsPolicy from '@components/InputFieldsPolicy';
-import SelectCustom from '@components/SelectCustom';
-import SelectCustomCity from '@components/SelectCustomCity';
-import SelectCustomDistrict from '@components/SelectCustomDistrict';
-import TextareaFields from '@components/TextareaFields';
 import TextareaPolicy from '@components/TextareaFieldsPolicy';
-import { CustomerReq } from '@models/customer';
 import { PolicyRequest } from '@models/policy';
 import { Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CloseIcon from '../../../assets/images/customer/close.svg';
-import DropdownIcon from '../../../assets/images/customer/dropdown.svg';
 import SaveIcon from '../../../assets/images/customer/save.svg';
 import './formaddpolicy.scss';
 
@@ -21,9 +14,14 @@ interface FormAddPolicyProps {
     onClose: () => void;
 }
 const FormAddPolicy: React.FC<FormAddPolicyProps> = ({ onClose }) => {
-    const { handleSubmit, control, setValue } = useForm<PolicyRequest>();
+    const { handleSubmit, control, formState } = useForm<PolicyRequest>();
     const [loading, setLoading] = useState<boolean>(false);
     const onSubmit = async (data: PolicyRequest) => {
+        if (!formState.isValid) {
+            // Form không hợp lệ, không thực hiện submit
+            return;
+        }
+
         setLoading(true);
         const url = '/api/PricePolicy/save';
         const response: any = await axiosClient.post(url, null, { params: data });
@@ -66,14 +64,24 @@ const FormAddPolicy: React.FC<FormAddPolicyProps> = ({ onClose }) => {
             </div>
 
             <div className="information--buttons">
-                <CustomButton text="Huỷ" backgroundColor="#ffffff" backgroundColorHover="#ffffff" boxShadow="none" className="btn-cancel" type="button" minHeight={35} maxHeight={35} onClick={onClose}/>
+                <CustomButton
+                    text="Huỷ"
+                    backgroundColor="#ffffff"
+                    backgroundColorHover="#ffffff"
+                    boxShadow="none"
+                    className="btn-cancel"
+                    type="button"
+                    minHeight={35}
+                    maxHeight={35}
+                    onClick={onClose}
+                />
                 <CustomButton
                     text="Lưu"
                     backgroundColor="#007AFF"
                     backgroundColorHover="#007AFF"
                     boxShadow="none"
                     icon={SaveIcon}
-                    className="btn-submit"
+                    className={`${!formState.isValid ? 'disabled' : ''} btn-submit`}
                     type="submit"
                     disabled={loading}
                     minHeight={35}

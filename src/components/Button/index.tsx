@@ -20,6 +20,7 @@ type CustomButtonProps = {
     backgroundColor?: string; // The color of the background
     backgroundImage?: string; // The source of the optional background image
     backgroundColorHover?: string; // The color of the background hover
+    disabled?: boolean;
 };
 const CONST_PROP_NAME = [
     'boxShadow',
@@ -56,6 +57,7 @@ const StyledButton = styled(Button, {
         maxHeight,
         minWidth,
         minHeight,
+        disabled,
     }) => ({
         width: width || 'auto',
         height: height || 'auto',
@@ -89,7 +91,7 @@ const StyledButton = styled(Button, {
 );
 
 // A component that renders the button with an optional icon and text
-const CustomButton = ({ icon, text, ...rest }: CustomButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
+const CustomButton = ({ icon, text, disabled, ...rest }: CustomButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
     return (
         <StyledButton {...rest} variant="contained" color="primary" startIcon={icon && <img src={icon} alt="" />}>
             {text}

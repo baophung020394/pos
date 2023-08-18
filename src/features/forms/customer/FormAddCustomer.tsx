@@ -20,9 +20,13 @@ interface FormAddCustomerProps {
     handleCloseAddCus: () => void;
 }
 const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) => {
-    const { handleSubmit, control, setValue } = useForm<CustomerReq>();
+    const { handleSubmit, control, setValue, formState } = useForm<CustomerReq>();
     const [loading, setLoading] = useState<boolean>(false);
     const onSubmit = async (data: CustomerReq) => {
+        if (!formState.isValid) {
+            // Form không hợp lệ, không thực hiện submit
+            return;
+        }
         setLoading(true);
         const url = '/api/Customer/save';
         const response: any = await axiosClient.post(url, null, { params: data });

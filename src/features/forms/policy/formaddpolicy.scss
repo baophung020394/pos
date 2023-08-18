@@ -68,6 +68,11 @@
                 text-transform: inherit;
                 font-size: $font-14;
                 font-weight: $font-weight-semi-bold;
+                &.disabled {
+                    background-color: gray;
+                    cursor: not-allowed;
+                    pointer-events: none;
+                }
             }
         }
 
