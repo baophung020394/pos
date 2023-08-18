@@ -133,9 +133,9 @@ const CustomerList: React.FC = () => {
         ? data.data
               .filter(
                   (customer) =>
-                      customer?.customerCode?.toLowerCase().includes(valueSearch.toLowerCase()) ||
-                      customer?.customerName?.toLowerCase().includes(valueSearch.toLowerCase()) ||
-                      customer?.phoneNumber?.toLowerCase().includes(valueSearch.toLowerCase())
+                      customer?.customerCode?.toLowerCase()?.includes(valueSearch.toLowerCase()) ||
+                      customer?.customerName?.toLowerCase()?.includes(valueSearch.toLowerCase()) ||
+                      customer?.phoneNumber?.toLowerCase()?.includes(valueSearch.toLowerCase())
               )
               .slice(startIndex, endIndex)
         : [];
