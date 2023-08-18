@@ -3,6 +3,7 @@ import PublicRoute from '@components/PublicRoute';
 import { lazy } from 'react';
 const Index = lazy(() => import('../pages/Index'));
 const CustomerPage = lazy(() => import('../pages/CustomerPage'));
+const CustomerGroupPage = lazy(() => import('../pages/CustomerGroupPage'));
 const Customer = lazy(() => import('../features/Customer/Customer'));
 const LoginCover = lazy(() => import('../pages/Authentication/LoginCover'));
 const RegisterCover = lazy(() => import('../pages/Authentication/RegisterCover'));
@@ -18,6 +19,10 @@ const routes = [
     {
         path: '/customers/:id',
         element: <PrivateRoute element={<Customer />} />,
+    },
+    {
+        path: '/customers-group/',
+        element: <PrivateRoute element={<CustomerGroupPage />} />,
     },
 
     //Authentication

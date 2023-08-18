@@ -1,3 +1,24 @@
+export interface CustomerGroup {
+    customerGroupId: string;
+    customerGroupCode: string | null;
+    customerGroupName: string | null;
+    pricePolicyName: string | null;
+    discount: number | 0;
+    note: string | null;
+    statusName: string | null;
+    totalCustomer: number | 0;
+    createdDate: string | null;
+    createdName: string | null;
+    modifiedDate: string | null;
+    modifiedName: string | null;
+    discription: string | null;
+}
+export interface CustomerGroupResponse {
+    success: boolean;
+    data: CustomerGroup[];
+    statusCode: number;
+    errors: string[];
+}
 export interface Customer {
     customerId: string;
     customerGroupId?: string;

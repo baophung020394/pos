@@ -70,7 +70,7 @@ const Sidebar = () => {
                     </div>
                     <PerfectScrollbar className="h-[calc(100vh-80px)] relative">
                         <ul className="relative font-semibold space-y-0.5 p-4 py-0">
-                            <li className="menu nav-item">
+                            {/* <li className="menu nav-item">
                                 <button type="button" className={`${currentMenu === 'customer' ? 'active' : ''} nav-link group w-full`} onClick={() => toggleMenu('customer')}>
                                     <div className="flex items-center">
                                         <span className="ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark">{t('Customer')}</span>
@@ -82,6 +82,16 @@ const Sidebar = () => {
                                         </svg>
                                     </div>
                                 </button>
+                            </li> */}
+                            <li className="nav-item">
+                                <NavLink to="/customers">
+                                    Danh sách khách hàng
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink to="/customers-group">
+                                    Danh sách nhóm khách hàng
+                                </NavLink>
                             </li>
                         </ul>
                     </PerfectScrollbar>
