@@ -212,7 +212,7 @@
                                     font-weight: $font-weight-medium;
                                     height: 100%;
                                     line-height: 50px;
-
+                                    width: 100%;
                                     &.color-blue {
                                         color: $color-007aff;
                                     }
@@ -232,7 +232,8 @@
                                 }
                             }
                             .checkbox-col {
-                                text-align: center;
+                                text-align: left;
+                                padding-left: 30px;
                             }
                             .btn-collapse {
                                 padding: 0;
