@@ -20,6 +20,7 @@ import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
 import CollapseBlueIcon from '../../assets/images/branch/collapse-blue.svg';
 import CollapseBlackIcon from '../../assets/images/branch/collapse-black.svg';
 import './branch.scss';
+import FormAddBranch from '@features/forms/Branch/FormAddBarnch';
 
 const columns: { field: keyof Branch; label: string }[] = [
     { field: 'branchCode', label: 'Mã CN' },
@@ -58,7 +59,7 @@ const BranchList: React.FC = () => {
         }));
     };
 
-    const handleCloseAddPolicy = () => setIsOpenAddPolicy(false);
+    const handleCloseAddBranch = () => setIsOpenAddPolicy(false);
 
     const handleSelectAll = () => {
         setSelectAll(!selectAll);
@@ -107,9 +108,9 @@ const BranchList: React.FC = () => {
 
     return (
         <>
-            {/* <Box className="btn-add">
+            <Box className="btn-add">
                 <CustomButton
-                    text="Thêm chính sách"
+                    text="Thêm chi nhánh"
                     maxHeight={45}
                     minHeight={32}
                     minWidth={32}
@@ -120,19 +121,19 @@ const BranchList: React.FC = () => {
                     className="btn-add-cus"
                     onClick={handleOnClickAddPolicy}
                 />
-            </Box> */}
+            </Box>
 
             <div className="branch-page__list">
                 <ModelCustom
                     isOpen={isOpenAddPolicy}
-                    onClose={handleCloseAddPolicy}
+                    onClose={handleCloseAddBranch}
                     title=""
                     okButtonText=""
                     cancelButtonText=""
-                    onCancel={handleCloseAddPolicy}
-                    className="customer-page__list__modal"
+                    onCancel={handleCloseAddBranch}
+                    className="branch-page__list__modal"
                 >
-                    <FormAddPolicy onClose={handleCloseAddPolicy} />
+                    <FormAddBranch onClose={handleCloseAddBranch} />
                 </ModelCustom>
 
                 <DragDropContext onDragEnd={handleColumnReorder}>

@@ -4,15 +4,20 @@ import React, { useState } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 interface FormData {
-    BranchId: string | null;
+    BranchId: string;
     BranchName: string | null;
-    BranchMasterId: string | null;
+    BranchCode: string | null;
+    BranchMasterName: string | null;
     Address: string | null;
+    AreaCityName: string | null;
+    AreaDistrictName: string | null;
+    AreaCommuneName: string | null;
+    StatusName: string | null;
+    PhoneNumber: string | null;
+    Default: boolean;
+    Status: boolean;
     AreaCityId: string | null;
     AreaDistrictId: string | null;
-    AreaCommuneId: string | null;
-    Status: string | null;
-    Phone: string | null;
 }
 
 interface InputFieldsBranchProps {

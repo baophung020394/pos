@@ -9,13 +9,25 @@ export interface Branch {
     areaCommuneName: string | null;
     statusName: string | null;
     phone: string | null;
+    default: boolean;
 }
 
-// export interface PolicyRequest {
-//     PricePolicyNameCode: string | null;
-//     pricePolicyName: string | null;
-//     Note: string | null;
-// }
+export interface BranchRequest {
+    BranchId: string;
+    BranchName: string | null;
+    BranchCode: string | null;
+    BranchMasterName: string | null;
+    Address: string | null;
+    AreaCityName: string | null;
+    AreaDistrictName: string | null;
+    AreaCommuneName: string | null;
+    StatusName: string | null;
+    PhoneNumber: string | null;
+    Default: boolean;
+    Status: boolean;
+    AreaCityId: string | null;
+    AreaDistrictId: string | null;
+}
 
 export interface BranchResponse {
     success: boolean;
