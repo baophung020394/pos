@@ -45,7 +45,7 @@ const ColumnConfig: React.FC<ColumnConfigProps> = ({
                 <div className="config-col__cols__add">
                     <Paper>
                         <Typography variant="h2" component="h2">
-                            Thêm Cột Hiển Thị
+                            Thêm cột hiển thị
                         </Typography>
                         <div className="config-col__cols__add__content">
                             {columns.map((column) => (
@@ -66,7 +66,7 @@ const ColumnConfig: React.FC<ColumnConfigProps> = ({
                 <div className="config-col__cols__display">
                     <Paper>
                         <Typography variant="h2" component="h2">
-                            Cột Hiển Thị
+                            Cột hiển thị
                         </Typography>
                         <div className="config-col__cols__display__introduce">
                             <Typography component="p">Di chuyển để sắp xếp cột hiển thị</Typography>

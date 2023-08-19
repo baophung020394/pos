@@ -5,6 +5,7 @@ const Index = lazy(() => import('../pages/Index'));
 const CustomerPage = lazy(() => import('../pages/CustomerPage'));
 const CustomerGroupPage = lazy(() => import('../pages/CustomerGroupPage'));
 const PolicyPage = lazy(() => import('../pages/PolicyPage'));
+const BranchPage = lazy(() => import('../pages/BranchPage'));
 const Customer = lazy(() => import('../features/Customer/Customer'));
 const LoginCover = lazy(() => import('../pages/Authentication/LoginCover'));
 const RegisterCover = lazy(() => import('../pages/Authentication/RegisterCover'));
@@ -30,6 +31,12 @@ const routes = [
     {
         path: '/policies/',
         element: <PrivateRoute element={<PolicyPage />} />,
+    },
+
+    // policy
+    {
+        path: '/branchs/',
+        element: <PrivateRoute element={<BranchPage />} />,
     },
     //Authentication
 

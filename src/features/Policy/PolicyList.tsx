@@ -18,7 +18,6 @@ import SortIcon from '../../assets/images/customer/sort.svg';
 import './policy.scss';
 
 const columns: { field: keyof Policy; label: string }[] = [
-    // { field: 'customerId', label: 'Mã khách hàng' },
     { field: 'pricePolicyNameCode', label: 'Mã chính sách' },
     { field: 'pricePolicyName', label: 'Tên chính sách' },
     { field: 'note', label: 'Mô tả' },
