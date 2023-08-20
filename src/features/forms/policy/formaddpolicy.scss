@@ -53,16 +53,18 @@
             text-align: center;
             margin-bottom: 18px;
             .btn-cancel {
+                min-width: 76px;
                 color: $color-e7515a;
-                border: 1px solid $color-e7515a;
+                border: 1.5px solid $color-e7515a;
                 border-radius: 3px;
-                padding: 8px 34px;
+                padding: 8px 14px;
                 margin-right: 37px;
                 text-transform: inherit;
                 font-size: $font-14;
                 font-weight: $font-weight-semi-bold;
             }
             .btn-submit {
+                min-width: 76px;
                 padding: 8px 14px;
                 border-radius: 3px;
                 text-transform: inherit;

@@ -2,7 +2,7 @@
 
 .form-add-customer {
     .heading--primary {
-        max-height: 63px;
+        max-height: 55px;
         padding: 24px;
         display: flex;
         align-items: center;
@@ -12,7 +12,7 @@
 
         h3 {
             font-weight: $font-weight-semi-bold;
-            font-size: $font-16;
+            font-size: $font-20;
         }
 
         .btn-submit {
@@ -40,7 +40,7 @@
     // }
 
     .information {
-        padding: 1rem;
+        padding: 0 3rem 2rem 3rem;
         h3 {
             border-bottom: 1px solid $color-d9d9d9;
             padding: 17px;
@@ -124,7 +124,7 @@
     }
 
     .information-add {
-        padding: 1rem;
+        padding: 0 3rem 2rem 3rem;
 
         h3 {
             border-bottom: 1px solid $color-d9d9d9;
