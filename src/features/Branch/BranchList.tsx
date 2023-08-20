@@ -1,26 +1,24 @@
+import axiosClient from '@apis/axios';
 import CustomButton from '@components/Button';
 import ModelCustom from '@components/ModelCustom';
-import FormAddPolicy from '@features/forms/policy/FormAddPolicy';
+import FormAddBranch from '@features/forms/Branch/FormAddBarnch';
 import useApi from '@hooks/useApi';
 import { Branch, BranchResponse } from '@models/branch';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Checkbox, Collapse, IconButton, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, Collapse, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import CollapseBlackIcon from '../../assets/images/branch/collapse-black.svg';
+import CollapseBlueIcon from '../../assets/images/branch/collapse-blue.svg';
 import AddIcon from '../../assets/images/customer/add.svg';
+import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
 import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
-import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
 import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
-import CollapseBlueIcon from '../../assets/images/branch/collapse-blue.svg';
-import CollapseBlackIcon from '../../assets/images/branch/collapse-black.svg';
 import './branch.scss';
-import FormAddBranch from '@features/forms/Branch/FormAddBarnch';
 
 const columns: { field: keyof Branch; label: string }[] = [
     { field: 'branchCode', label: 'Mã CN' },
@@ -67,12 +65,8 @@ const BranchList: React.FC = () => {
         setSelectedRows(selectAll ? [] : visibleCustomers.map((branch) => branch.branchId));
     };
 
-    const handleSelectRow = (branchId: string) => {
-        if (selectedRows.includes(branchId)) {
-            setSelectedRows(selectedRows.filter((row) => row !== branchId));
-        } else {
-            setSelectedRows([...selectedRows, branchId]);
-        }
+    const handleSelectRow = (selectedBranch: Branch, event: any) => {
+        updateBranchDefault(selectedBranch, event.target.checked);
     };
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
@@ -87,6 +81,17 @@ const BranchList: React.FC = () => {
 
     const handleOnClickAddPolicy = () => {
         setIsOpenAddPolicy(!isOpenAddPolicy);
+    };
+
+    const updateBranchDefault = async (branch: Branch, selectedBranch: boolean) => {
+        const url = '/api/Branch/save';
+        const initData = { ...branch };
+        initData.default = selectedBranch;
+        const response: any = await axiosClient.post(url, null, { params: initData });
+        console.log('response', response);
+        if (response?.data.success) {
+            alert('Success');
+        }
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -124,15 +129,7 @@ const BranchList: React.FC = () => {
             </Box>
 
             <div className="branch-page__list">
-                <ModelCustom
-                    isOpen={isOpenAddPolicy}
-                    onClose={handleCloseAddBranch}
-                    title=""
-                    okButtonText=""
-                    cancelButtonText=""
-                    onCancel={handleCloseAddBranch}
-                    className="branch-page__list__modal"
-                >
+                <ModelCustom isOpen={isOpenAddPolicy} onClose={handleCloseAddBranch} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddBranch} className="branch-page__list__modal">
                     <FormAddBranch onClose={handleCloseAddBranch} />
                 </ModelCustom>
 
@@ -172,27 +169,30 @@ const BranchList: React.FC = () => {
                                                         className="btn-collapse"
                                                     />
                                                 </TableCell>
-                                                {visibleColumns.map((column) => (
-                                                    <TableCell key={column}>
-                                                        {column === 'branchMasterName' ? (
-                                                            <Box className="checkbox-col">
-                                                                <Checkbox
-                                                                    checked={selectedRows.includes(branch.branchId)}
-                                                                    onChange={() => handleSelectRow(branch.branchId)}
-                                                                    icon={<img src={UncheckIcon} alt="" />}
-                                                                    checkedIcon={<img src={CheckedIcon} alt="" />}
-                                                                    className="custom-checkbox"
-                                                                />
-                                                            </Box>
-                                                        ) : (
-                                                            <Box className="table-body">
-                                                                <Typography component="p" className={`${column === 'branchCode' ? 'color-blue' : ''}`}>
-                                                                    {branch[column]}
-                                                                </Typography>
-                                                            </Box>
-                                                        )}
-                                                    </TableCell>
-                                                ))}
+                                                {visibleColumns.map((column) => {
+                                                    return (
+                                                        <TableCell key={column}>
+                                                            {column === 'branchMasterName' ? (
+                                                                <Box className="checkbox-col">
+                                                                    <Checkbox
+                                                                        // checked={selectedRows.includes(branch.branchId)}
+                                                                        defaultChecked={branch.default}
+                                                                        onChange={(e: any) => handleSelectRow(branch, e)}
+                                                                        icon={<img src={UncheckIcon} alt="" />}
+                                                                        checkedIcon={<img src={CheckedIcon} alt="" />}
+                                                                        className="custom-checkbox"
+                                                                    />
+                                                                </Box>
+                                                            ) : (
+                                                                <Box className="table-body">
+                                                                    <Typography component="p" className={`${column === 'branchCode' ? 'color-blue' : ''}`}>
+                                                                        {branch[column]}
+                                                                    </Typography>
+                                                                </Box>
+                                                            )}
+                                                        </TableCell>
+                                                    );
+                                                })}
                                             </TableRow>
                                             <TableRow className="row-collapse">
                                                 {isOpenCollapse(branch.branchId) ? (
