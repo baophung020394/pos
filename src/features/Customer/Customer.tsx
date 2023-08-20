@@ -11,6 +11,7 @@ import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import OpenNewTabIcon from '../../assets/images/customer/open-new-tab.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
+import SortIcon from '../../assets/images/customer/sort.svg';
 import './customer.scss';
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -200,7 +201,22 @@ const Customer: React.FC = () => {
                                 <TableHead>
                                     <TableRow>
                                         {columns.map((column) => (
-                                            <TableCell key={column.field}>{column.label}</TableCell>
+                                            <TableCell key={column.field}>
+                                                <div className="table-head">
+                                                    <Typography
+                                                        component="p"
+                                                        className={`${['technicalName', 'total', 'status'].includes(column.field) ? 'col-100' : ''} ${
+                                                            ['service'].includes(column.field) ? 'min-200' : ''
+                                                        }`}
+                                                    >
+                                                        {column.label}
+                                                    </Typography>
+
+                                                    <button>
+                                                        <img src={SortIcon} alt="" />
+                                                    </button>
+                                                </div>
+                                            </TableCell>
                                         ))}
                                     </TableRow>
                                 </TableHead>
@@ -209,7 +225,15 @@ const Customer: React.FC = () => {
                                         <TableRow key={customer.idTag}>
                                             {columns.map((col) => (
                                                 <TableCell key={col.field}>
-                                                    {col.field === 'status' ? <p className={statusClassMap[customer.status]}>{customer.status}</p> : customer[col.field]}
+                                                    <Box className="table-body">
+                                                        {col.field === 'status' ? (
+                                                            <Typography component="p" className={statusClassMap[customer.status]}>
+                                                                {customer.status}
+                                                            </Typography>
+                                                        ) : (
+                                                            <Typography component="p">{customer[col.field]}</Typography>
+                                                        )}
+                                                    </Box>
                                                 </TableCell>
                                             ))}
                                         </TableRow>

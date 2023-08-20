@@ -177,6 +177,10 @@
                                     line-height: 50px;
                                     width: 100%;
                                     color: $color-0f1824;
+                                    overflow: hidden;
+                                    white-space: nowrap;
+                                    text-overflow: ellipsis;
+                                    padding: 0;
                                 }
                             }
 
