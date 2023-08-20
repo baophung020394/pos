@@ -4,8 +4,10 @@ import ModelCustom from '@components/ModelCustom';
 import FormAddBranch from '@features/forms/Branch/FormAddBarnch';
 import useApi from '@hooks/useApi';
 import { Branch, BranchResponse } from '@models/branch';
+import { Staff, StaffResponse } from '@models/user/staff';
 import { Box, Checkbox, Collapse, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { showErrorToast, showSuccessToast } from '@store/actions/actionToast';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import CollapseBlackIcon from '../../assets/images/branch/collapse-black.svg';
 import CollapseBlueIcon from '../../assets/images/branch/collapse-blue.svg';
@@ -34,15 +36,28 @@ const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const BranchList: React.FC = () => {
     const [visibleColumns, setVisibleColumns] = useState<Array<keyof Branch>>(['branchCode', 'branchName', 'phone', 'address', 'areaCommuneName', 'statusName', 'branchMasterName']);
-    const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
+
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-    const [selectedRows, setSelectedRows] = useState<string[]>([]);
+    const [branches, setBranches] = useState<Branch[]>([]);
+    const [staff, setStaff] = useState<Staff[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
     const [isOpenAddPolicy, setIsOpenAddPolicy] = useState<boolean>(false);
-    const [open, setOpen] = useState<boolean>(false);
     const apiUrl = '/api/Branch/list'; // Đường dẫn cụ thể đến API
-    const { data, loading, error } = useApi<BranchResponse>(apiUrl);
+    const { data } = useApi<BranchResponse>(apiUrl);
     const [openCollapse, setOpenCollapse] = useState<{ [key: string]: boolean }>({});
+
+    const handleAddBranchSuccess = (newBranch: Branch) => {
+        setBranches([...branches, newBranch]);
+    };
+
+    useEffect(() => {
+        console.log('setbranch', data);
+        if (data?.success) {
+            setBranches(data.data);
+        } else if (!data?.success && data?.errors) {
+            showErrorToast(data?.errors[0] || '');
+        }
+    }, [data]);
 
     // Hàm để kiểm tra xem hàng có đang mở rộng Collapsible hay không
     const isOpenCollapse = (branchId: string) => {
@@ -55,17 +70,16 @@ const BranchList: React.FC = () => {
             ...prevState,
             [branchId]: !prevState[branchId],
         }));
+        console.log('isOpenCollapse(branchId)', isOpenCollapse(branchId));
+        if (!isOpenCollapse(branchId)) {
+            callListStaff(branchId);
+        }
     };
 
     const handleCloseAddBranch = () => setIsOpenAddPolicy(false);
 
-    const handleSelectAll = () => {
-        setSelectAll(!selectAll);
-
-        setSelectedRows(selectAll ? [] : visibleCustomers.map((branch) => branch.branchId));
-    };
-
     const handleSelectRow = (selectedBranch: Branch, event: any) => {
+        console.log('selectedBranch', selectedBranch);
         updateBranchDefault(selectedBranch, event.target.checked);
     };
 
@@ -90,7 +104,17 @@ const BranchList: React.FC = () => {
         const response: any = await axiosClient.post(url, null, { params: initData });
         console.log('response', response);
         if (response?.data.success) {
+            showSuccessToast('Thay đổi thành công');
+        }
+    };
+
+    const callListStaff = async (branchId: string) => {
+        const url = '/api/User/list/ByBranch';
+        const response: StaffResponse = await axiosClient.get(url, { params: { BranchId: branchId } });
+        console.log('response', response);
+        if (response.success) {
             alert('Success');
+            setStaff(response.data);
         }
     };
 
@@ -107,9 +131,9 @@ const BranchList: React.FC = () => {
 
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
-    const visibleCustomers = data ? data.data : [];
-    const lastPage = data ? Math.ceil(data.data.length / pageSize) : 0;
+    const endIndex = branches ? Math.min(startIndex + pageSize, branches.length) : 0;
+    const visibleCustomers = branches ? branches : [];
+    const lastPage = branches ? Math.ceil(branches.length / pageSize) : 0;
 
     return (
         <>
@@ -130,7 +154,7 @@ const BranchList: React.FC = () => {
 
             <div className="branch-page__list">
                 <ModelCustom isOpen={isOpenAddPolicy} onClose={handleCloseAddBranch} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddBranch} className="branch-page__list__modal">
-                    <FormAddBranch onClose={handleCloseAddBranch} />
+                    <FormAddBranch onClose={handleCloseAddBranch} onAddSuccess={handleAddBranchSuccess} />
                 </ModelCustom>
 
                 <DragDropContext onDragEnd={handleColumnReorder}>

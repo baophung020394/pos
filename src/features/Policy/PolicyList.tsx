@@ -4,10 +4,8 @@ import FormAddPolicy from '@features/forms/policy/FormAddPolicy';
 import useApi from '@hooks/useApi';
 import { Policy, PolicyResponse } from '@models/policy';
 import { Box, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import AddIcon from '../../assets/images/customer/add.svg';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
@@ -15,6 +13,7 @@ import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
+import { showErrorToast } from '@store/actions/actionToast';
 import './policy.scss';
 
 const columns: { field: keyof Policy; label: string }[] = [
@@ -27,38 +26,28 @@ const columns: { field: keyof Policy; label: string }[] = [
 const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerGroupList: React.FC = () => {
+    const [policyList, setPolicyList] = useState<Policy[]>([]);
     const [visibleColumns, setVisibleColumns] = useState<Array<keyof Policy>>(['pricePolicyNameCode', 'pricePolicyName', 'note', 'status']);
-    const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-    const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
     const [isOpenAddPolicy, setIsOpenAddPolicy] = useState<boolean>(false);
     const apiUrl = '/api/PricePolicy/list'; // Đường dẫn cụ thể đến API
-    const { data, loading, error } = useApi<PolicyResponse>(apiUrl);
+    const { data } = useApi<PolicyResponse>(apiUrl);
+
+    const handleAddPolicySuccess = (newPolicy: Policy) => {
+        setPolicyList([...policyList, newPolicy]);
+    };
+
+    useEffect(() => {
+        console.log('setPolicy', data);
+        if (data?.success) {
+            setPolicyList(data.data);
+        } else if (!data?.success && data?.errors) {
+            showErrorToast(data?.errors[0] || '');
+        }
+    }, [data]);
 
     const handleCloseAddPolicy = () => setIsOpenAddPolicy(false);
-
-    const handleColumnToggle = (field: keyof Policy) => {
-        if (visibleColumns.includes(field)) {
-            setVisibleColumns(visibleColumns.filter((col) => col !== field));
-        } else {
-            setVisibleColumns([...visibleColumns, field]);
-        }
-    };
-
-    const handleSelectAll = () => {
-        setSelectAll(!selectAll);
-
-        setSelectedRows(selectAll ? [] : visibleCustomers.map((policy) => policy.pricePolicyId));
-    };
-
-    const handleSelectRow = (pricePolicyId: string) => {
-        if (selectedRows.includes(pricePolicyId)) {
-            setSelectedRows(selectedRows.filter((row) => row !== pricePolicyId));
-        } else {
-            setSelectedRows([...selectedRows, pricePolicyId]);
-        }
-    };
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
         setCurrentPage(newPage);
@@ -87,9 +76,9 @@ const CustomerGroupList: React.FC = () => {
 
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
-    const visibleCustomers = data ? data.data : [];
-    const lastPage = data ? Math.ceil(data.data.length / pageSize) : 0;
+    const endIndex = policyList ? Math.min(startIndex + pageSize, policyList.length) : 0;
+    const visibleCustomers = policyList ? policyList : [];
+    const lastPage = policyList ? Math.ceil(policyList.length / pageSize) : 0;
 
     return (
         <div className="policy-page__list">
@@ -109,7 +98,7 @@ const CustomerGroupList: React.FC = () => {
             </Box>
 
             <ModelCustom isOpen={isOpenAddPolicy} onClose={handleCloseAddPolicy} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddPolicy} className="customer-page__list__modal">
-                <FormAddPolicy onClose={handleCloseAddPolicy} />
+                <FormAddPolicy onClose={handleCloseAddPolicy} onAddSuccess={handleAddPolicySuccess} />
             </ModelCustom>
 
             <DragDropContext onDragEnd={handleColumnReorder}>
@@ -134,7 +123,13 @@ const CustomerGroupList: React.FC = () => {
                                 {visibleCustomers.map((policy) => (
                                     <TableRow key={policy.pricePolicyId}>
                                         {visibleColumns.map((column) => {
-                                            return <TableCell key={column}>{policy[column]}</TableCell>;
+                                            return (
+                                                <TableCell key={column}>
+                                                    <Box className="table-body">
+                                                        <Typography component="p">{policy[column]}</Typography>
+                                                    </Box>
+                                                </TableCell>
+                                            );
                                         })}
                                     </TableRow>
                                 ))}

@@ -1,26 +1,20 @@
 import CustomButton from '@components/Button';
 import ModelCustom from '@components/ModelCustom';
-import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
+import FormAddCusGroup from '@features/forms/customerGroup/FormAddCusGroup';
 import useApi from '@hooks/useApi';
-import { Box, Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { setCurrentCus } from '@store/customerSlice';
-import React, { useCallback, useState } from 'react';
+import { Box, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { showErrorToast } from '@store/actions/actionToast';
+import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Customer, CustomerGroup, CustomerGroupResponse } from 'src/models/customer';
-import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
+import { CustomerGroup, CustomerGroupResponse } from 'src/models/customer';
+import AddIcon from '../../assets/images/customer/add.svg';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
 import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
-import SettingColIcon from '../../assets/images/customer/setting-col.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
-import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
-import AddIcon from '../../assets/images/customer/add.svg';
 import './customer-group.scss';
-import FormAddCusGroup from '@features/forms/customerGroup/FormAddCusGroup';
 
 const columns: { field: keyof CustomerGroup; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -34,42 +28,29 @@ const columns: { field: keyof CustomerGroup; label: string }[] = [
 const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerGroupList: React.FC = () => {
+    const [customerGroup, setCustomersGroup] = useState<CustomerGroup[]>([]);
     const [visibleColumns, setVisibleColumns] = useState<Array<keyof CustomerGroup>>(['customerGroupCode', 'customerGroupName', 'note', 'pricePolicyName', 'totalCustomer']);
-    const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-    const [selectedRows, setSelectedRows] = useState<string[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
-    const [valueSearch, setValueSearch] = useState<string>('');
     const [isOpenAddCusGroup, setIsOpenAddCusGroup] = useState<boolean>(false);
     const apiUrl = '/api/CustomerGroup/list'; // Đường dẫn cụ thể đến API
-    const { data, loading, error } = useApi<CustomerGroupResponse>(apiUrl);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const { data } = useApi<CustomerGroupResponse>(apiUrl);
+
+    const handleAddGroupCusSuccess = (newCustomerGroup: CustomerGroup) => {
+        setCustomersGroup([...customerGroup, newCustomerGroup]);
+    };
+
+    useEffect(() => {
+        console.log('setbranch', data);
+        if (data?.success) {
+            setCustomersGroup(data.data);
+        } else if (!data?.success && data?.errors) {
+            showErrorToast(data?.errors[0] || '');
+        }
+    }, [data]);
 
     const handleOpenAddCusGroup = () => setIsOpenAddCusGroup(true);
     const handleCloseAddCusGroup = () => setIsOpenAddCusGroup(false);
-
-    const handleColumnToggle = (field: keyof CustomerGroup) => {
-        if (visibleColumns.includes(field)) {
-            setVisibleColumns(visibleColumns.filter((col) => col !== field));
-        } else {
-            setVisibleColumns([...visibleColumns, field]);
-        }
-    };
-
-    const handleSelectAll = () => {
-        setSelectAll(!selectAll);
-
-        setSelectedRows(selectAll ? [] : visibleCustomers.map((customer) => customer.customerGroupId));
-    };
-
-    const handleSelectRow = (customerId: string) => {
-        if (selectedRows.includes(customerId)) {
-            setSelectedRows(selectedRows.filter((row) => row !== customerId));
-        } else {
-            setSelectedRows([...selectedRows, customerId]);
-        }
-    };
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
         setCurrentPage(newPage);
@@ -92,22 +73,11 @@ const CustomerGroupList: React.FC = () => {
         setVisibleColumns(updatedVisibleColumns);
     };
 
-    const handleSearch = (value: string) => {
-        setValueSearch(value);
-    };
-
-    const handleGoPageDetail = (customer: Customer, column: string) => {
-        if (column === 'customerName') {
-            navigate(`/customers/${customer['customerId']}`);
-            dispatch(setCurrentCus(customer));
-        }
-    };
-
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
-    const visibleCustomers = data ? data.data : [];
-    const lastPage = data ? Math.ceil(data.data.length / pageSize) : 0;
+    const endIndex = customerGroup ? Math.min(startIndex + pageSize, customerGroup.length) : 0;
+    const visibleCustomers = customerGroup ? customerGroup : [];
+    const lastPage = customerGroup ? Math.ceil(customerGroup.length / pageSize) : 0;
 
     return (
         <div className="customer-group-page__list">
@@ -135,7 +105,7 @@ const CustomerGroupList: React.FC = () => {
                 onCancel={handleCloseAddCusGroup}
                 className="customer-page__list__modal"
             >
-                <FormAddCusGroup onClose={handleCloseAddCusGroup} />
+                <FormAddCusGroup onClose={handleCloseAddCusGroup} onAddSuccess={handleAddGroupCusSuccess} />
             </ModelCustom>
             <DragDropContext onDragEnd={handleColumnReorder}>
                 <div className="customer-group-page__list__tables">
@@ -159,7 +129,13 @@ const CustomerGroupList: React.FC = () => {
                                 {visibleCustomers.map((customer) => (
                                     <TableRow key={customer.customerGroupId}>
                                         {visibleColumns.map((column) => {
-                                            return <TableCell key={column}>{customer[column]}</TableCell>;
+                                            return (
+                                                <TableCell key={column}>
+                                                    <Box className="table-body">
+                                                        <Typography component="p"> {customer[column]}</Typography>
+                                                    </Box>
+                                                </TableCell>
+                                            );
                                         })}
                                     </TableRow>
                                 ))}

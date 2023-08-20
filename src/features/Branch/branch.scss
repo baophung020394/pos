@@ -170,6 +170,7 @@
                                     font-size: $font-14;
                                     font-weight: $font-weight-semi-bold;
                                     margin-right: 8px;
+                                    color: #000000;
                                 }
                                 button {
                                     background: transparent;
@@ -225,6 +226,7 @@
                                     height: 100%;
                                     line-height: 50px;
                                     width: 100%;
+                                    color: $color-0f1824;
                                     &.color-blue {
                                         color: $color-007aff;
                                     }

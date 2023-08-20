@@ -7,8 +7,9 @@ import SelectCustomDistrict from '@components/SelectCustomDistrict';
 import SelectFields from '@components/SelectFields';
 import TextareaFields from '@components/TextareaFields';
 import useApi from '@hooks/useApi';
-import { CustomerReq } from '@models/customer';
+import { Customer, CustomerReq } from '@models/customer';
 import { Typography } from '@mui/material';
+import { showSuccessToast } from '@store/actions/actionToast';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CloseIcon from '../../../assets/images/customer/close.svg';
@@ -18,15 +19,12 @@ import './formaddcustomer.scss';
 
 interface FormAddCustomerProps {
     handleCloseAddCus: () => void;
+    onAddSuccess: (branch: Customer) => void;
 }
-const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) => {
+const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleCloseAddCus }) => {
     const { handleSubmit, control, setValue, formState } = useForm<CustomerReq>();
     const [loading, setLoading] = useState<boolean>(false);
     const onSubmit = async (data: CustomerReq) => {
-        if (!formState.isValid) {
-            // Form không hợp lệ, không thực hiện submit
-            return;
-        }
         setLoading(true);
         const url = '/api/Customer/save';
         const response: any = await axiosClient.post(url, null, { params: data });
@@ -34,6 +32,8 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ handleCloseAddCus }) 
         if (response?.data.success) {
             handleCloseAddCus();
             setLoading(false);
+            onAddSuccess(response?.data.data);
+            showSuccessToast('Thay đổi thành công');
         }
     };
 

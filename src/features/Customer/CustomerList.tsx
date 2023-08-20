@@ -3,10 +3,10 @@ import ModelCustom from '@components/ModelCustom';
 import FilterCustomer from '@features/Filters/FilterCustomer';
 import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
 import useApi from '@hooks/useApi';
-import { Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { setCurrentCus } from '@store/customerSlice';
 import { format } from 'date-fns';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ import SettingColIcon from '../../assets/images/customer/setting-col.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
 import ColumnConfig from './ColumnConfig';
 import './customer.scss';
+import { showErrorToast } from '@store/actions/actionToast';
 
 const columns: { field: keyof Customer; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -51,6 +52,7 @@ const columns: { field: keyof Customer; label: string }[] = [
 const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerList: React.FC = () => {
+    const [customers, setCustomers] = useState<Customer[]>([]);
     const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>(['customerCode', 'customerName', 'phoneNumber', 'customerGroupName', 'createdDate', 'statusName']);
     const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
@@ -60,13 +62,26 @@ const CustomerList: React.FC = () => {
     const [valueSearch, setValueSearch] = useState<string>('');
     const [isOpenAddCus, setIsOpenAddCus] = useState<boolean>(false);
     const apiUrl = '/api/Customer/list'; // Đường dẫn cụ thể đến API
-    const { data, loading, error } = useApi<CustomerResponse>(apiUrl);
+    const { data } = useApi<CustomerResponse>(apiUrl);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleOpenConfigColumn = () => setIsOpenConfig(!isOpenConfig);
     const handleCloseConfigColumn = () => setIsOpenConfig(false);
     const handleCloseAddCus = () => setIsOpenAddCus(false);
+
+    const handleAddCustomerSuccess = (newCus: Customer) => {
+        setCustomers([...customers, newCus]);
+    };
+
+    useEffect(() => {
+        console.log('setCustomer', data);
+        if (data?.success) {
+            setCustomers(data.data);
+        } else if (!data?.success && data?.errors) {
+            showErrorToast(data?.errors[0] || '');
+        }
+    }, [data]);
 
     const handleColumnToggle = (field: keyof Customer) => {
         if (visibleColumns.includes(field)) {
@@ -128,9 +143,9 @@ const CustomerList: React.FC = () => {
 
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = data ? Math.min(startIndex + pageSize, data.data.length) : 0;
-    const visibleCustomers = data
-        ? data.data
+    const endIndex = customers ? Math.min(startIndex + pageSize, customers.length) : 0;
+    const visibleCustomers = customers
+        ? customers
               .filter(
                   (customer) =>
                       customer?.customerCode?.toLowerCase()?.includes(valueSearch.toLowerCase()) ||
@@ -139,7 +154,7 @@ const CustomerList: React.FC = () => {
               )
               .slice(startIndex, endIndex)
         : [];
-    const lastPage = data ? Math.ceil(data.data.length / pageSize) : 0;
+    const lastPage = customers ? Math.ceil(customers.length / pageSize) : 0;
 
     return (
         <div className="customer-page__list">
@@ -158,7 +173,7 @@ const CustomerList: React.FC = () => {
                 </ModelCustom>
 
                 <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-page__list__modal">
-                    <FormAddCustomer handleCloseAddCus={handleCloseAddCus} />
+                    <FormAddCustomer handleCloseAddCus={handleCloseAddCus} onAddSuccess={handleAddCustomerSuccess} />
                 </ModelCustom>
 
                 <div className="customer-page__list__tables">
@@ -219,8 +234,12 @@ const CustomerList: React.FC = () => {
                                             const date = new Date(customer['createdDate']);
                                             const convertDate = format(date, 'dd/MM/yyyy');
                                             return (
-                                                <TableCell className={`${column === 'customerName' ? 'color-name' : ''}`} key={column} onClick={() => handleGoPageDetail(customer, column)}>
-                                                    {column === 'createdDate' ? convertDate : customer[column]}
+                                                <TableCell key={column} onClick={() => handleGoPageDetail(customer, column)}>
+                                                    <Box className="table-body">
+                                                        <Typography component="p" className={`${column === 'customerName' ? 'color-name' : ''}`}>
+                                                            {column === 'createdDate' ? convertDate : customer[column]}
+                                                        </Typography>
+                                                    </Box>
                                                 </TableCell>
                                             );
                                         })}
@@ -234,7 +253,7 @@ const CustomerList: React.FC = () => {
             <div className="customer-page__list__pagination">
                 <div className="customer-page__list__pagination__select">
                     <p>
-                        Hiển thị 1 - {data?.data.length} của {data?.data.length}
+                        Hiển thị 1 - {customers?.length} của {customers?.length}
                     </p>
                     <Select
                         className="select-option"

@@ -2,8 +2,9 @@ import axiosClient from '@apis/axios';
 import CustomButton from '@components/Button';
 import InputFieldsPolicy from '@components/InputFieldsPolicy';
 import TextareaPolicy from '@components/TextareaFieldsPolicy';
-import { PolicyRequest } from '@models/policy';
+import { Policy, PolicyRequest } from '@models/policy';
 import { Typography } from '@mui/material';
+import { showSuccessToast } from '@store/actions/actionToast';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CloseIcon from '../../../assets/images/customer/close.svg';
@@ -12,16 +13,12 @@ import './formaddpolicy.scss';
 
 interface FormAddPolicyProps {
     onClose: () => void;
+    onAddSuccess: (policy: Policy) => void;
 }
-const FormAddPolicy: React.FC<FormAddPolicyProps> = ({ onClose }) => {
-    const { handleSubmit, control, formState } = useForm<PolicyRequest>();
+const FormAddPolicy: React.FC<FormAddPolicyProps> = ({ onClose, onAddSuccess }) => {
+    const { handleSubmit, control } = useForm<PolicyRequest>();
     const [loading, setLoading] = useState<boolean>(false);
     const onSubmit = async (data: PolicyRequest) => {
-        if (!formState.isValid) {
-            // Form không hợp lệ, không thực hiện submit
-            return;
-        }
-
         setLoading(true);
         const url = '/api/PricePolicy/save';
         const response: any = await axiosClient.post(url, null, { params: data });
@@ -29,6 +26,7 @@ const FormAddPolicy: React.FC<FormAddPolicyProps> = ({ onClose }) => {
         if (response?.data.success) {
             onClose();
             setLoading(false);
+            showSuccessToast('Thêm chính sách thành công');
         }
     };
 

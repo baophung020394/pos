@@ -118,38 +118,18 @@
                         max-height: 56px;
                         box-sizing: border-box;
                         th {
-                            min-width: 200px;
+                            // min-width: 200px;
                             box-sizing: border-box;
-                            max-height: 56px;
                             padding: 0 24px !important;
                             background-color: $color-f2f9ff;
                             border-bottom: 1px solid #e0e6ed;
-                            min-height: 45px;
-                            max-height: 45px;
-                            height: 45px;
-                            box-sizing: border-box;
+
                             button {
                                 background: transparent;
                                 border: none;
                                 cursor: pointer;
                                 padding: 0;
                             }
-
-                            // &:first-child {
-                            //     width: 200px;
-                            //     min-width: 200px;
-                            //     max-width: 200px; /* Đặt giá trị max-width theo ý muốn */
-                            //     overflow: hidden;
-                            //     white-space: nowrap;
-                            //     text-overflow: ellipsis;
-                            //     text-align: left;
-                            // }
-                            // &:nth-child(2) {
-                            //     min-width: 200px;
-                            //     max-width: 200px;
-                            //     padding: 0 !important;
-                            //     text-align: center;
-                            // }
 
                             .table-head {
                                 display: flex;
@@ -158,8 +138,15 @@
                                     font-size: $font-14;
                                     font-weight: $font-weight-semi-bold;
                                     margin-right: 8px;
+                                    color: #000000;
+                                    min-height: 45px;
+                                    max-height: 45px;
+                                    height: 45px;
+                                    line-height: 45px;
+                                    color: #000000;
                                 }
                             }
+
                             .custom-checkbox {
                                 max-width: 21px;
                                 max-height: 21px;
@@ -176,32 +163,23 @@
                     tr {
                         td {
                             font-family: 'Manrope', sans-serif !important;
-                            padding: 0 24px !important;
-                            font-size: $font-14;
-                            font-weight: $font-weight-medium;
+                            // padding: 0 !important;
                             border-bottom: 1px solid #e0e6ed;
-                            min-height: 50px;
-                            max-height: 50px;
-                            height: 50px;
-                            box-sizing: border-box;
-                            // &:first-child {
-                            //     width: 200px;
-                            //     max-width: 200px; /* Đặt giá trị max-width theo ý muốn */
-                            //     overflow: hidden;
-                            //     white-space: nowrap;
-                            //     text-overflow: ellipsis;
-                            //     padding: 0;
-                            // }
-                            // &:nth-child(2) {
-                            //     min-width: 200px;
-                            //     max-width: 200px;
-                            //     padding: 0 !important;
-                            //     text-align: center;
-                            // }
-                            &.color-name {
-                                color: #4361ee;
-                                cursor: pointer;
+                            .table-body {
+                                p {
+                                    min-height: 50px;
+                                    max-height: 50px;
+                                    height: 50px;
+                                    font-family: 'Manrope', sans-serif !important;
+                                    font-size: $font-14;
+                                    font-weight: $font-weight-medium;
+                                    height: 100%;
+                                    line-height: 50px;
+                                    width: 100%;
+                                    color: $color-0f1824;
+                                }
                             }
+
                             .custom-checkbox {
                                 max-width: 21px;
                                 max-height: 21px;

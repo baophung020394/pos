@@ -4,7 +4,7 @@ import InputFieldsBranch from '@components/InputFieldsBranch';
 import InputFieldsPolicy from '@components/InputFieldsPolicy';
 import SelectCustomCity from '@components/SelectCustomCity';
 import TextareaPolicy from '@components/TextareaFieldsPolicy';
-import { BranchRequest } from '@models/branch';
+import { Branch, BranchRequest } from '@models/branch';
 import { PolicyRequest } from '@models/policy';
 import { Checkbox, FormControlLabel, Typography } from '@mui/material';
 import React, { useState } from 'react';
@@ -17,11 +17,13 @@ import SelectCityBranch from '@components/SelectCityBranch';
 import SelectDistrictBranch from '@components/SelectDistrictBranch';
 import CheckedIcon from '../../../assets/images/customer/checkboxicon.svg';
 import UncheckIcon from '../../../assets/images/customer/uncheckbox.svg';
+import { showSuccessToast } from '@store/actions/actionToast';
 
 interface FormAddBranchProps {
     onClose: () => void;
+    onAddSuccess: (branch: Branch) => void;
 }
-const FormAddBranch: React.FC<FormAddBranchProps> = ({ onClose }) => {
+const FormAddBranch: React.FC<FormAddBranchProps> = ({ onClose, onAddSuccess }) => {
     const { handleSubmit, control, formState } = useForm<BranchRequest>();
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -33,6 +35,8 @@ const FormAddBranch: React.FC<FormAddBranchProps> = ({ onClose }) => {
         if (response?.data.success) {
             onClose();
             setLoading(false);
+            onAddSuccess(response?.data.data);
+            showSuccessToast('Thay đổi thành công');
         }
     };
 

@@ -5,7 +5,7 @@ import InputFieldsPolicy from '@components/InputFieldsPolicy';
 import SelectCustomPolicy from '@components/SelectCustomPolicy';
 import TextareaCusGroup from '@components/TextareaCusGroup';
 import TextareaPolicy from '@components/TextareaFieldsPolicy';
-import { CustomerGroupReq } from '@models/customer';
+import { CustomerGroup, CustomerGroupReq } from '@models/customer';
 import { PolicyRequest } from '@models/policy';
 import { Typography } from '@mui/material';
 import React, { useState } from 'react';
@@ -14,18 +14,16 @@ import CloseIcon from '../../../assets/images/customer/close.svg';
 import SaveIcon from '../../../assets/images/customer/save.svg';
 import DropdownIcon from '../../../assets/images/customer/dropdown.svg';
 import './formaddcusgroup.scss';
+import { showSuccessToast } from '@store/actions/actionToast';
 
 interface FormAddCusGroupProps {
     onClose: () => void;
+    onAddSuccess: (branch: CustomerGroup) => void;
 }
-const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose }) => {
+const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess }) => {
     const { handleSubmit, control, formState } = useForm<CustomerGroupReq>();
     const [loading, setLoading] = useState<boolean>(false);
     const onSubmit = async (data: CustomerGroupReq) => {
-        if (!formState.isValid) {
-            return;
-        }
-
         setLoading(true);
         const url = '/api/CustomerGroup/save';
         const response: any = await axiosClient.post(url, null, { params: data });
@@ -33,6 +31,8 @@ const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose }) => {
         if (response?.data.success) {
             onClose();
             setLoading(false);
+            onAddSuccess(response?.data.data);
+            showSuccessToast('Thêm mới nhóm khách hàng thành công');
         }
     };
 
