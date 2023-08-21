@@ -19,8 +19,10 @@ import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
+import TickIcon from '../../assets/images/branch/tick.svg';
 import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
 import './branch.scss';
+import FormEditBranch from '@features/forms/Branch/FormEditBranch';
 
 const columns: { field: keyof Branch; label: string }[] = [
     { field: 'branchCode', label: 'Mã CN' },
@@ -42,9 +44,14 @@ const BranchList: React.FC = () => {
     const [staff, setStaff] = useState<Staff[]>([]);
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
     const [isOpenAddPolicy, setIsOpenAddPolicy] = useState<boolean>(false);
+    const [isOpenEditBranch, setIsOpenEditBranch] = useState<boolean>(false);
+    const [editingBranch, setEditingBranch] = useState<Branch | undefined>(undefined);
     const apiUrl = '/api/Branch/list'; // Đường dẫn cụ thể đến API
     const { data } = useApi<BranchResponse>(apiUrl);
     const [openCollapse, setOpenCollapse] = useState<{ [key: string]: boolean }>({});
+
+    const handleCloseAddBranch = () => setIsOpenAddPolicy(false);
+    const handleCloseEditBranch = () => setIsOpenEditBranch(false);
 
     const handleAddBranchSuccess = (newBranch: Branch) => {
         setBranches([...branches, newBranch]);
@@ -76,8 +83,6 @@ const BranchList: React.FC = () => {
         }
     };
 
-    const handleCloseAddBranch = () => setIsOpenAddPolicy(false);
-
     const handleSelectRow = (selectedBranch: Branch, event: any) => {
         console.log('selectedBranch', selectedBranch);
         updateBranchDefault(selectedBranch, event.target.checked);
@@ -95,6 +100,11 @@ const BranchList: React.FC = () => {
 
     const handleOnClickAddPolicy = () => {
         setIsOpenAddPolicy(!isOpenAddPolicy);
+    };
+
+    const handleEditBranch = (branch: Branch) => {
+        setIsOpenEditBranch(true);
+        setEditingBranch(branch);
     };
 
     const updateBranchDefault = async (branch: Branch, selectedBranch: boolean) => {
@@ -116,6 +126,22 @@ const BranchList: React.FC = () => {
             alert('Success');
             setStaff(response.data);
         }
+    };
+
+    // Giả sử bạn có một hàm để cập nhật chi nhánh trong mảng branches
+    const updateBranchInArray = (updatedBranch: Branch) => {
+        setBranches((prevBranches) => {
+            const newBranches = prevBranches.map((branch) => {
+                if (branch.branchId === updatedBranch.branchId) {
+                    return updatedBranch;
+                } else if (updatedBranch.default) {
+                    return { ...branch, default: false };
+                }
+                return branch;
+            });
+
+            return newBranches;
+        });
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -156,6 +182,9 @@ const BranchList: React.FC = () => {
                 <ModelCustom isOpen={isOpenAddPolicy} onClose={handleCloseAddBranch} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddBranch} className="branch-page__list__modal">
                     <FormAddBranch onClose={handleCloseAddBranch} onAddSuccess={handleAddBranchSuccess} />
                 </ModelCustom>
+                <ModelCustom isOpen={isOpenEditBranch} onClose={handleCloseAddBranch} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddBranch} className="branch-page__list__modal">
+                    <FormEditBranch initialData={editingBranch} onUpdateSuccess={updateBranchInArray} onClose={handleCloseEditBranch} />
+                </ModelCustom>
 
                 <DragDropContext onDragEnd={handleColumnReorder}>
                     <Box className="branch-page__list__tables">
@@ -195,17 +224,18 @@ const BranchList: React.FC = () => {
                                                 </TableCell>
                                                 {visibleColumns.map((column) => {
                                                     return (
-                                                        <TableCell key={column}>
+                                                        <TableCell key={column} onClick={() => handleEditBranch(branch)}>
                                                             {column === 'branchMasterName' ? (
                                                                 <Box className="checkbox-col">
-                                                                    <Checkbox
+                                                                    {/* <Checkbox
                                                                         // checked={selectedRows.includes(branch.branchId)}
                                                                         defaultChecked={branch.default}
                                                                         onChange={(e: any) => handleSelectRow(branch, e)}
                                                                         icon={<img src={UncheckIcon} alt="" />}
                                                                         checkedIcon={<img src={CheckedIcon} alt="" />}
                                                                         className="custom-checkbox"
-                                                                    />
+                                                                    /> */}
+                                                                    {branch.default ? <img src={TickIcon} alt="" /> : null}
                                                                 </Box>
                                                             ) : (
                                                                 <Box className="table-body">
