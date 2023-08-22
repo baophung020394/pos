@@ -248,14 +248,33 @@
             border-bottom: 1px solid $color-d9d9d9;
         }
         &--wrap {
-            padding: 1rem 2rem;
+            padding: 0 1.5rem 1rem;
             display: grid;
             gap: 5px;
             width: 100%;
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(5, auto);
+
             &__checkboxs {
                 border-bottom: 1px solid $color-d9d9d9;
+                padding-left: 10px;
+
+                &.actived {
+                    background-color: $color-f2f9ff;
+                    .MuiFormControlLabel-root {
+                    }
+                    .permissions--wrap__checkboxs__title {
+                        margin-bottom: 37px;
+                    }
+                }
+
+                &__title {
+                    display: flex;
+                    align-items: center;
+                    padding: 21px 0;
+                    max-height: 55px;
+                }
+
                 .MuiFormControlLabel-root {
                     margin: 0;
                     .MuiButtonBase-root {

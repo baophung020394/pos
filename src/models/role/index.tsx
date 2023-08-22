@@ -33,3 +33,9 @@ export interface RoleResponse {
     statusCode: number;
     errors: string[];
 }
+export interface RoleResponseAdd {
+    success: boolean;
+    data: Role;
+    statusCode: number;
+    errors: string[];
+}

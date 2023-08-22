@@ -97,7 +97,7 @@ const RoleList: React.FC = () => {
             </Box>
 
             <ModelCustom isOpen={isOpenAddRole} onClose={handleCloseAddRole} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddRole} className="customer-page__list__modal">
-                <FormAddRole onClose={handleCloseAddRole} roleList={roleList} onAddSuccess={handleAddRoleSuccess} />
+                <FormAddRole onClose={handleCloseAddRole} onAddSuccess={handleAddRoleSuccess} />
             </ModelCustom>
 
             <DragDropContext onDragEnd={handleColumnReorder}>

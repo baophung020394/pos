@@ -1,10 +1,10 @@
 import axiosClient from '@apis/axios';
 import CustomButton from '@components/Button';
 import TextareaPolicy from '@components/TextareaFieldsPolicy';
-import { Role, RoleRequest, RoleResponse } from '@models/role';
+import { Role, RoleRequest, RoleResponse, RoleResponseAdd } from '@models/role';
 import { Box, Checkbox, Collapse, FormControlLabel, Input, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import { showSuccessToast } from '@store/actions/actionToast';
-import React, { useState } from 'react';
+import { showErrorToast, showSuccessToast } from '@store/actions/actionToast';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import CloseIcon from '../../../assets/images/customer/close.svg';
 import SaveIcon from '../../../assets/images/customer/save.svg';
@@ -19,28 +19,24 @@ import useApi from '@hooks/useApi';
 interface FormAddRoleProps {
     onClose: () => void;
     onAddSuccess: (role: Role) => void;
-    roleList: Role[];
 }
-const FormAddRole: React.FC<FormAddRoleProps> = ({ onClose, onAddSuccess, roleList }) => {
-    console.log('role', roleList);
+const FormAddRole: React.FC<FormAddRoleProps> = ({ onClose, onAddSuccess }) => {
+    const [permissionsList, setPermissionsList] = useState<RoleResponseAdd>();
     const { handleSubmit, control } = useForm<RoleRequest>();
     const [loading, setLoading] = useState<boolean>(false);
-    const apiUrl = '/api/Role/list';
-    const { data } = useApi<RoleResponse>(apiUrl);
+    const apiUrl = '/api/Role/-1';
+    const { data } = useApi<RoleResponseAdd>(apiUrl);
 
     const [openIndexes, setOpenIndexes] = useState<any>([]);
 
-    function generateRandomString(length: number) {
-        const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let randomString = '';
-
-        for (let i = 0; i < length; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            randomString += characters.charAt(randomIndex);
+    useEffect(() => {
+        console.log('setPermissionsList', data);
+        if (data?.success) {
+            setPermissionsList(data);
+        } else if (!data?.success && data?.errors) {
+            showErrorToast(data?.errors[0] || '');
         }
-
-        return randomString;
-    }
+    }, [data]);
 
     const randomNumber = Math.floor(Math.random() * 9999);
 
@@ -123,12 +119,13 @@ const FormAddRole: React.FC<FormAddRoleProps> = ({ onClose, onAddSuccess, roleLi
                 <Typography variant="h3" component="h3">
                     Phân quyền
                 </Typography>
-                {roleList.map((role, index) => (
-                    <Box className="permissions--wrap">
-                        {role.functions.map((permission, indx) => (
-                            <div key={`${permission.functionId}-${indx}`} className="permissions--wrap__checkboxs">
+
+                <Box className="permissions--wrap">
+                    {permissionsList?.data.functions.map((permission, indx) => (
+                        <div key={`${permission.functionId}-${indx}`} className={`permissions--wrap__checkboxs ${isItemOpen(`${permission.functionId}`) ? 'actived' : ''}`}>
+                            <Box className="permissions--wrap__checkboxs__title">
                                 <FormControlLabel
-                                    control={<Checkbox icon={<img src={UncheckIcon} alt="" />} checkedIcon={<img src={CheckedIcon} alt="" />} className="custom-checkbox" />}
+                                    control={<Checkbox icon={<img src={UncheckIcon} alt="" />} checkedIcon={<img src={CheckedIcon} alt="" />} className={` custom-checkbox`} />}
                                     label={permission.functionName}
                                 />
                                 <CustomButton
@@ -138,46 +135,26 @@ const FormAddRole: React.FC<FormAddRoleProps> = ({ onClose, onAddSuccess, roleLi
                                     boxShadow="none"
                                     width={25}
                                     height={25}
-                                    icon={isItemOpen(`${permission.functionId}-${index}`) ? CollapseBlueIcon : CollapseBlackIcon}
-                                    onClick={() => handleToggle(`${permission.functionId}-${index}`)}
+                                    icon={isItemOpen(`${permission.functionId}`) ? CollapseBlueIcon : CollapseBlackIcon}
+                                    onClick={() => handleToggle(`${permission.functionId}`)}
                                     className="btn-collapse"
                                 />
-                                {/* <Controller
-                                    name="functions['functionName']"
-                                    control={control}
-                                    defaultValue={initialData?.default} // Trạng thái mặc định của checkbox
-                                    render={({ field }) => (
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    defaultChecked={initialData?.default}
-                                                    {...field}
-                                                    icon={<img src={UncheckIcon} alt="" />}
-                                                    checkedIcon={<img src={CheckedIcon} alt="" />}
-                                                    className="custom-checkbox"
-                                                />
-                                            }
-                                            label="Chi nhánh mặc định"
-                                            defaultChecked={initialData?.default}
-                                        />
-                                    )}
-                                /> */}
-                                <Collapse in={isItemOpen(`${permission.functionId}-${index}`)} timeout="auto" unmountOnExit data-id={`${permission.functionId}-${index}`}>
-                                    <List component="div" disablePadding className="list-permission">
-                                        {permission.roleFunctionClaims.map((subPermission, subIndex) => (
-                                            <ListItem key={subPermission.actionId} className="list-permission__items">
-                                                <ListItemIcon className="list-permission__items__item">
-                                                    <Checkbox icon={<img src={UncheckIcon} alt="" />} checkedIcon={<img src={CheckedIcon} alt="" />} className="custom-checkbox" />
-                                                </ListItemIcon>
-                                                <ListItemText primary={subPermission.claimName} title={subPermission.claimName || ''} className="list-permission__items__text" />
-                                            </ListItem>
-                                        ))}
-                                    </List>
-                                </Collapse>
-                            </div>
-                        ))}
-                    </Box>
-                ))}
+                            </Box>
+                            <Collapse in={isItemOpen(`${permission.functionId}`)} timeout="auto" unmountOnExit data-id={`${permission.functionId}`} className="list-collapse">
+                                <List component="div" disablePadding className="list-permission">
+                                    {permission.roleFunctionClaims.map((subPermission, subIndex) => (
+                                        <ListItem key={subPermission.actionId} className="list-permission__items">
+                                            <ListItemIcon className="list-permission__items__item">
+                                                <Checkbox icon={<img src={UncheckIcon} alt="" />} checkedIcon={<img src={CheckedIcon} alt="" />} className="custom-checkbox" />
+                                            </ListItemIcon>
+                                            <ListItemText primary={subPermission.claimName} title={subPermission.claimName || ''} className="list-permission__items__text" />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Collapse>
+                        </div>
+                    ))}
+                </Box>
             </div>
         </form>
     );
