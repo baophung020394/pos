@@ -6,6 +6,7 @@ const CustomerPage = lazy(() => import('../pages/CustomerPage'));
 const CustomerGroupPage = lazy(() => import('../pages/CustomerGroupPage'));
 const PolicyPage = lazy(() => import('../pages/PolicyPage'));
 const BranchPage = lazy(() => import('../pages/BranchPage'));
+const RolePage = lazy(() => import('../pages/RolePage'));
 const Customer = lazy(() => import('../features/Customer/Customer'));
 const LoginCover = lazy(() => import('../pages/Authentication/LoginCover'));
 const RegisterCover = lazy(() => import('../pages/Authentication/RegisterCover'));
@@ -33,10 +34,16 @@ const routes = [
         element: <PrivateRoute element={<PolicyPage />} />,
     },
 
-    // policy
+    // branch
     {
         path: '/branchs/',
         element: <PrivateRoute element={<BranchPage />} />,
+    },
+
+    // role
+    {
+        path: '/roles/',
+        element: <PrivateRoute element={<RolePage />} />,
     },
     //Authentication
 

@@ -1,9 +1,10 @@
 import CustomButton from '@components/Button';
 import ModelCustom from '@components/ModelCustom';
-import FormAddPolicy from '@features/forms/policy/FormAddPolicy';
+import FormAddRole from '@features/forms/role/FormAddRole';
 import useApi from '@hooks/useApi';
-import { Policy, PolicyResponse } from '@models/policy';
+import { Functions, Role, RoleResponse } from '@models/role';
 import { Box, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { showErrorToast } from '@store/actions/actionToast';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import AddIcon from '../../assets/images/customer/add.svg';
@@ -13,41 +14,39 @@ import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
-import { showErrorToast } from '@store/actions/actionToast';
-import './policy.scss';
+import './role.scss';
 
-const columns: { field: keyof Policy; label: string }[] = [
-    { field: 'pricePolicyNameCode', label: 'Mã chính sách' },
-    { field: 'pricePolicyName', label: 'Tên chính sách' },
+const columns: { field: keyof Role; label: string }[] = [
+    { field: 'roleName', label: 'Tên vai trò' },
     { field: 'note', label: 'Mô tả' },
     { field: 'status', label: 'Trạng thái' },
 ];
 
 const pageSizeOptions = [20, 50, 100, 200, 500];
 
-const PolicyList: React.FC = () => {
-    const [policyList, setPolicyList] = useState<Policy[]>([]);
-    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Policy>>(['pricePolicyNameCode', 'pricePolicyName', 'note', 'status']);
+const RoleList: React.FC = () => {
+    const [roleList, setRoleList] = useState<Role[]>([]);
+    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Role>>(['roleName', 'note', 'status']);
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
-    const [isOpenAddPolicy, setIsOpenAddPolicy] = useState<boolean>(false);
-    const apiUrl = '/api/PricePolicy/list'; // Đường dẫn cụ thể đến API
-    const { data } = useApi<PolicyResponse>(apiUrl);
+    const [isOpenAddRole, setIsOpenAddRole] = useState<boolean>(false);
+    const apiUrl = '/api/Role/list'; // Đường dẫn cụ thể đến API
+    const { data } = useApi<RoleResponse>(apiUrl);
 
-    const handleAddPolicySuccess = (newPolicy: Policy) => {
-        setPolicyList([...policyList, newPolicy]);
+    const handleAddRoleSuccess = (newRole: Role) => {
+        setRoleList([...roleList, newRole]);
     };
 
     useEffect(() => {
-        console.log('setPolicy', data);
+        console.log('setRoleList', data);
         if (data?.success) {
-            setPolicyList(data.data);
+            setRoleList(data.data);
         } else if (!data?.success && data?.errors) {
             showErrorToast(data?.errors[0] || '');
         }
     }, [data]);
 
-    const handleCloseAddPolicy = () => setIsOpenAddPolicy(false);
+    const handleCloseAddRole = () => setIsOpenAddRole(false);
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
         setCurrentPage(newPage);
@@ -59,8 +58,8 @@ const PolicyList: React.FC = () => {
         setCurrentPage(1); // Reset về trang đầu tiên khi thay đổi số lượng item trên 1 trang
     };
 
-    const handleOnClickAddPolicy = () => {
-        setIsOpenAddPolicy(!isOpenAddPolicy);
+    const handleOnClickAddRole = () => {
+        setIsOpenAddRole(!isOpenAddRole);
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,15 +75,15 @@ const PolicyList: React.FC = () => {
 
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
-    const endIndex = policyList ? Math.min(startIndex + pageSize, policyList.length) : 0;
-    const visibleCustomers = policyList ? policyList : [];
-    const lastPage = policyList ? Math.ceil(policyList.length / pageSize) : 0;
+    const endIndex = roleList ? Math.min(startIndex + pageSize, roleList.length) : 0;
+    const visibleCustomers = roleList ? roleList : [];
+    const lastPage = roleList ? Math.ceil(roleList.length / pageSize) : 0;
 
     return (
-        <div className="policy-page__list">
+        <div className="role-page__list">
             <Box className="btn-add">
                 <CustomButton
-                    text="Thêm chính sách"
+                    text="Thêm vai trò"
                     maxHeight={45}
                     minHeight={32}
                     minWidth={32}
@@ -93,16 +92,16 @@ const PolicyList: React.FC = () => {
                     borderRadius="50%"
                     icon={AddIcon}
                     className="btn-add-cus"
-                    onClick={handleOnClickAddPolicy}
+                    onClick={handleOnClickAddRole}
                 />
             </Box>
 
-            <ModelCustom isOpen={isOpenAddPolicy} onClose={handleCloseAddPolicy} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddPolicy} className="customer-page__list__modal">
-                <FormAddPolicy onClose={handleCloseAddPolicy} onAddSuccess={handleAddPolicySuccess} />
+            <ModelCustom isOpen={isOpenAddRole} onClose={handleCloseAddRole} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddRole} className="customer-page__list__modal">
+                <FormAddRole onClose={handleCloseAddRole} roleList={roleList} onAddSuccess={handleAddRoleSuccess} />
             </ModelCustom>
 
             <DragDropContext onDragEnd={handleColumnReorder}>
-                <div className="policy-page__list__tables">
+                <div className="role-page__list__tables">
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
@@ -120,13 +119,30 @@ const PolicyList: React.FC = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {visibleCustomers.map((policy) => (
-                                    <TableRow key={policy.pricePolicyId}>
+                                {visibleCustomers.map((role) => (
+                                    <TableRow key={role.roleId}>
                                         {visibleColumns.map((column) => {
                                             return (
                                                 <TableCell key={column}>
                                                     <Box className="table-body">
-                                                        <Typography component="p">{policy[column]}</Typography>
+                                                        {(() => {
+                                                            const columnValue = role[column];
+                                                            if (Array.isArray(columnValue)) {
+                                                                return columnValue.map((func: Functions | string, index: number) =>
+                                                                    typeof func === 'string' ? (
+                                                                        <Typography key={index} component="p">
+                                                                            {func}
+                                                                        </Typography>
+                                                                    ) : (
+                                                                        <Typography key={index} component="p">
+                                                                            {func.functionName}
+                                                                        </Typography>
+                                                                    )
+                                                                );
+                                                            } else {
+                                                                return <Typography component="p">{columnValue}</Typography>;
+                                                            }
+                                                        })()}
                                                     </Box>
                                                 </TableCell>
                                             );
@@ -139,8 +155,8 @@ const PolicyList: React.FC = () => {
                 </div>
             </DragDropContext>
 
-            <div className="policy-page__list__pagination">
-                <div className="policy-page__list__pagination__select">
+            <div className="role-page__list__pagination">
+                <div className="role-page__list__pagination__select">
                     <p>
                         Hiển thị 1 - {data?.data.length} của {data?.data.length}
                     </p>
@@ -166,7 +182,7 @@ const PolicyList: React.FC = () => {
                 </div>
 
                 {data?.success ? (
-                    <div className="policy-page__list__pagination__number">
+                    <div className="role-page__list__pagination__number">
                         <CustomButton
                             text=""
                             maxHeight={40}
@@ -213,4 +229,4 @@ const PolicyList: React.FC = () => {
     );
 };
 
-export default React.memo(PolicyList);
+export default React.memo(RoleList);
