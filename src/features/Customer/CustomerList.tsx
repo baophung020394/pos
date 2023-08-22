@@ -4,25 +4,26 @@ import FilterCustomer from '@features/Filters/FilterCustomer';
 import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
 import useApi from '@hooks/useApi';
 import { Box, Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { showErrorToast } from '@store/actions/actionToast';
 import { setCurrentCus } from '@store/customerSlice';
 import { format } from 'date-fns';
 import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
+import 'react-resizable/css/styles.css';
 import { useNavigate } from 'react-router-dom';
 import { Customer, CustomerResponse } from 'src/models/customer';
+import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
 import LastPageIcon from '../../assets/images/customer/lastpage.svg';
 import NextIcon from '../../assets/images/customer/next.svg';
 import PrevIcon from '../../assets/images/customer/prev.svg';
-import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
-import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
 import SettingColIcon from '../../assets/images/customer/setting-col.svg';
 import SortIcon from '../../assets/images/customer/sort.svg';
+import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
 import ColumnConfig from './ColumnConfig';
 import './customer.scss';
-import { showErrorToast } from '@store/actions/actionToast';
 
 const columns: { field: keyof Customer; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },

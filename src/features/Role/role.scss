@@ -1,10 +1,22 @@
 @import '../../assets/styles/app.scss';
 
 .role-page {
-    box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
+    .btn-add {
+        width: 100%;
+        text-align: left;
+        .btn-add-cus {
+            border-radius: 6px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            text-transform: initial;
+            padding: 7px 15px;
+            margin-bottom: 17px;
+        }
+    }
     &__list {
         background-color: $white;
+        border-radius: 6px;
+        box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
         border-radius: 6px;
         &__modal {
             .MuiDialog-container {
@@ -163,17 +175,15 @@
                     tr {
                         td {
                             font-family: 'Manrope', sans-serif !important;
-                            // padding: 0 !important;
+                            padding: 0 24px !important;
                             border-bottom: 1px solid #e0e6ed;
                             .table-body {
                                 p {
                                     min-height: 50px;
                                     max-height: 50px;
-                                    height: 50px;
                                     font-family: 'Manrope', sans-serif !important;
                                     font-size: $font-14;
                                     font-weight: $font-weight-medium;
-                                    height: 100%;
                                     line-height: 50px;
                                     width: 100%;
                                     color: $color-0f1824;
@@ -181,6 +191,10 @@
                                     white-space: nowrap;
                                     text-overflow: ellipsis;
                                     padding: 0;
+
+                                    &.color-blue {
+                                        color: $color-007aff;
+                                    }
                                 }
                             }
 
@@ -196,18 +210,6 @@
                         }
                     }
                 }
-            }
-        }
-
-        .btn-add {
-            padding: 1rem;
-            .btn-add-cus {
-                border-radius: 6px;
-                font-size: $font-14;
-                font-weight: $font-weight-semi-bold;
-                text-transform: initial;
-                padding: 10px 9px;
-                margin-right: 30px;
             }
         }
     }

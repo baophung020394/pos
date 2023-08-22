@@ -163,17 +163,15 @@
                     tr {
                         td {
                             font-family: 'Manrope', sans-serif !important;
-                            // padding: 0 !important;
+                            padding: 0 24px !important;
                             border-bottom: 1px solid #e0e6ed;
                             .table-body {
                                 p {
                                     min-height: 50px;
                                     max-height: 50px;
-                                    height: 50px;
                                     font-family: 'Manrope', sans-serif !important;
                                     font-size: $font-14;
                                     font-weight: $font-weight-medium;
-                                    height: 100%;
                                     line-height: 50px;
                                     width: 100%;
                                     color: $color-0f1824;

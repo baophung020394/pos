@@ -86,7 +86,9 @@ const AddRolePage: React.FC<AddRolePageProps> = ({ onClose }) => {
                         type="button"
                         minHeight={35}
                         maxHeight={35}
-                        onClick={onClose}
+                        onClick={() => {
+                            navigate('/roles');
+                        }}
                     />
                     <CustomButton
                         text="Lưu"
