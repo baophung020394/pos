@@ -6,27 +6,27 @@ import { Box, Checkbox, Collapse, FormControlLabel, Input, List, ListItem, ListI
 import { showErrorToast, showSuccessToast } from '@store/actions/actionToast';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import CloseIcon from '../../../assets/images/customer/close.svg';
-import SaveIcon from '../../../assets/images/customer/save.svg';
-import CheckedIcon from '../../../assets/images/customer/checkboxicon.svg';
-import UncheckIcon from '../../../assets/images/customer/uncheckbox.svg';
-import CollapseBlackIcon from '../../../assets/images/branch/collapse-black.svg';
-import CollapseBlueIcon from '../../../assets/images/branch/collapse-blue.svg';
+import CloseIcon from '../../assets/images/customer/close.svg';
+import SaveIcon from '../../assets/images/customer/save.svg';
+import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
+import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
+import CollapseBlackIcon from '../../assets/images/branch/collapse-black.svg';
+import CollapseBlueIcon from '../../assets/images/branch/collapse-blue.svg';
 import { Check, ExpandLess, ExpandMore } from '@mui/icons-material';
 import './formaddrole.scss';
 import useApi from '@hooks/useApi';
+import { useNavigate } from 'react-router-dom';
 
-interface FormAddRoleProps {
-    onClose: () => void;
-    onAddSuccess: (role: Role) => void;
+interface AddRolePageProps {
+    onClose?: () => void;
 }
-const FormAddRole: React.FC<FormAddRoleProps> = ({ onClose, onAddSuccess }) => {
+const AddRolePage: React.FC<AddRolePageProps> = ({ onClose }) => {
     const [permissionsList, setPermissionsList] = useState<RoleResponseAdd>();
     const { handleSubmit, control } = useForm<RoleRequest>();
     const [loading, setLoading] = useState<boolean>(false);
     const apiUrl = '/api/Role/-1';
     const { data } = useApi<RoleResponseAdd>(apiUrl);
-
+    const navigate = useNavigate();
     const [openIndexes, setOpenIndexes] = useState<any>([]);
 
     useEffect(() => {
@@ -64,9 +64,9 @@ const FormAddRole: React.FC<FormAddRoleProps> = ({ onClose, onAddSuccess }) => {
         const response: any = await axiosClient.post(url, null, { params: data });
         console.log('response', response);
         if (response?.data.success) {
-            onClose();
             setLoading(false);
             showSuccessToast('Thêm chính sách thành công');
+            navigate('/roles');
         }
     };
 
@@ -171,4 +171,4 @@ const FormAddRole: React.FC<FormAddRoleProps> = ({ onClose, onAddSuccess }) => {
     );
 };
 
-export default FormAddRole;
+export default AddRolePage;

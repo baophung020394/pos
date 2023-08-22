@@ -1,0 +1,319 @@
+@import '../../assets/styles/app.scss';
+
+.form-add-role {
+    .heading--primary {
+        max-height: 55px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $white;
+        margin-bottom: 17px;
+        box-shadow: 0px 0px 25px 0px rgba(94, 92, 154, 0.1);
+
+        h3 {
+            font-weight: $font-weight-semi-bold;
+            font-size: $font-20;
+        }
+
+        .btn-cancel {
+            min-width: 76px;
+            color: $color-e7515a;
+            border: 1.5px solid $color-e7515a;
+            border-radius: 3px;
+            padding: 8px 14px;
+            margin-right: 37px;
+            text-transform: inherit;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+        }
+        .btn-submit {
+            min-width: 76px;
+            padding: 8px 14px;
+            border-radius: 3px;
+            text-transform: inherit;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            &.disabled {
+                background-color: gray;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+        }
+    }
+
+    .information {
+        padding: 26px 38px;
+        background-color: $white;
+        margin-bottom: 16px;
+        border-radius: 6px;
+        box-shadow: 0px 0px 25px 0px rgba(94, 92, 154, 0.1);
+        h3 {
+            border-bottom: 1px solid $color-d9d9d9;
+            padding: 17px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            margin-bottom: 16px;
+        }
+
+        &--buttons {
+            text-align: center;
+            margin-bottom: 18px;
+            .btn-cancel {
+                min-width: 76px;
+                color: $color-e7515a;
+                border: 1.5px solid $color-e7515a;
+                border-radius: 3px;
+                padding: 8px 14px;
+                margin-right: 37px;
+                text-transform: inherit;
+                font-size: $font-14;
+                font-weight: $font-weight-semi-bold;
+            }
+            .btn-submit {
+                min-width: 76px;
+                padding: 8px 14px;
+                border-radius: 3px;
+                text-transform: inherit;
+                font-size: $font-14;
+                font-weight: $font-weight-semi-bold;
+                &.disabled {
+                    background-color: gray;
+                    cursor: not-allowed;
+                    pointer-events: none;
+                }
+            }
+        }
+
+        &--form-control {
+            width: 48%;
+            margin-bottom: 20px;
+            &.textarea {
+                .MuiFormControl-root {
+                    max-height: 100%;
+                    .MuiInputBase-root {
+                        max-height: 100%;
+                    }
+
+                    textarea {
+                        font-size: $font-14;
+                        font-weight: $font-weight-medium;
+                        color: $color-191919;
+                        &::placeholder {
+                            font-size: $font-14;
+                            font-weight: $font-weight-medium;
+                            color: $color-939393;
+                        }
+                    }
+                }
+            }
+            label {
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                margin-bottom: 3px;
+            }
+
+            .input-field {
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                color: $color-191919;
+                border: 1px solid $color-d9d9d9;
+                border-radius: 6px;
+                max-height: 35px;
+                padding: 10px 24px;
+                width: 100%;
+                &::placeholder {
+                    font-size: $font-14;
+                    font-weight: $font-weight-medium;
+                    color: $color-939393;
+                }
+                &::before {
+                    content: none;
+                }
+                &::after {
+                    content: none;
+                }
+            }
+            .MuiFormControl-root {
+                max-height: 39px;
+                input {
+                    padding: 10px 24px;
+                    &::placeholder {
+                        font-size: $font-14;
+                        font-weight: $font-weight-medium;
+                        color: $color-939393;
+                    }
+                }
+                fieldset {
+                    border: 1px solid $color-d9d9d9;
+                }
+            }
+
+            .MuiInputBase-root {
+                max-height: 39px;
+                svg {
+                    display: none;
+                }
+                fieldset {
+                    border: 1px solid $color-d9d9d9;
+                }
+            }
+        }
+        .information--col {
+            margin-bottom: 21px;
+            .information--form-control {
+                width: 100%;
+            }
+        }
+        .information--cols {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+    .information-add {
+        padding: 1rem;
+
+        h3 {
+            border-bottom: 1px solid $color-d9d9d9;
+            padding: 17px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            margin-bottom: 16px;
+        }
+
+        &--columns {
+            display: flex;
+            justify-content: space-between;
+        }
+        &__left {
+            width: 48%;
+            .information-add--cols {
+                .information--form-control {
+                    width: 100%;
+                }
+            }
+
+            .input-date {
+                width: 100%;
+                min-height: 39px;
+                max-height: 39px;
+                border-radius: 3px;
+                border: 1px solid $color-d9d9d9;
+                padding: 1rem;
+                box-sizing: border-box;
+            }
+        }
+
+        &__right {
+            width: 48%;
+            .information--form-control {
+                width: 100%;
+
+                &.textarea-note {
+                    .MuiFormControl-root {
+                        max-height: 100%;
+                        .MuiInputBase-root {
+                            max-height: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .permissions {
+        background-color: $white;
+        border-radius: 6px;
+        box-shadow: 0px 0px 25px 0px rgba(94, 92, 154, 0.10);
+        h3 {
+            font-size: $font-16;
+            font-weight: $font-weight-semi-bold;
+            color: $color-46515f;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid $color-d9d9d9;
+        }
+        &--wrap {
+            padding: 0 1.5rem 1rem;
+            display: grid;
+            gap: 5px;
+            width: 100%;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(5, auto);
+
+            &__checkboxs {
+                border-bottom: 1px solid $color-d9d9d9;
+                padding-left: 10px;
+
+                &.actived {
+                    background-color: $color-f2f9ff;
+                    .MuiFormControlLabel-root {
+                    }
+                    .permissions--wrap__checkboxs__title {
+                        margin-bottom: 37px;
+                    }
+                }
+
+                &__title {
+                    display: flex;
+                    align-items: center;
+                    padding: 21px 0;
+                    max-height: 55px;
+                }
+
+                .MuiFormControlLabel-root {
+                    margin: 0;
+                    .MuiButtonBase-root {
+                        margin-right: 8px !important;
+                    }
+                    .MuiTypography-root {
+                        font-size: $font-14;
+                        font-weight: $font-weight-semi-bold;
+                        color: $color-46515f;
+                    }
+                }
+                .btn-collapse {
+                    margin-left: 8px;
+                }
+            }
+            .list-permission {
+                display: none;
+                padding-left: 24px;
+                &__items {
+                    padding: 0;
+                    &__item {
+                        // max-width: 18px;
+                        min-width: 18px;
+                        .MuiButtonBase-root {
+                            margin: 0;
+                            // width: 100%;
+                            margin-right: 8px !important;
+                        }
+                    }
+                    &__text {
+                        .MuiTypography-root {
+                            font-size: $font-14;
+                            font-weight: $font-weight-medium;
+                            color: $color-46515f;
+                        }
+                    }
+                }
+            }
+        }
+        .btn-collapse {
+            padding: 0;
+        }
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+
+            &.Mui-checked {
+                width: 16px;
+                height: 16px;
+            }
+        }
+        .list-permission {
+            display: flex;
+        }
+    }
+}

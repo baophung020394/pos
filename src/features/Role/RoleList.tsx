@@ -7,6 +7,7 @@ import { Box, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableB
 import { showErrorToast } from '@store/actions/actionToast';
 import React, { useEffect, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { useNavigate } from 'react-router-dom';
 import AddIcon from '../../assets/images/customer/add.svg';
 import DropdownIcon from '../../assets/images/customer/dropdown.svg';
 import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
@@ -32,7 +33,7 @@ const RoleList: React.FC = () => {
     const [isOpenAddRole, setIsOpenAddRole] = useState<boolean>(false);
     const apiUrl = '/api/Role/list'; // Đường dẫn cụ thể đến API
     const { data } = useApi<RoleResponse>(apiUrl);
-
+    const navigate = useNavigate();
     const handleAddRoleSuccess = (newRole: Role) => {
         setRoleList([...roleList, newRole]);
     };
@@ -59,7 +60,8 @@ const RoleList: React.FC = () => {
     };
 
     const handleOnClickAddRole = () => {
-        setIsOpenAddRole(!isOpenAddRole);
+        // setIsOpenAddRole(!isOpenAddRole);
+        navigate('/roles/add');
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

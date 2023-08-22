@@ -18,6 +18,8 @@ export interface Role {
     roleName: string | null;
     note: string | null;
     status: string | null;
+    SalseStaffActive: string | null;
+    SalseStaffInactive: string | null;
     functions: Functions[];
 }
 
