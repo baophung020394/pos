@@ -64,11 +64,11 @@ const FormAddStaff: React.FC<FormAddStaffProps> = ({ onClose, onAddSuccess }) =>
             const selectCustomRef = document.querySelector('.select-branch-mul');
 
             if (selectCustomBoxRef && selectCustomRef && !selectCustomBoxRef.contains(event.target) && !selectCustomRef.contains(event.target)) {
-                setIsOpenItems(false);
+                setIsOpenBranchs(false);
             }
         };
 
-        if (isOpenItems) {
+        if (isOpenBranchs) {
             document.addEventListener('click', handleClickOutside);
         } else {
             document.removeEventListener('click', handleClickOutside);
