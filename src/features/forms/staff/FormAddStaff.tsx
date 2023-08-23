@@ -1,45 +1,83 @@
 import axiosClient from '@apis/axios';
 import CustomButton from '@components/Button';
-import TextareaPolicy from '@components/TextareaFieldsPolicy';
-import { Role, RoleRequest, RoleResponse, RoleResponseAdd } from '@models/role';
-import { Box, Checkbox, Collapse, FormControlLabel, Input, List, ListItem, ListItemIcon, ListItemText, TextareaAutosize, TextField, Typography } from '@mui/material';
+import SelectBranchMultiple from '@components/SelectBarnchMultiple';
+import SelectRoleMultiple from '@components/SelectRoleMultiple';
+import SelectStaffBranchs from '@components/SelectStaffBranchs';
+import useApi from '@hooks/useApi';
+import { Staff, StaffResponse } from '@models/user/staff';
+import { Input, TextField, Typography } from '@mui/material';
 import { showErrorToast, showSuccessToast } from '@store/actions/actionToast';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import CloseIcon from '../../../assets/images/customer/close.svg';
+import DropdownIcon from '../../../assets/images/customer/dropdown.svg';
 import SaveIcon from '../../../assets/images/customer/save.svg';
-import CheckedIcon from '../../../assets/images/customer/checkboxicon.svg';
-import UncheckIcon from '../../../assets/images/customer/uncheckbox.svg';
-import CollapseBlackIcon from '../../../assets/images/branch/collapse-black.svg';
 import AddMoreRoleIcon from '../../../assets/images/staff/addmorerole.svg';
 import './formaddstaff.scss';
-import useApi from '@hooks/useApi';
-import { Staff, StaffResponse } from '@models/user/staff';
-import SelectStaffBranchs from '@components/SelectStaffBranchs';
-import SelectStaffRoles from '@components/SelectStaffRoles';
-import DropdownIcon from '../../../assets/images/customer/dropdown.svg';
 
 interface FormAddStaffProps {
     onClose: () => void;
     onAddSuccess: (role: Staff) => void;
 }
 const FormAddStaff: React.FC<FormAddStaffProps> = ({ onClose, onAddSuccess }) => {
-    const [permissionsList, setPermissionsList] = useState<StaffResponse>();
-    const { handleSubmit, control } = useForm<Staff>();
+    const [isOpenItems, setIsOpenItems] = useState<boolean>(false);
+    const [isOpenBranchs, setIsOpenBranchs] = useState<boolean>(false);
+    const { handleSubmit, control, setValue } = useForm<Staff>();
     const [loading, setLoading] = useState<boolean>(false);
     const apiUrl = '/api/Staff/save';
     const { data } = useApi<StaffResponse>(apiUrl);
 
     const [openIndexes, setOpenIndexes] = useState<any>([]);
 
+    const handleOpenItems = () => setIsOpenItems(true);
+    const handleOpenBranchs = () => setIsOpenBranchs(true);
+    const handleCloseItems = () => {
+        setIsOpenItems(false);
+    };
+    const handleCloseBranchs = () => {
+        setIsOpenBranchs(false);
+    };
+
     useEffect(() => {
-        console.log('setPermissionsList', data);
-        if (data?.success) {
-            setPermissionsList(data);
-        } else if (!data?.success && data?.errors) {
-            showErrorToast(data?.errors[0] || '');
+        const handleClickOutside = (event: any) => {
+            const selectCustomBoxRef = document.querySelector('.select-role-mul__box');
+            const selectCustomRef = document.querySelector('.select-role-mul');
+
+            if (selectCustomBoxRef && selectCustomRef && !selectCustomBoxRef.contains(event.target) && !selectCustomRef.contains(event.target)) {
+                setIsOpenItems(false);
+            }
+        };
+
+        if (isOpenItems) {
+            document.addEventListener('click', handleClickOutside);
+        } else {
+            document.removeEventListener('click', handleClickOutside);
         }
-    }, [data]);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [isOpenItems]);
+
+    useEffect(() => {
+        const handleClickOutside = (event: any) => {
+            const selectCustomBoxRef = document.querySelector('.select-branch-mul__box');
+            const selectCustomRef = document.querySelector('.select-branch-mul');
+
+            if (selectCustomBoxRef && selectCustomRef && !selectCustomBoxRef.contains(event.target) && !selectCustomRef.contains(event.target)) {
+                setIsOpenItems(false);
+            }
+        };
+
+        if (isOpenItems) {
+            document.addEventListener('click', handleClickOutside);
+        } else {
+            document.removeEventListener('click', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [isOpenBranchs]);
 
     const handleToggle = (index: string) => {
         const currentIndex = openIndexes.indexOf(index);
@@ -99,11 +137,34 @@ const FormAddStaff: React.FC<FormAddStaffProps> = ({ onClose, onAddSuccess }) =>
                 <div className="information--cols">
                     <div className="information--form-control">
                         <label>Vai trò</label>
-                        <SelectStaffRoles name="roleName" label="" control={control} endpoint="/api/Role/list" endIcon={DropdownIcon} />
+                        <SelectRoleMultiple
+                            endpoint="/api/Role/list"
+                            minHeight={40}
+                            maxHeight={40}
+                            onChange={(value: string) => {
+                                setValue('roleName', value);
+                            }}
+                            onClick={handleOpenItems}
+                            onClose={handleCloseItems}
+                            isOpen={isOpenItems}
+                        />
+                        {/* {isOpenItems ? <div className="layer" onClick={() => handleCloseItems()}></div> : null} */}
+                        {/* <SelectStaffRoles name="roleName" label="" control={control} endpoint="/api/Role/list" endIcon={DropdownIcon} /> */}
                     </div>
                     <div className="information--form-control">
                         <label>Chi nhánh</label>
-                        <SelectStaffBranchs name="branchName" label="" control={control} endpoint="/api/Branch/list" endIcon={DropdownIcon} />
+                        <SelectBranchMultiple
+                            endpoint="/api/Branch/list"
+                            minHeight={40}
+                            maxHeight={40}
+                            onChange={(value: string) => {
+                                setValue('branchName', value);
+                            }}
+                            onClose={handleCloseBranchs}
+                            onClick={handleOpenBranchs}
+                            isOpen={isOpenBranchs}
+                        />
+                        {/* <SelectStaffBranchs name="branchName" label="" control={control} endpoint="/api/Branch/list" endIcon={DropdownIcon} /> */}
                     </div>
                 </div>
                 <div className="information--col addmore-role">

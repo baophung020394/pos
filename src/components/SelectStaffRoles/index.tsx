@@ -1,6 +1,6 @@
 import useApi from '@hooks/useApi';
 import { Select, MenuItem, InputAdornment } from '@mui/material';
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 interface FormData {
@@ -18,7 +18,8 @@ interface FormData {
     status: string | null;
     note: string | null;
 }
-interface SelectStaffRolesProps {
+
+interface SelectStaffRoleProps {
     name: keyof FormData; // Chỉnh sửa ở đây
     label?: string;
     control: Control<FormData>;
@@ -28,8 +29,16 @@ interface SelectStaffRolesProps {
     endpoint: string; // Đường dẫn API endpoint
 }
 
-const SelectStaffRoles: React.FC<SelectStaffRolesProps> = ({ endpoint, name, label, control, startIcon, endIcon, className }) => {
+const SelectStaffRoles: React.FC<SelectStaffRoleProps> = ({ endpoint, name, label, control, startIcon, endIcon, className }) => {
     const { data, loading, error } = useApi<any>(endpoint);
+    const [searchValue, setSearchValue] = useState('');
+    const [isOpen, setIsOpen] = useState(false); // Thêm biến state cho trạng thái mở/đóng Select
+    const selectRef = useRef(null);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+    };
+
     const renderAdornment = (position: 'start' | 'end') => {
         const icon = position === 'start' ? startIcon : endIcon;
 
@@ -40,20 +49,46 @@ const SelectStaffRoles: React.FC<SelectStaffRolesProps> = ({ endpoint, name, lab
         return null;
     };
 
+    const filteredData = data?.data.filter((option: any) => option.roleName.toLowerCase().includes(searchValue.toLowerCase()));
+
     return (
         <Controller
             control={control}
             name={name}
             defaultValue=""
             render={({ field }) => (
-                <Select {...field} label={label} fullWidth className={className} startAdornment={renderAdornment('start')} endAdornment={renderAdornment('end')}>
-                    {data &&
-                        data?.data.map((option: any, index: number) => (
-                            <MenuItem key={index} value={option.roleId}>
-                                {option.roleName}
-                            </MenuItem>
-                        ))}
-                </Select>
+                <div>
+                    <Select
+                        {...field}
+                        label={label}
+                        fullWidth
+                        className={className}
+                        open={isOpen} // Sử dụng biến state để xác định trạng thái mở/đóng Select
+                        onClick={() => {
+                            setIsOpen(true); // Mở Select khi click vào
+                        }}
+                        onClose={() => {
+                            setIsOpen(false); // Đóng Select khi click ngoài
+                        }}
+                        ref={selectRef}
+                        // iconComponent={ArrowDropDownIcon}
+                    >
+                        <input type="text" placeholder="search" value={searchValue} onChange={handleSearchChange} onClick={(e) => e.stopPropagation()} />
+                        {filteredData &&
+                            filteredData.map((option: any, index: number) => (
+                                <MenuItem
+                                    key={index}
+                                    value={option.roleId}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsOpen(false); // Đóng Select khi chọn một tùy chọn
+                                    }}
+                                >
+                                    {option.roleName}
+                                </MenuItem>
+                            ))}
+                    </Select>
+                </div>
             )}
         />
     );

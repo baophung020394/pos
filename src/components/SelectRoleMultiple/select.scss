@@ -1,0 +1,94 @@
+@import '../../assets/styles/app.scss';
+
+.select-role-mul {
+    position: relative;
+    background-color: $white;
+    border-radius: 6px;
+    border: 1px solid $color-d9d9d9;
+    cursor: pointer;
+    z-index: 2;
+
+    &__search {
+        padding: 0 11px;
+        input {
+            border-radius: 6px;
+            border: 1px solid $color-d9d9d9;
+            min-height: 40px;
+            color: $color-939393;
+            font-size: $font-15;
+            font-weight: $font-weight-medium;
+            padding: 9px 22px;
+            width: 100%;
+            &::placeholder {
+                color: $color-939393;
+                font-size: $font-15;
+                font-weight: $font-weight-medium;
+            }
+        }
+    }
+
+    &__box {
+        // display: none;
+        background-color: $white;
+        position: fixed;
+        z-index: 9;
+        border-radius: 6px;
+        box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.05), -4px 0px 10px 0px rgba(0, 0, 0, 0.05);
+        padding: 21px 0 0;
+    }
+
+    &__button {
+        padding: 10px 0;
+        .btn-add {
+            width: 100%;
+            font-size: $font-15;
+            font-weight: $font-weight-medium;
+            color: $color-007aff;
+            text-transform: initial;
+        }
+        .btn-role {
+            width: 100%;
+            font-size: $font-15;
+            font-weight: $font-weight-medium;
+            color: $color-007aff;
+            text-transform: initial;
+        }
+
+        &--right {
+            .btn-role {
+                .MuiButton-startIcon {
+                    order: 1;
+                    margin-left: 10px;
+                }
+                .MuiTouchRipple-root {
+                    order: 0;
+                }
+            }
+        }
+    }
+
+    &__items {
+        border-top: 1px solid $color-d9d9d9;
+        border-bottom: 1px solid $color-d9d9d9;
+        p {
+            color: #000000;
+            font-size: $font-15;
+            font-weight: $font-weight-normal;
+            padding: 0 31px;
+            max-height: 45px;
+            min-height: 45px;
+            box-sizing: border-box;
+            line-height: 45px;
+            &:hover {
+                background-color: #007aff;
+            }
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+    }
+}
