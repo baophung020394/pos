@@ -6,11 +6,12 @@ export interface Staff {
     phone: string | null;
     roleName: string | null;
     branchName: string | null;
-    createdDate: string
+    createdDate: string;
     createdName: string | null;
     modifiedDate: string | null;
     modifiedName: string | null;
     status: string | null;
+    note: string | null;
 }
 
 export interface StaffResponse {

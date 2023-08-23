@@ -1,0 +1,205 @@
+@import '../../../assets/styles/app.scss';
+
+.form-add-staff {
+    .heading--primary {
+        max-height: 63px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: $color-f2f9ff;
+        margin-bottom: 17px;
+
+        h3 {
+            font-weight: $font-weight-semi-bold;
+            font-size: $font-16;
+        }
+
+        .btn-submit {
+            text-transform: initial;
+            font-size: $font-14;
+            font-weight: $font-weight-bold;
+            max-height: 35px;
+            padding: 6px 14px;
+            border-radius: 3px;
+            margin-right: 35px;
+        }
+
+        .btn-close {
+            padding: 0;
+        }
+    }
+    // .information--form-control {
+    //     input {
+    // &::placeholder {
+    //     font-size: $font-14;
+    //     font-weight: $font-weight-medium;
+    //     color: $color-939393;
+    // }
+    //     }
+    // }
+
+    .information {
+        padding: 1rem;
+        h3 {
+            border-bottom: 1px solid $color-d9d9d9;
+            padding: 17px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            margin-bottom: 16px;
+        }
+
+        &--buttons {
+            text-align: center;
+            margin-bottom: 18px;
+            .btn-cancel {
+                min-width: 76px;
+                color: $color-e7515a;
+                border: 1.5px solid $color-e7515a;
+                border-radius: 3px;
+                padding: 8px 14px;
+                margin-right: 37px;
+                text-transform: inherit;
+                font-size: $font-14;
+                font-weight: $font-weight-semi-bold;
+            }
+            .btn-submit {
+                min-width: 76px;
+                padding: 8px 14px;
+                border-radius: 3px;
+                text-transform: inherit;
+                font-size: $font-14;
+                font-weight: $font-weight-semi-bold;
+                &.disabled {
+                    background-color: gray;
+                    cursor: not-allowed;
+                    pointer-events: none;
+                }
+            }
+        }
+
+        &--form-control {
+            width: 48%;
+            margin-bottom: 20px;
+            &.textarea {
+                .MuiFormControl-root {
+                    max-height: 100%;
+                    .MuiInputBase-root {
+                        max-height: 100%;
+                    }
+
+                    textarea {
+                        font-size: $font-14;
+                        font-weight: $font-weight-medium;
+                        color: $color-191919;
+                        &::placeholder {
+                            font-size: $font-14;
+                            font-weight: $font-weight-medium;
+                            color: $color-939393;
+                        }
+                    }
+                }
+            }
+            .input-field {
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                color: $color-191919;
+                border: 1px solid $color-d9d9d9;
+                border-radius: 6px;
+                max-height: 35px;
+                padding: 10px 24px;
+                width: 100%;
+                &::placeholder {
+                    font-size: $font-14;
+                    font-weight: $font-weight-medium;
+                    color: $color-939393;
+                }
+                &::before {
+                    content: none;
+                }
+                &::after {
+                    content: none;
+                }
+            }
+
+            label {
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                margin-bottom: 3px;
+            }
+            input {
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                color: $color-191919;
+                &::placeholder {
+                    font-size: $font-14;
+                    font-weight: $font-weight-medium;
+                    color: $color-939393;
+                }
+            }
+            .MuiFormControl-root {
+                max-height: 39px;
+                input {
+                    padding: 10px 24px;
+                    &::placeholder {
+                        font-size: $font-14;
+                        font-weight: $font-weight-medium;
+                        color: $color-939393;
+                    }
+                }
+                fieldset {
+                    border: 1px solid $color-d9d9d9;
+                }
+            }
+
+            .MuiInputBase-root {
+                max-height: 39px;
+                svg {
+                    display: none;
+                }
+                fieldset {
+                    border: 1px solid $color-d9d9d9;
+                }
+            }
+        }
+        .information--col {
+            margin-bottom: 21px;
+            .information--form-control {
+                width: 100%;
+            }
+
+            &.textarea {
+                .MuiFormControl-root {
+                    padding: 0;
+                    border: none;
+                    max-height: unset;
+                    .MuiInputBase-root {
+                        max-height: unset;
+                        // min-height: 90px;
+                    }
+                }
+            }
+
+            &.addmore-role {
+                cursor: pointer;
+                label {
+                    color: $color-007aff;
+                    font-size: $font-15;
+                    font-weight: $font-weight-semi-bold;
+                    margin: 0;
+                }
+                img {
+                    margin-right: 10px;
+                }
+                .information--form-control {
+                    display: flex;
+                    align-items: center;
+                }
+            }
+        }
+        .information--cols {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

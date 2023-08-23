@@ -1,11 +1,23 @@
 @import '../../assets/styles/app.scss';
 
 .staff-page {
-    box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
+    .btn-add {
+        width: 100%;
+        text-align: left;
+        .btn-add-cus {
+            border-radius: 6px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            text-transform: initial;
+            padding: 7px 15px;
+            margin-bottom: 17px;
+        }
+    }
     &__list {
         background-color: $white;
         border-radius: 6px;
+        box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
+
         &__modal {
             .MuiDialog-container {
                 min-width: 750px;
@@ -411,7 +423,7 @@
                         th {
                             // min-width: 200px;
                             box-sizing: border-box;
-                            padding: 0  !important;
+                            padding: 0 !important;
                             background-color: $color-f2f9ff;
                             border-bottom: 1px solid #e0e6ed;
                             box-sizing: border-box;
