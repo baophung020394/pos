@@ -1,6 +1,6 @@
 @import '../../assets/styles/app.scss';
 
-.customer-page {
+.service-page {
     box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
     border-radius: 6px;
     &__list {
@@ -128,10 +128,6 @@
         }
 
         &__config-col {
-            // position: fixed;
-            // top: 50%;
-            // left: 50%;
-            // transform: translate(-50%, -50%);
             width: 100%;
             max-width: 1005px;
             margin: 0 auto;
@@ -400,6 +396,16 @@
         &__tables {
             .MuiPaper-root {
                 box-shadow: none;
+                // &::-webkit-scrollbar {
+                //     width: 0.5em;
+                // }
+                // &::-webkit-scrollbar-track {
+                //     background-color: transparent; /* Màu nền của vùng chứa thanh cuộn */
+                // }
+                // &::-webkit-scrollbar-thumb {
+                //     background-color: transparent; /* Màu của thanh cuộn */
+                //     border-radius: 4px; /* Đường viền cong cho thanh cuộn */
+                // }
             }
             table {
                 thead {
@@ -434,6 +440,19 @@
                                 text-align: center;
                             }
                             &:nth-child(2) {
+                                min-width: 50px;
+                                max-width: 50px;
+                                padding: 0 !important;
+                                text-align: center;
+                            }
+
+                            &:nth-child(3) {
+                                min-width: 25px;
+                                max-width: 25px;
+                                padding: 0 !important;
+                                text-align: center;
+                            }
+                            &:nth-child(4) {
                                 min-width: 50px;
                                 max-width: 50px;
                                 padding: 0 !important;
@@ -481,6 +500,17 @@
                 }
                 tbody {
                     tr {
+                        border-bottom: 1px solid #d9d9d9;
+                        &.active-collapse-row {
+                            background-color: $color-f2f9ff;
+                            border-bottom: unset;
+
+                            td {
+                                border-bottom: unset;
+                                padding-top: 16px !important;
+                                padding-bottom: 16px !important;
+                            }
+                        }
                         td {
                             font-family: 'Manrope', sans-serif !important;
                             padding: 0 !important;
@@ -501,6 +531,16 @@
                                 text-align: center;
                             }
 
+                            &:nth-child(3) {
+                                min-width: 25px;
+                                max-width: 25px;
+                                padding: 0 !important;
+                                text-align: center;
+                            }
+
+                            .btn-collapse {
+                                padding: 0;
+                            }
                             .table-body {
                                 p {
                                     min-height: 50px;
@@ -517,9 +557,23 @@
                                     white-space: nowrap;
                                     text-overflow: ellipsis;
                                     max-width: 200px;
+                                    padding-right: 15px;
+                                    // display: flex;
+                                    // align-items: center;
                                     &.color-name {
                                         color: #4361ee;
                                         cursor: pointer;
+                                    }
+                                    .img-product {
+                                        margin-right: 0;
+                                        padding-top: 7px;
+                                    }
+                                }
+
+                                .btn-copy {
+                                    padding: 0;
+                                    .MuiButton-startIcon {
+                                        margin-right: 0;
                                     }
                                 }
                             }
@@ -534,339 +588,126 @@
                                 }
                             }
                         }
-                    }
-                }
-            }
-        }
-    }
-}
-
-.customer-detail {
-    &__heading {
-        background-color: #ffffff;
-        border-radius: 6px;
-        box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.05);
-        max-height: 66px;
-        box-sizing: border-box;
-        padding: 12px 24px;
-        margin-bottom: 16px;
-
-        p {
-            color: #007aff;
-            font-size: $font-24;
-            font-weight: $font-weight-semi-bold;
-        }
-    }
-
-    &__information {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 16px;
-
-        &__person {
-            max-width: 49%;
-            width: 100%;
-            background-color: $white;
-            border-radius: 6px;
-            box-shadow: -4px -4px 10px 0px rgba(168, 168, 168, 0.1), 4px 4px 10px 0px rgba(168, 168, 168, 0.1);
-            .heading {
-                max-height: 55px;
-                box-sizing: border-box;
-                background-color: #f2f9ff;
-                padding: 19px 34px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-top-left-radius: 6px;
-                border-top-right-radius: 6px;
-                p {
-                    color: #007aff;
-                    font-size: $font-24;
-                    font-weight: $font-weight-semi-bold;
-                }
-
-                .open-new-tab {
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                    p {
-                        font-size: $font-15;
-                        font-weight: $font-weight-semi-bold;
-                        color: #007aff;
-                        margin-right: 8px;
-                    }
-                }
-            }
-            .table {
-                padding: 30px 37px;
-                display: grid;
-                // grid-template-columns: max-content max-content;
-                gap: 5px;
-                width: 100%;
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(5, auto);
-
-                p {
-                    font-size: $font-14;
-                    font-weight: 500;
-                    padding: 10px 0;
-                    min-height: 40px;
-                }
-                // .left {
-                //     display: flex;
-                //     justify-content: space-between;
-                //     max-width: 46%;
-                //     width: 100%;
-                // }
-                // .right {
-                //     display: flex;
-                //     justify-content: space-between;
-                //     max-width: 46%;
-                //     width: 100%;
-                // }
-            }
-        }
-
-        &__trade {
-            max-width: 49%;
-            width: 100%;
-            background-color: $white;
-            border-radius: 6px;
-            box-shadow: -4px -4px 10px 0px rgba(168, 168, 168, 0.1), 4px 4px 10px 0px rgba(168, 168, 168, 0.1);
-            .heading {
-                max-height: 55px;
-                box-sizing: border-box;
-                background-color: #f2f9ff;
-                padding: 19px 34px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-top-left-radius: 6px;
-                border-top-right-radius: 6px;
-                p {
-                    font-size: $font-16;
-                    font-weight: $font-weight-semi-bold;
-                }
-
-                .open-new-tab {
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                    p {
-                        font-size: $font-15;
-                        font-weight: $font-weight-semi-bold;
-                        color: #007aff;
-                        margin-right: 8px;
-                    }
-                }
-            }
-            .table {
-                padding: 30px 37px;
-                display: grid;
-                grid-template-columns: max-content max-content;
-                gap: 16px;
-                width: 100%;
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(5, auto);
-
-                p {
-                    font-size: $font-14;
-                    font-weight: 500;
-                    padding: 10px 0;
-                }
-            }
-        }
-    }
-
-    /* Customer detail */
-    &__tables {
-        border-radius: 6px;
-        background-color: $white;
-        box-shadow: -4px -4px 10px 0px rgba(168, 168, 168, 0.1), 4px 4px 10px 0px rgba(168, 168, 168, 0.1);
-        table {
-            thead {
-                tr {
-                    th {
-                        min-width: 100%;
-                        box-sizing: border-box;
-                        padding: 0 24px !important;
-                        background-color: $color-f2f9ff;
-                        border-bottom: 1px solid #e0e6ed;
-                        &:first-child {
-                            min-width: unset;
-                            max-width: 100%;
-                        }
-                        &:nth-child(2) {
-                            min-width: 100px;
-                            max-width: 100%;
-                            // padding: 0 24px !important;
-                        }
-                        .table-head {
-                            display: flex;
-                            align-items: center;
-                            p {
-                                font-size: $font-14;
-                                font-weight: $font-weight-semi-bold;
-                                margin-right: 8px;
-                                color: #000000;
-                                min-height: 45px;
-                                max-height: 45px;
-                                height: 45px;
-                                line-height: 45px;
-                                color: #000000;
-                                text-align: left;
+                        &.row-collapse {
+                            border-bottom: none;
+                            position: relative;
+                            &::before {
+                                content: '';
+                                position: absolute;
+                                background-color: $color-f2f9ff;
                                 width: 100%;
-                            }
-                        }
-                    }
-                }
-            }
-            tbody {
-                tr {
-                    td {
-                        font-family: 'Manrope', sans-serif !important;
-                        padding: 0 24px !important;
-                        border-bottom: 1px solid #e0e6ed;
-                        text-align: left;
-                        .table-body {
-                            p {
-                                min-height: 50px;
-                                max-height: 50px;
-                                height: 50px;
-                                font-family: 'Manrope', sans-serif !important;
-                                font-size: $font-14;
-                                font-weight: $font-weight-medium;
                                 height: 100%;
-                                line-height: 50px;
-                                width: 100%;
-                                color: $color-0f1824;
-                                text-align: left;
-                                &.status-return {
-                                    color: #ff1d1d;
-                                    display: inline-block;
-                                    border-radius: 6px;
-                                    padding: 5px 0;
-                                    font-size: $font-13;
-                                    font-weight: $font-weight-semi-bold;
-                                }
-
-                                &.status-fixing {
-                                    color: #46515f;
-                                    display: inline-block;
-                                    border-radius: 6px;
-                                    padding: 5px 0;
-                                    font-size: $font-13;
-                                    font-weight: $font-weight-semi-bold;
-                                }
-
-                                &.status-done {
-                                    color: #e2a03f;
-                                    display: inline-block;
-                                    border-radius: 6px;
-                                    padding: 5px 0;
-                                    font-size: $font-13;
-                                    font-weight: $font-weight-semi-bold;
-                                }
-
-                                &.status-return-cus {
-                                    color: #007aff;
-                                    display: inline-block;
-                                    border-radius: 6px;
-                                    padding: 5px 0;
-                                    font-size: $font-13;
-                                    font-weight: $font-weight-semi-bold;
-                                }
-
-                                &.status-completed {
-                                    color: #00ab55;
-                                    display: inline-block;
-                                    border-radius: 6px;
-                                    padding: 5px 0;
-                                    font-size: $font-13;
-                                    font-weight: $font-weight-semi-bold;
+                                z-index: 0;
+                            }
+                            .row-collapse--col {
+                                border-bottom: none;
+                                // padding-left: 70px !important;
+                                padding-top: 16px !important;
+                                padding-bottom: 16px !important;
+                            }
+                            .row-table-collapse {
+                                position: relative;
+                                z-index: 2;
+                                table {
+                                    thead {
+                                        tr {
+                                            border-bottom: none;
+                                            background-color: transparent;
+                                            th {
+                                                text-align: center;
+                                                padding: 0 !important;
+                                                min-width: 200px;
+                                                background-color: #ffffff;
+                                                border-bottom: 1px solid $color-d9d9d9;
+                                                &:first-child {
+                                                    // min-width: unset;
+                                                    // max-width: unset;
+                                                    width: auto;
+                                                    // background-color: transparent;
+                                                    // border: none;
+                                                    min-width: 50px;
+                                                    max-width: 50px;
+                                                }
+                                                // &:nth-child(4) {
+                                                //     min-width: 50px;
+                                                //     max-width: 50px;
+                                                //     padding: 0 !important;
+                                                //     text-align: center;
+                                                // }
+                                                .table-head {
+                                                    p {
+                                                        min-height: 45px;
+                                                        max-height: 45px;
+                                                        font-size: $font-14;
+                                                        font-weight: $font-weight-semi-bold;
+                                                        color: #000000;
+                                                        text-align: center;
+                                                        width: 100%;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    tbody {
+                                        tr {
+                                            border-bottom: none;
+                                            &:last-child {
+                                                td {
+                                                    border-bottom: unset;
+                                                }
+                                            }
+                                            &.row-total {
+                                                td {
+                                                    &:first-child {
+                                                        p {
+                                                            text-align: right !important;
+                                                            max-width: 100% !important;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            td {
+                                                padding: 0 !important;
+                                                border-bottom: none;
+                                                background-color: #ffffff;
+                                                text-align: center;
+                                                border-bottom: 1px solid $color-d9d9d9;
+                                                &:first-child {
+                                                    p {
+                                                        text-align: center;
+                                                        padding-right: 0;
+                                                        img {
+                                                            margin: 0 auto;
+                                                        }
+                                                    }
+                                                }
+                                                .table-body {
+                                                    p {
+                                                        min-height: 50px;
+                                                        max-height: 50px;
+                                                        font-size: $font-14;
+                                                        font-weight: $font-weight-medium;
+                                                        color: $color-46515f;
+                                                        width: 100%;
+                                                        text-align: center;
+                                                        justify-content: center;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-        .MuiTabs-root {
-            background-color: #f2f9ff;
-            margin-bottom: 16px;
-            .MuiTabs-flexContainer {
-                // justify-content: space-between;
-            }
-            .MuiTabs-indicator {
-                background-color: #007aff;
-            }
-            .MuiButtonBase-root {
-                text-transform: initial;
-                font-size: $font-16;
-                font-weight: $font-weight-semi-bold;
-
-                &.Mui-selected {
-                    color: #007aff;
-                }
-            }
-        }
-        table {
-            thead {
-                tr {
-                    position: relative;
-                    th {
-                        font-family: 'Manrope', sans-serif !important;
-                        position: relative;
-                        font-size: $font-14;
-                        font-weight: $font-weight-semi-bold;
-                        color: $color-46515f;
-                        background-color: transparent;
-                        text-align: left;
-                        &:first-child {
-                            width: auto;
-                            max-width: 100%;
-                            padding-left: 0;
-                        }
-                    }
-                }
-            }
-            tbody {
-                tr {
-                    td {
-                        font-size: $font-14;
-                        font-weight: $font-weight-medium;
-                        color: $color-46515f;
-                        &:first-child {
-                            color: #4361ee;
-                            width: auto;
-                            max-width: 100%;
-                            padding: 16px;
-                        }
-                        &:last-child {
-                            &.return {
-                                border: 1px solid #ff1d1d;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    .MuiTabs-root {
-        .MuiButtonBase-root {
-            font-size: $font-14;
-            font-weight: $font-weight-semi-bold;
-            color: $color-747c87;
-            &.Mui-selected {
-                color: $color-007aff;
             }
         }
     }
 }
 
 @media screen and (max-width: 1600px) {
-    .customer-page {
+    .service-page {
         &__list {
             &__filters {
                 flex-direction: column;

@@ -9,6 +9,7 @@ const BranchPage = lazy(() => import('../pages/BranchPage'));
 const RolePage = lazy(() => import('../pages/RolePage'));
 const AddRolePage = lazy(() => import('../pages/RolePage/AddRolePage'));
 const StaffPage = lazy(() => import('../pages/StaffPage/'));
+const ServicesPage = lazy(() => import('../pages/ServicesPage/'));
 const Customer = lazy(() => import('../features/Customer/Customer'));
 const LoginCover = lazy(() => import('../pages/Authentication/LoginCover'));
 const RegisterCover = lazy(() => import('../pages/Authentication/RegisterCover'));
@@ -53,10 +54,15 @@ const routes = [
     },
 
     // staff
-
     {
         path: '/staffs',
         element: <PrivateRoute element={<StaffPage />} />,
+    },
+
+    // service
+    {
+        path: '/services',
+        element: <PrivateRoute element={<ServicesPage />} />,
     },
     //Authentication
 

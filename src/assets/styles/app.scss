@@ -130,3 +130,34 @@ h6 {
     top: 0;
     left: 0;
 }
+
+.switch-button {
+    // width: 33px;
+    // height: 20px !important;
+    padding: 7px 4px !important;
+    // border-radius: 20px;
+    .MuiSwitch-track {
+        background-color: $color-e0e6ed;
+        border-radius: 20px;
+    }
+
+    .MuiButtonBase-root {
+        padding: 11px 9px;
+        .MuiSwitch-thumb {
+            width: 16px;
+            height: 16px;
+        }
+        &.MuiSwitch-switchBase {
+            .MuiSwitch-thumb {
+                background-color: $white;
+            }
+            &.Mui-checked {
+                padding: 11px 13px;
+                + .MuiSwitch-track {
+                    background-color: $color-4361ee;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

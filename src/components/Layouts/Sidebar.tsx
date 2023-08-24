@@ -113,6 +113,11 @@ const Sidebar = () => {
                                     Danh sách nhân viên
                                 </NavLink>
                             </li>
+                            <li className="nav-item">
+                                <NavLink to="/services">
+                                    Danh sách dịch vụ
+                                </NavLink>
+                            </li>
                         </ul>
                     </PerfectScrollbar>
                 </div>
