@@ -50,7 +50,7 @@ const SelectRoleMultiple: React.FC<SelectRoleMultipleProps> = ({ endpoint, minHe
                 <Box
                     className="select-role-mul__box"
                     style={{
-                        top: selectCustomBoxPosition.top - 150,
+                        top: selectCustomBoxPosition.top,
                         left: selectCustomBoxPosition.left,
                         width: selectCustomBoxPosition.width,
                     }}

@@ -54,7 +54,7 @@ const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerList: React.FC = () => {
     const [customers, setCustomers] = useState<Customer[]>([]);
-    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>(['customerCode', 'customerName', 'phoneNumber', 'customerGroupName', 'createdDate', 'statusName']);
+    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>(['customerCode', 'customerName', 'phoneNumber', 'customerGroupName', 'createdDate', 'statusName', 'createdByName','taxCode']);
     const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
