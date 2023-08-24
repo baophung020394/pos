@@ -522,6 +522,50 @@
                                         color: #4361ee;
                                         cursor: pointer;
                                     }
+                                    &.status-return {
+                                        color: #ff1d1d;
+                                        display: inline-block;
+                                        border-radius: 6px;
+                                        padding: 5px 0;
+                                        font-size: $font-13;
+                                        font-weight: $font-weight-semi-bold;
+                                    }
+
+                                    &.status-fixing {
+                                        color: #46515f;
+                                        display: inline-block;
+                                        border-radius: 6px;
+                                        padding: 5px 0;
+                                        font-size: $font-13;
+                                        font-weight: $font-weight-semi-bold;
+                                    }
+
+                                    &.status-done {
+                                        color: #e2a03f;
+                                        display: inline-block;
+                                        border-radius: 6px;
+                                        padding: 5px 0;
+                                        font-size: $font-13;
+                                        font-weight: $font-weight-semi-bold;
+                                    }
+
+                                    &.status-return-cus {
+                                        color: #007aff;
+                                        display: inline-block;
+                                        border-radius: 6px;
+                                        padding: 5px 0;
+                                        font-size: $font-13;
+                                        font-weight: $font-weight-semi-bold;
+                                    }
+
+                                    &.status-completed {
+                                        color: #00ab55;
+                                        display: inline-block;
+                                        border-radius: 6px;
+                                        padding: 5px 0;
+                                        font-size: $font-13;
+                                        font-weight: $font-weight-semi-bold;
+                                    }
                                 }
                             }
 
