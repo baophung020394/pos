@@ -24,7 +24,7 @@ const ColumnConfig: React.FC<ColumnConfigProps> = ({
     setIsOpen,
 }) => {
     return (
-        <div className="    __list__config-col">
+        <div className="service-page__list__config-col">
             <div className="config-col__heading">
                 <Typography variant="h2" component="h2">
                     Điều chỉnh cột hiển thị
