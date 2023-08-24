@@ -93,7 +93,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
                                 {children}
 
                                 {/* BEGIN FOOTER */}
-                                <Footer />
+                                {/* <Footer /> */}
                                 {/* END FOOTER */}
                             </div>
                         </Suspense>
