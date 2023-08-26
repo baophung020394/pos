@@ -5,8 +5,6 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import AddIcon from '@assets/images/customer/add.svg';
 import DropdownIcon from '@assets/images/customer/dropdown.svg';
-import ImportIcon from '@assets/images/customer/import.svg';
-import ExportIcon from '@assets/images/customer/export.svg';
 
 type FilterCustomerProps = {
     getValueSearch?: (value: string) => void;

@@ -28,6 +28,35 @@
                 margin-right: 8px;
             }
         }
+        .options-files {
+            // display: none;
+            position: relative;
+            .files {
+                display: flex;
+                flex-direction: column;
+                background-color: $white;
+                box-shadow: 0px 0px 25px 0px rgba(94, 92, 154, 0.1);
+                border-radius: 6px;
+                min-width: 152px;
+                position: relative;
+                position: absolute;
+                top: 40px;
+                left: 50%;
+                z-index: 1;
+                transform: translateX(-55%);
+                .btn-action-file {
+                    color: $color-46515f;
+                    font-size: $font-14;
+                    font-weight: $font-weight-medium;
+                    min-height: 50px;
+                    text-transform: capitalize;
+                    .MuiButton-startIcon {
+                        order: 1;
+                        margin-left: 12px;
+                    }
+                }
+            }
+        }
 
         button {
             padding: 0;

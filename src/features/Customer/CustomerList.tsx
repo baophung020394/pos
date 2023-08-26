@@ -26,6 +26,8 @@ import ColumnConfig from './ColumnConfig';
 import AddIcon from '@assets/images/customer/add.svg';
 import MoreIcon from '@assets/images/customer/more.svg';
 import CheckmarkIcon from '@assets/images/customer/checkmark.svg';
+import ImportIcon from '@assets/images/customer/import.svg';
+import ExportIcon from '@assets/images/customer/export.svg';
 import './customer.scss';
 import ImageCustom from '@components/Image';
 
@@ -75,6 +77,7 @@ const CustomerList: React.FC = () => {
     const [isOpenConfig, setIsOpenConfig] = useState<boolean>(false);
     const [valueSearch, setValueSearch] = useState<string>('');
     const [isOpenAddCus, setIsOpenAddCus] = useState<boolean>(false);
+    const [isOpenMenuFiles, setIsOpenMenuFiles] = useState<boolean>(false);
     const apiUrl = '/api/Customer/list'; // Đường dẫn cụ thể đến API
     const { data } = useApi<CustomerResponse>(apiUrl);
     const dispatch = useDispatch();
@@ -179,7 +182,26 @@ const CustomerList: React.FC = () => {
     return (
         <>
             <Box className="btn-add">
-                <CustomButton text="" icon={MoreIcon} className="btn-more" backgroundColor="transparent" backgroundColorHover="transparent" minWidth={45} maxWidth={45} boxShadow="none" />
+                <Box className="options-files">
+                    <CustomButton
+                        text=""
+                        icon={MoreIcon}
+                        className="btn-more"
+                        backgroundColor="transparent"
+                        backgroundColorHover="transparent"
+                        minWidth={45}
+                        maxWidth={45}
+                        boxShadow="none"
+                        onClick={() => setIsOpenMenuFiles(!isOpenMenuFiles)}
+                    />
+
+                    {isOpenMenuFiles ? (
+                        <Box className="files">
+                            <CustomButton text="Nhập file" icon={ImportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
+                            <CustomButton text="Xuất file" icon={ExportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
+                        </Box>
+                    ) : null}
+                </Box>
                 <CustomButton
                     text="Thêm khách hàng"
                     maxHeight={45}
@@ -241,7 +263,10 @@ const CustomerList: React.FC = () => {
                                             </Box>
                                         </TableCell>
                                         {visibleColumns.map((column) => (
-                                            <TableCell key={column} className={`${column === 'createdDate' ? 'mwDate' : column === 'phoneNumber' ? 'mwDate' : column === 'statusName' ? 'mwDate' : ''} `}>
+                                            <TableCell
+                                                key={column}
+                                                className={`${column === 'createdDate' ? 'mwDate' : column === 'phoneNumber' ? 'mwDate' : column === 'statusName' ? 'mwDate' : ''} `}
+                                            >
                                                 <div className="table-head">
                                                     <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
                                                     <button>
