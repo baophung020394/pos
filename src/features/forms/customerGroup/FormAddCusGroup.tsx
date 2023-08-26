@@ -29,10 +29,21 @@ const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess
     const [options, setOptions] = useState<Options[]>([]);
     const dataPricePolicy = useApi<any>('/api/PricePolicy/list');
 
-    const onSubmit = async (data: CustomerGroupReq) => {
+    const onSubmit = async (data: any) => {
         setLoading(true);
         const url = '/api/CustomerGroup/add';
-        const response: any = await axiosClient.post(url, data);
+        const formData = new FormData();
+
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+
+        const response: any = await axiosClient.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
         console.log('response', response);
         if (response?.data.success) {
             onClose();

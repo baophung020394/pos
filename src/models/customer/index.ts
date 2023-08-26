@@ -67,7 +67,7 @@ export interface CustomerReq {
     birthDay: string;
     address: string;
     note: string;
-    status: string;
+    status: boolean;
     taxCode: string;
     hastag: string;
     facebookLink: string;

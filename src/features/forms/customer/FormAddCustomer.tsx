@@ -25,7 +25,11 @@ interface Options {
     label: string;
 }
 const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleCloseAddCus }) => {
-    const { handleSubmit, control, setValue, formState } = useForm<CustomerReq>();
+    const { handleSubmit, control, setValue, formState } = useForm<CustomerReq>({
+        defaultValues: {
+            status: false,
+        },
+    });
     const [loading, setLoading] = useState<boolean>(false);
     const [isOpenCity, setIsOpenCity] = useState<boolean>(false);
     const [options, setOptions] = useState<Options[]>([]);
@@ -36,13 +40,24 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
 
     console.log('dataCity', dataCity);
 
-    const onSubmit = async (data: CustomerReq) => {
+    const onSubmit = async (data: any) => {
         setLoading(true);
         const url = '/api/Customer/add';
-        const response: any = await axiosClient.post(url, data);
+        const formData = new FormData();
+
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+
+        const response: any = await axiosClient.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
         console.log('response', response);
         if (response?.data.success) {
-            // handleCloseAddCus();
+            handleCloseAddCus();
             setLoading(false);
             onAddSuccess(response?.data.data);
             showSuccessToast('Thay đổi thành công');
