@@ -60,23 +60,22 @@ export interface Customer {
 }
 
 export interface CustomerReq {
-    CustomerCode: string;
-    CustomerName: string;
-    Gender: string;
-    PhoneNumber: string;
-    BirthDay: string;
-    Email: string;
-    Address: string;
-    Note: string;
-    Status: string;
-    TaxCode: string;
-    Hastag: string;
-    FacebookLink: string;
-    Debt: string;
-    AreaCityId: string;
-    AreaDistrictId: string;
-    CustomerGroupId: string;
-    CustomerGroupName: string;
+    customerCode: string;
+    customerName: string;
+    gender: string;
+    phoneNumber: string;
+    birthDay: string;
+    address: string;
+    note: string;
+    status: string;
+    taxCode: string;
+    hastag: string;
+    facebookLink: string;
+    debt: string;
+    areaCityId: string;
+    areaDistrictId: string;
+    customerGroupId: string;
+    customerGroupName: string;
     email: string;
 }
 export interface CustomerResponse {

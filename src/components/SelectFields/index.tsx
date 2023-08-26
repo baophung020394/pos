@@ -3,24 +3,23 @@ import React from 'react';
 import { Control, Controller } from 'react-hook-form';
 
 interface FormData {
-    CustomerCode: string;
-    CustomerName: string;
-    Gender: string;
-    PhoneNumber: string;
-    BirthDay: string;
-    Email: string;
-    Address: string;
-    Note: string;
-    Status: string;
-    TaxCode: string;
-    Hastag: string;
-    FacebookLink: string;
-    Debt: string;
-    AreaCityId: string;
-    AreaDistrictId: string;
-    CustomerGroupId: string;
-    CustomerGroupName: string;
+    customerCode: string;
+    customerName: string;
+    gender: string;
+    phoneNumber: string;
+    birthDay: string;
     email: string;
+    address: string;
+    note: string;
+    status: string;
+    taxCode: string;
+    hastag: string;
+    facebookLink: string;
+    debt: string;
+    areaCityId: string;
+    areaDistrictId: string;
+    customerGroupId: string;
+    customerGroupName: string;
 }
 
 interface SelectFieldsProps {

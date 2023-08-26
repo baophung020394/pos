@@ -12,17 +12,21 @@
 
         h3 {
             font-weight: $font-weight-semi-bold;
-            font-size: $font-20;
+            font-size: $font-16;
+            color: #000000;
         }
 
         .btn-submit {
             text-transform: initial;
             font-size: $font-14;
-            font-weight: $font-weight-bold;
+            font-weight: $font-weight-semi-bold;
             max-height: 35px;
             padding: 6px 14px;
             border-radius: 3px;
             margin-right: 35px;
+            &:hover {
+                transform: scale(1);
+            }
         }
 
         .btn-close {
