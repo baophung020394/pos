@@ -1,11 +1,13 @@
 import CustomButton from '@components/Button';
-import { Checkbox, Paper, Typography } from '@mui/material';
+import ImageCustom from '@components/Image';
+import { Box, Checkbox, Paper, Typography } from '@mui/material';
 import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { Customer } from 'src/models/customer';
 import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
 import CloseIcon from '../../assets/images/customer/close.svg';
 import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
+import CheckmarkIcon from '@assets/images/customer/checkmark.svg';
 
 interface ColumnConfigProps {
     columns: { field: keyof Customer; label: string }[];
@@ -50,14 +52,11 @@ const ColumnConfig: React.FC<ColumnConfigProps> = ({
                         <div className="config-col__cols__add__content">
                             {columns.map((column) => (
                                 <div key={column.field} className={`config-col__cols__add__content__row ${visibleColumns.includes(column.field) ? 'selected' : ''}`}>
-                                    <Checkbox
-                                        checked={visibleColumns.includes(column.field)}
-                                        onChange={() => onColumnToggle(column.field)}
-                                        icon={<img src={UncheckIcon} alt="" />}
-                                        checkedIcon={<img src={CheckedIcon} alt="" />}
-                                        className="custom-checkbox"
-                                    />
-                                    <label>{column.label}</label>
+                                    <Box className="wrap-checkbox">
+                                        <Checkbox checked={visibleColumns.includes(column.field)} onChange={() => onColumnToggle(column.field)} className="custom-checkbox" />
+                                        <ImageCustom src={CheckmarkIcon} alt="" className="icon-checkmark" />
+                                    </Box>
+                                    <label className={`${visibleColumns.includes(column.field) ? 'active' : ''}`}>{column.label}</label>
                                 </div>
                             ))}
                         </div>

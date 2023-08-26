@@ -47,6 +47,7 @@ $color-e0e6ed: #e0e6ed;
 $color-007aff: #007aff;
 $color-0f1824: #0f1824;
 $color-747c87: #747c87;
+$color-00ab55: #00ab55;
 /*
   * VARIABLES FONT-WEIGHT
   */
@@ -165,4 +166,53 @@ h6 {
 .animate__animated {
     overflow-x: scroll;
     display: flex;
+}
+
+.wrap-checkbox {
+    position: relative;
+    margin: 0 auto;
+    width: 16px;
+    height: 16px;
+    .custom-checkbox {
+        max-width: 16px;
+        max-height: 16px;
+        margin-right: 0 !important;
+        position: absolute;
+        top: 2px;
+        left: 0;
+        padding: 0;
+        border: 1.5px solid #b0b0b0;
+        height: 16px;
+        width: 16px;
+        border-radius: 4px;
+        .MuiSvgIcon-root {
+            max-width: 16px;
+            max-height: 16px;
+        }
+        &.Mui-checked {
+            max-width: 16px;
+            max-height: 16px;
+            & + .icon-checkmark {
+                display: block;
+            }
+            // background-color: #ffffff;
+            border: 1.5px solid #4361ee !important;
+        }
+        svg {
+            fill: transparent;
+            display: none !important;
+        }
+        .MuiButton-startIco {
+            margin-right: 0;
+        }
+    }
+    .icon-checkmark {
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        top: 65%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: none;
+    }
 }

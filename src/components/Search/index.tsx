@@ -1,6 +1,8 @@
 // Search.tsx
 import { Box, TextField } from '@mui/material';
 import React, { useState } from 'react';
+import SearchIcon from '@assets/images/customer/search.svg';
+import ImageCustom from '@components/Image';
 
 type SearchProps = {
     placeholder?: string;
@@ -18,6 +20,7 @@ const Search: React.FC<SearchProps> = ({ onSearch, placeholder }) => {
 
     return (
         <Box className="search-wrapper">
+            <ImageCustom alt='' src={SearchIcon} className='icon-search' />
             <TextField className="search-wrapper__input" variant="outlined" size="small" value={searchValue} onChange={handleSearch} placeholder={placeholder} fullWidth />
         </Box>
     );

@@ -13,17 +13,21 @@ import { useDispatch } from 'react-redux';
 import 'react-resizable/css/styles.css';
 import { useNavigate } from 'react-router-dom';
 import { Customer, CustomerResponse } from 'src/models/customer';
-import CheckedIcon from '../../assets/images/customer/checkboxicon.svg';
-import DropdownIcon from '../../assets/images/customer/dropdown.svg';
-import FirstPageIcon from '../../assets/images/customer/firstpage.svg';
-import LastPageIcon from '../../assets/images/customer/lastpage.svg';
-import NextIcon from '../../assets/images/customer/next.svg';
-import PrevIcon from '../../assets/images/customer/prev.svg';
-import SettingColIcon from '../../assets/images/customer/setting-col.svg';
-import SortIcon from '../../assets/images/customer/sort.svg';
-import UncheckIcon from '../../assets/images/customer/uncheckbox.svg';
+import CheckedIcon from '@assets/images/customer/checkboxicon.svg';
+import DropdownIcon from '@assets/images/customer/dropdown.svg';
+import FirstPageIcon from '@assets/images/customer/firstpage.svg';
+import LastPageIcon from '@assets/images/customer/lastpage.svg';
+import NextIcon from '@assets/images/customer/next.svg';
+import PrevIcon from '@assets/images/customer/prev.svg';
+import SettingColIcon from '@assets/images/customer/setting-col.svg';
+import SortIcon from '@assets/images/customer/sort.svg';
+import UncheckIcon from '@assets/images/customer/uncheckbox.svg';
 import ColumnConfig from './ColumnConfig';
+import AddIcon from '@assets/images/customer/add.svg';
+import MoreIcon from '@assets/images/customer/more.svg';
+import CheckmarkIcon from '@assets/images/customer/checkmark.svg';
 import './customer.scss';
+import ImageCustom from '@components/Image';
 
 const columns: { field: keyof Customer; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -54,7 +58,16 @@ const pageSizeOptions = [20, 50, 100, 200, 500];
 
 const CustomerList: React.FC = () => {
     const [customers, setCustomers] = useState<Customer[]>([]);
-    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>(['customerCode', 'customerName', 'phoneNumber', 'customerGroupName', 'createdDate', 'statusName', 'createdByName','taxCode']);
+    const [visibleColumns, setVisibleColumns] = useState<Array<keyof Customer>>([
+        'customerCode',
+        'customerName',
+        'phoneNumber',
+        'customerGroupName',
+        'createdDate',
+        'statusName',
+        'createdByName',
+        'taxCode',
+    ]);
     const [selectAll, setSelectAll] = useState(false); // Trạng thái chọn tất cả
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -67,6 +80,7 @@ const CustomerList: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const handleOnClickAddCus = () => setIsOpenAddCus(true);
     const handleOpenConfigColumn = () => setIsOpenConfig(!isOpenConfig);
     const handleCloseConfigColumn = () => setIsOpenConfig(false);
     const handleCloseAddCus = () => setIsOpenAddCus(false);
@@ -142,6 +156,11 @@ const CustomerList: React.FC = () => {
         setIsOpenAddCus(!isOpenAddCus);
     }, []);
 
+    const statusClassMap: { [key: string]: string } = {
+        'Đang hoạt động': 'status-active',
+        'Ngưng hoạt động': 'status-deactive',
+    };
+
     // Tính toán dữ liệu hiển thị trên trang hiện tại
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = customers ? Math.min(startIndex + pageSize, customers.length) : 0;
@@ -158,170 +177,194 @@ const CustomerList: React.FC = () => {
     const lastPage = customers ? Math.ceil(customers.length / pageSize) : 0;
 
     return (
-        <div className="customer-page__list">
-            <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} />
-            <DragDropContext onDragEnd={handleColumnReorder}>
-                <ModelCustom
-                    isOpen={isOpenConfig}
-                    onClose={handleCloseConfigColumn}
-                    title=""
-                    okButtonText=""
-                    cancelButtonText=""
-                    onCancel={handleCloseConfigColumn}
-                    className="customer-page__list__modal"
-                >
-                    <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
-                </ModelCustom>
+        <>
+            <Box className="btn-add">
+                <CustomButton text="" icon={MoreIcon} className="btn-more" backgroundColor="transparent" backgroundColorHover="transparent" minWidth={45} maxWidth={45} boxShadow="none" />
+                <CustomButton
+                    text="Thêm khách hàng"
+                    maxHeight={45}
+                    minHeight={32}
+                    minWidth={32}
+                    backgroundColor="#007AFF"
+                    backgroundColorHover="#007AFF"
+                    borderRadius="50%"
+                    icon={AddIcon}
+                    className="btn-add-cus"
+                    onClick={handleOnClickAddCus}
+                />
+            </Box>
+            <div className="customer-page__list">
+                <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} />
+                <DragDropContext onDragEnd={handleColumnReorder}>
+                    <ModelCustom
+                        isOpen={isOpenConfig}
+                        onClose={handleCloseConfigColumn}
+                        title=""
+                        okButtonText=""
+                        cancelButtonText=""
+                        onCancel={handleCloseConfigColumn}
+                        className="customer-page__list__modal"
+                    >
+                        <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
+                    </ModelCustom>
 
-                <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-page__list__modal">
-                    <FormAddCustomer handleCloseAddCus={handleCloseAddCus} onAddSuccess={handleAddCustomerSuccess} />
-                </ModelCustom>
+                    <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="customer-page__list__modal">
+                        <FormAddCustomer handleCloseAddCus={handleCloseAddCus} onAddSuccess={handleAddCustomerSuccess} />
+                    </ModelCustom>
 
-                <div className="customer-page__list__tables">
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell className="custom-cell">
-                                        <CustomButton
-                                            text=""
-                                            width="25px"
-                                            height="25px"
-                                            boxShadow="none"
-                                            borderHover="transparent"
-                                            backgroundColor="transparent"
-                                            backgroundColorHover="transparent"
-                                            borderRadius="50%"
-                                            icon={SettingColIcon}
-                                            className="btn-open-setting"
-                                            onClick={handleOpenConfigColumn}
-                                        />
-                                    </TableCell>
-                                    <TableCell className="custom-cell">
-                                        <Checkbox
-                                            checked={selectAll}
-                                            onChange={handleSelectAll}
-                                            icon={<img src={UncheckIcon} alt="" />}
-                                            checkedIcon={<img src={CheckedIcon} alt="" />}
-                                            className="custom-checkbox"
-                                        />
-                                    </TableCell>
-                                    {visibleColumns.map((column) => (
-                                        <TableCell key={column}>
-                                            <div className="table-head">
-                                                <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
-                                                <button>
-                                                    <img src={SortIcon} alt="" />
-                                                </button>
-                                            </div>
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {visibleCustomers.map((customer) => (
-                                    <TableRow key={customer.customerId}>
-                                        <TableCell className="custom-cell"></TableCell>
+                    <div className="customer-page__list__tables">
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
                                         <TableCell className="custom-cell">
-                                            <Checkbox
-                                                checked={selectedRows.includes(customer.customerId)}
-                                                onChange={() => handleSelectRow(customer.customerId)}
-                                                icon={<img src={UncheckIcon} alt="" />}
-                                                checkedIcon={<img src={CheckedIcon} alt="" />}
-                                                className="custom-checkbox"
+                                            <CustomButton
+                                                text=""
+                                                width="15px"
+                                                height="15px"
+                                                boxShadow="none"
+                                                borderHover="transparent"
+                                                backgroundColor="transparent"
+                                                backgroundColorHover="transparent"
+                                                borderRadius="50%"
+                                                icon={SettingColIcon}
+                                                className="btn-open-setting"
+                                                onClick={handleOpenConfigColumn}
                                             />
                                         </TableCell>
-                                        {visibleColumns.map((column) => {
-                                            const date = new Date(customer['createdDate']);
-                                            const convertDate = format(date, 'dd/MM/yyyy');
-                                            return (
-                                                <TableCell key={column} onClick={() => handleGoPageDetail(customer, column)}>
-                                                    <Box className="table-body">
-                                                        <Typography component="p" className={`${column === 'customerName' ? 'color-name' : ''}`}>
-                                                            {column === 'createdDate' ? convertDate : customer[column]}
-                                                        </Typography>
-                                                    </Box>
-                                                </TableCell>
-                                            );
-                                        })}
+                                        <TableCell className="custom-cell">
+                                            <Box className="table-head">
+                                                <Box className="wrap-checkbox">
+                                                    <Checkbox checked={selectAll} onChange={handleSelectAll} className="custom-checkbox" />
+                                                    <ImageCustom src={CheckmarkIcon} alt="" className="icon-checkmark" />
+                                                </Box>
+                                            </Box>
+                                        </TableCell>
+                                        {visibleColumns.map((column) => (
+                                            <TableCell key={column} className={`${column === 'createdDate' ? 'mwDate' : column === 'phoneNumber' ? 'mwDate' : column === 'statusName' ? 'mwDate' : ''} `}>
+                                                <div className="table-head">
+                                                    <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
+                                                    <button>
+                                                        <img src={SortIcon} alt="" />
+                                                    </button>
+                                                </div>
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </DragDropContext>
-            <div className="customer-page__list__pagination">
-                <div className="customer-page__list__pagination__select">
-                    <p>
-                        Hiển thị 1 - {customers?.length} của {customers?.length}
-                    </p>
-                    <Select
-                        className="select-option"
-                        value={pageSize}
-                        onChange={(event) => {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            handlePageSizeChange(event as any);
-                        }}
-                        IconComponent={() => {
-                            return (
-                                <>
-                                    <img src={DropdownIcon} alt="" />
-                                </>
-                            );
-                        }}
-                    >
-                        <MenuItem value={10}>10</MenuItem>
-                        <MenuItem value={20}>20</MenuItem>
-                        <MenuItem value={50}>50</MenuItem>
-                    </Select>
-                </div>
+                                </TableHead>
+                                <TableBody>
+                                    {visibleCustomers.map((customer) => (
+                                        <TableRow key={customer.customerId}>
+                                            <TableCell className="custom-cell"></TableCell>
+                                            <TableCell className="custom-cell">
+                                                <Box className="wrap-checkbox">
+                                                    <Checkbox checked={selectedRows.includes(customer.customerId)} onChange={() => handleSelectRow(customer.customerId)} className="custom-checkbox" />
 
-                {data?.success ? (
-                    <div className="customer-page__list__pagination__number">
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={FirstPageIcon}
-                            className="btn-first"
-                            onClick={() => setCurrentPage(1)}
-                        />
-                        <Pagination
-                            count={Math.ceil(data?.data.length / pageSize)}
-                            page={currentPage}
-                            onChange={handlePageChange}
-                            className="pagination-list"
-                            renderItem={(item) => {
-                                const isPrevious = item.type === 'previous';
-                                const isNext = item.type === 'next';
-                                const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
-
-                                return <PaginationItem {...item} className={iconClassName} />;
-                            }}
-                        />
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={LastPageIcon}
-                            className="btn-last"
-                            onClick={() => setCurrentPage(lastPage)}
-                        />
+                                                    <ImageCustom src={CheckmarkIcon} alt="" className="icon-checkmark" />
+                                                </Box>
+                                            </TableCell>
+                                            {visibleColumns.map((column) => {
+                                                const date = new Date(customer['createdDate']);
+                                                const convertDate = format(date, 'dd/MM/yyyy');
+                                                return (
+                                                    <TableCell key={column} onClick={() => handleGoPageDetail(customer, column)}>
+                                                        <Box className="table-body">
+                                                            <Typography component="p" className={`${column === 'customerName' ? 'color-name' : ''}`}>
+                                                                {column === 'createdDate' ? (
+                                                                    convertDate
+                                                                ) : column === 'statusName' ? (
+                                                                    <Typography component="p" className={`${statusClassMap[customer.statusName]}`}>
+                                                                        {customer['statusName']}
+                                                                    </Typography>
+                                                                ) : (
+                                                                    customer[column]
+                                                                )}
+                                                            </Typography>
+                                                        </Box>
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
-                ) : null}
+                </DragDropContext>
+                <div className="customer-page__list__pagination">
+                    <div className="customer-page__list__pagination__select">
+                        <p>
+                            Hiển thị 1 - {customers?.length} của {customers?.length}
+                        </p>
+                        <Select
+                            className="select-option"
+                            value={pageSize}
+                            onChange={(event) => {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                handlePageSizeChange(event as any);
+                            }}
+                            IconComponent={() => {
+                                return (
+                                    <>
+                                        <img src={DropdownIcon} alt="" />
+                                    </>
+                                );
+                            }}
+                        >
+                            <MenuItem value={10}>10</MenuItem>
+                            <MenuItem value={20}>20</MenuItem>
+                            <MenuItem value={50}>50</MenuItem>
+                        </Select>
+                    </div>
+
+                    {data?.success ? (
+                        <div className="customer-page__list__pagination__number">
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="#E0E6ED"
+                                backgroundColorHover="transparent"
+                                boxShadow="none"
+                                borderRadius="50%"
+                                icon={FirstPageIcon}
+                                className="btn-first"
+                                onClick={() => setCurrentPage(1)}
+                            />
+                            <Pagination
+                                count={Math.ceil(data?.data.length / pageSize)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                className="pagination-list"
+                                renderItem={(item) => {
+                                    const isPrevious = item.type === 'previous';
+                                    const isNext = item.type === 'next';
+                                    const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
+
+                                    return <PaginationItem {...item} className={iconClassName} />;
+                                }}
+                            />
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="#E0E6ED"
+                                backgroundColorHover="transparent"
+                                boxShadow="none"
+                                borderRadius="50%"
+                                icon={LastPageIcon}
+                                className="btn-last"
+                                onClick={() => setCurrentPage(lastPage)}
+                            />
+                        </div>
+                    ) : null}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

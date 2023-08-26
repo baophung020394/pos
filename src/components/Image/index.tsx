@@ -12,7 +12,7 @@ interface ImageProps {
   boxShadow?: string
 }
 
-const LazyImage: React.FC<ImageProps> = ({ src, alt, width, height, border, className, borderRadius, boxShadow }) => {
+const ImageCustom: React.FC<ImageProps> = ({ src, alt, width, height, border, className, borderRadius, boxShadow }) => {
   const [imageSrc, setImageSrc] = useState(CoverImage)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -60,4 +60,4 @@ const LazyImage: React.FC<ImageProps> = ({ src, alt, width, height, border, clas
   )
 }
 
-export default LazyImage
+export default ImageCustom
