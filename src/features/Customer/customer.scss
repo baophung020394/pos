@@ -260,6 +260,33 @@
                         z-index: 1;
                     }
 
+                    .search {
+                        max-height: 35px;
+                        box-sizing: border-box;
+                        padding: 0 20px;
+                        margin-top: 15px;
+                        .search-box {
+                            position: relative;
+                            width: 100%;
+                            .search-icon {
+                                position: absolute;
+                                top: 50%;
+                                left: 15px;
+                                transform: translateY(-50%);
+                            }
+                            input {
+                                height: 100%;
+                                width: 100%;
+                                color: $color-858585;
+                                font-size: $font-12;
+                                font-weight: $font-weight-normal;
+                                border: 1px solid $color-dcdcdc;
+                                padding: 8px 24px 8px 36px;
+                                border-radius: 6px;
+                            }
+                        }
+                    }
+
                     &__content {
                         padding: 25px 25px;
 
