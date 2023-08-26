@@ -80,7 +80,7 @@ const CustomerGroupList: React.FC = () => {
     const lastPage = customerGroup ? Math.ceil(customerGroup.length / pageSize) : 0;
 
     return (
-        <div className="customer-group-page__list">
+        <>
             <Box className="btn-add">
                 <CustomButton
                     text="Thêm nhóm khách hàng"
@@ -95,127 +95,128 @@ const CustomerGroupList: React.FC = () => {
                     onClick={handleOpenAddCusGroup}
                 />
             </Box>
-
-            <ModelCustom
-                isOpen={isOpenAddCusGroup}
-                onClose={handleCloseAddCusGroup}
-                title=""
-                okButtonText=""
-                cancelButtonText=""
-                onCancel={handleCloseAddCusGroup}
-                className="customer-page__list__modal"
-            >
-                <FormAddCusGroup onClose={handleCloseAddCusGroup} onAddSuccess={handleAddGroupCusSuccess} />
-            </ModelCustom>
-            <DragDropContext onDragEnd={handleColumnReorder}>
-                <div className="customer-group-page__list__tables">
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    {visibleColumns.map((column) => (
-                                        <TableCell key={column}>
-                                            <div className="table-head">
-                                                <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
-                                                <button>
-                                                    <img src={SortIcon} alt="" />
-                                                </button>
-                                            </div>
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {visibleCustomers.map((customer) => (
-                                    <TableRow key={customer.customerGroupId}>
-                                        {visibleColumns.map((column) => {
-                                            return (
-                                                <TableCell key={column}>
-                                                    <Box className="table-body">
-                                                        <Typography component="p"> {customer[column]}</Typography>
-                                                    </Box>
-                                                </TableCell>
-                                            );
-                                        })}
+            <div className="customer-group-page__list">
+                <ModelCustom
+                    isOpen={isOpenAddCusGroup}
+                    onClose={handleCloseAddCusGroup}
+                    title=""
+                    okButtonText=""
+                    cancelButtonText=""
+                    onCancel={handleCloseAddCusGroup}
+                    className="customer-page__list__modal"
+                >
+                    <FormAddCusGroup onClose={handleCloseAddCusGroup} onAddSuccess={handleAddGroupCusSuccess} />
+                </ModelCustom>
+                <DragDropContext onDragEnd={handleColumnReorder}>
+                    <div className="customer-group-page__list__tables">
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        {visibleColumns.map((column) => (
+                                            <TableCell key={column}>
+                                                <div className="table-head">
+                                                    <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
+                                                    <button>
+                                                        <img src={SortIcon} alt="" />
+                                                    </button>
+                                                </div>
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </DragDropContext>
-
-            <div className="customer-group-page__list__pagination">
-                <div className="customer-group-page__list__pagination__select">
-                    <p>
-                        Hiển thị 1 - {data?.data.length} của {data?.data.length}
-                    </p>
-                    <Select
-                        className="select-option"
-                        value={pageSize}
-                        onChange={(event) => {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            handlePageSizeChange(event as any);
-                        }}
-                        IconComponent={() => {
-                            return (
-                                <>
-                                    <img src={DropdownIcon} alt="" />
-                                </>
-                            );
-                        }}
-                    >
-                        <MenuItem value={10}>10</MenuItem>
-                        <MenuItem value={20}>20</MenuItem>
-                        <MenuItem value={50}>50</MenuItem>
-                    </Select>
-                </div>
-
-                {data?.success ? (
-                    <div className="customer-group-page__list__pagination__number">
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={FirstPageIcon}
-                            className="btn-first"
-                            onClick={() => setCurrentPage(1)}
-                        />
-                        <Pagination
-                            count={Math.ceil(data?.data.length / pageSize)}
-                            page={currentPage}
-                            onChange={handlePageChange}
-                            className="pagination-list"
-                            renderItem={(item) => {
-                                const isPrevious = item.type === 'previous';
-                                const isNext = item.type === 'next';
-                                const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
-
-                                return <PaginationItem {...item} className={iconClassName} />;
-                            }}
-                        />
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={LastPageIcon}
-                            className="btn-last"
-                            onClick={() => setCurrentPage(lastPage)}
-                        />
+                                </TableHead>
+                                <TableBody>
+                                    {visibleCustomers.map((customer) => (
+                                        <TableRow key={customer.customerGroupId}>
+                                            {visibleColumns.map((column) => {
+                                                return (
+                                                    <TableCell key={column}>
+                                                        <Box className="table-body">
+                                                            <Typography component="p"> {customer[column]}</Typography>
+                                                        </Box>
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
-                ) : null}
+                </DragDropContext>
+
+                <div className="customer-group-page__list__pagination">
+                    <div className="customer-group-page__list__pagination__select">
+                        <p>
+                            Hiển thị 1 - {data?.data.length} của {data?.data.length}
+                        </p>
+                        <Select
+                            className="select-option"
+                            value={pageSize}
+                            onChange={(event) => {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                handlePageSizeChange(event as any);
+                            }}
+                            IconComponent={() => {
+                                return (
+                                    <>
+                                        <img src={DropdownIcon} alt="" />
+                                    </>
+                                );
+                            }}
+                        >
+                            <MenuItem value={10}>10</MenuItem>
+                            <MenuItem value={20}>20</MenuItem>
+                            <MenuItem value={50}>50</MenuItem>
+                        </Select>
+                    </div>
+
+                    {data?.success ? (
+                        <div className="customer-group-page__list__pagination__number">
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="transparent"
+                                backgroundColorHover="transparent"
+                                borderRadius="50%"
+                                icon={FirstPageIcon}
+                                className="btn-first"
+                                onClick={() => setCurrentPage(1)}
+                            />
+                            <Pagination
+                                count={Math.ceil(data?.data.length / pageSize)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                className="pagination-list"
+                                renderItem={(item) => {
+                                    const isPrevious = item.type === 'previous';
+                                    const isNext = item.type === 'next';
+                                    const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
+
+                                    return <PaginationItem {...item} className={iconClassName} />;
+                                }}
+                            />
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="transparent"
+                                backgroundColorHover="transparent"
+                                borderRadius="50%"
+                                icon={LastPageIcon}
+                                className="btn-last"
+                                onClick={() => setCurrentPage(lastPage)}
+                            />
+                        </div>
+                    ) : null}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

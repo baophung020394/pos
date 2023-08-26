@@ -1,12 +1,51 @@
 @import '../../assets/styles/app.scss';
 
 .customer-group-page {
-    box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
     width: 100%;
+    .btn-add {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        z-index: 1;
+        width: 100%;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        max-height: 35px;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+        .btn-more {
+            margin-right: 16px;
+        }
+        .btn-add-cus {
+            border-radius: 6px;
+            font-size: $font-14;
+            font-weight: $font-weight-semi-bold;
+            text-transform: initial;
+            padding: 7px 15px;
+            span {
+                margin-right: 8px;
+            }
+        }
+
+        button {
+            padding: 0;
+            max-height: 35px;
+            box-sizing: border-box;
+            span {
+                margin-right: 0;
+            }
+            &:hover {
+                transform: scale(1);
+            }
+        }
+    }
     &__list {
         background-color: $white;
         border-radius: 6px;
+        box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
+        margin-top: 40px;
         &__modal {
             .MuiDialog-container {
                 min-width: 750px;
@@ -239,76 +278,4 @@
 //     min-width: 100px;
 //     max-width: 100px;
 //     text-align: center;
-// }
-
-// .status-done {
-//     color: #ffffff;
-//     border: 1px solid #e2a03f;
-//     background-color: #e2a03f;
-//     display: inline-block;
-//     border-radius: 6px;
-//     padding: 5px 0;
-//     font-size: $font-13;
-//     font-weight: $font-weight-medium;
-//     min-width: 100px;
-//     max-width: 100px;
-//     text-align: center;
-// }
-
-// .status-return-cus {
-//     color: #ffffff;
-//     border: 1px solid #007aff;
-//     background-color: #007aff;
-//     display: inline-block;
-//     border-radius: 6px;
-//     padding: 5px 0;
-//     font-size: $font-13;
-//     font-weight: $font-weight-medium;
-//     min-width: 100px;
-//     max-width: 100px;
-//     text-align: center;
-// }
-
-// .status-completed {
-//     color: #ffffff;
-//     border: 1px solid #00ab55;
-//     background-color: #00ab55;
-//     display: inline-block;
-//     border-radius: 6px;
-//     padding: 5px 0;
-//     font-size: $font-13;
-//     font-weight: $font-weight-medium;
-//     min-width: 100px;
-//     max-width: 100px;
-//     text-align: center;
-// }
-
-// @media screen and (max-width: 1600px) {
-//     .customer-page {
-//         &__list {
-//             &__filters {
-//                 flex-direction: column;
-//                 align-items: flex-start;
-//                 .filters--filter-top {
-//                     margin-bottom: 16px;
-//                     width: 100%;
-//                     .search-wrapper {
-//                         max-width: 50%;
-//                         width: 100%;
-//                     }
-//                 }
-//                 .filters--filter-bottom {
-//                     &__files {
-//                         margin-right: 16px;
-//                         .file {
-//                             margin-right: 8px;
-//                             &:last-child {
-//                                 margin-right: 0;
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//         }
-//     }
 // }

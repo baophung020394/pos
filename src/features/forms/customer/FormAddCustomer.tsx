@@ -1,9 +1,9 @@
 import axiosClient from '@apis/axios';
+import CloseIcon from '@assets/images/customer/close.svg';
+import DropdownIcon from '@assets/images/customer/dropdown.svg';
+import SaveIcon from '@assets/images/customer/save.svg';
 import CustomButton from '@components/Button';
 import Input from '@components/InputFields';
-import SelectCustom from '@components/SelectCustom';
-import SelectCustomCity from '@components/SelectCustomCity';
-import SelectCustomDistrict from '@components/SelectCustomDistrict';
 import SelectFields from '@components/SelectFields';
 import TextareaFields from '@components/TextareaFields';
 import useApi from '@hooks/useApi';
@@ -12,13 +12,8 @@ import { Typography } from '@mui/material';
 import { showSuccessToast } from '@store/actions/actionToast';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import CloseIcon from '@assets/images/customer/close.svg';
-import DropdownIcon from '@assets/images/customer/dropdown.svg';
-import SaveIcon from '@assets/images/customer/save.svg';
-import SelectCityMultiple from '@components/SelectCityMultiple';
 import Select from 'react-select';
 import './formaddcustomer.scss';
-import axios from 'axios';
 
 interface FormAddCustomerProps {
     handleCloseAddCus: () => void;
@@ -40,11 +35,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
     const dataCusGroup = useApi<any>('/api/CustomerGroup/list');
 
     console.log('dataCity', dataCity);
-    const handleOpenCity = () => setIsOpenCity(true);
-    const handleCloseCity = () => {
-        setIsOpenCity(false);
-        console.log('onClose is called');
-    };
+
     const onSubmit = async (data: CustomerReq) => {
         setLoading(true);
         const url = '/api/Customer/add';
@@ -224,7 +215,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
                         </div>
                         <div className="information--form-control">
                             <label>Tag</label>
-                            <Input name="hastag" label="" control={control} placeholder='Nhập tag'/>
+                            <Input name="hastag" label="" control={control} placeholder="Nhập tag" />
                         </div>
                         <div className="information--form-control">
                             <label>Facebook</label>

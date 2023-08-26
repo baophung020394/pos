@@ -1,32 +1,38 @@
 import axiosClient from '@apis/axios';
 import CustomButton from '@components/Button';
 import InputFieldsCusGroup from '@components/InputFieldsCusGroup';
-import InputFieldsPolicy from '@components/InputFieldsPolicy';
 import SelectCustomPolicy from '@components/SelectCustomPolicy';
 import TextareaCusGroup from '@components/TextareaCusGroup';
-import TextareaPolicy from '@components/TextareaFieldsPolicy';
+import useApi from '@hooks/useApi';
 import { CustomerGroup, CustomerGroupReq } from '@models/customer';
-import { PolicyRequest } from '@models/policy';
 import { Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import CloseIcon from '../../../assets/images/customer/close.svg';
-import SaveIcon from '../../../assets/images/customer/save.svg';
-import DropdownIcon from '../../../assets/images/customer/dropdown.svg';
-import './formaddcusgroup.scss';
 import { showSuccessToast } from '@store/actions/actionToast';
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import CloseIcon from '@assets/images/customer/close.svg';
+import DropdownIcon from '@assets/images/customer/dropdown.svg';
+import SaveIcon from '@assets/images/customer/save.svg';
+import Select from 'react-select';
+import './formaddcusgroup.scss';
 
 interface FormAddCusGroupProps {
     onClose: () => void;
     onAddSuccess: (branch: CustomerGroup) => void;
 }
+interface Options {
+    value: string;
+    label: string;
+}
 const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess }) => {
-    const { handleSubmit, control, formState } = useForm<CustomerGroupReq>();
+    const { handleSubmit, control, setValue } = useForm<CustomerGroupReq>();
     const [loading, setLoading] = useState<boolean>(false);
+    const [options, setOptions] = useState<Options[]>([]);
+    const dataPricePolicy = useApi<any>('/api/PricePolicy/list');
+
     const onSubmit = async (data: CustomerGroupReq) => {
         setLoading(true);
-        const url = '/api/CustomerGroup/save';
-        const response: any = await axiosClient.post(url, null, { params: data });
+        const url = '/api/CustomerGroup/add';
+        const response: any = await axiosClient.post(url, data);
         console.log('response', response);
         if (response?.data.success) {
             onClose();
@@ -35,6 +41,20 @@ const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess
             showSuccessToast('Thêm mới nhóm khách hàng thành công');
         }
     };
+
+    useEffect(() => {
+        if (dataPricePolicy.data?.success) {
+            const formattedOptions = dataPricePolicy.data?.data.reduce((accumulator: any, current: any) => {
+                const option = {
+                    value: current.pricePolicyId,
+                    label: current.pricePolicyName,
+                };
+                accumulator.push(option);
+                return accumulator;
+            }, []);
+            setOptions(formattedOptions);
+        }
+    }, [dataPricePolicy.data?.success]);
 
     return (
         <form className="form-add-customer-group" onSubmit={handleSubmit(onSubmit)}>
@@ -62,7 +82,16 @@ const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess
                     </div>
                     <div className="information--form-control">
                         <label>Chính sách giá</label>
-                        <SelectCustomPolicy name="PricePolicyName" label="" control={control} endpoint="/api/PricePolicy/list" endIcon={DropdownIcon} />
+                        <Select
+                            options={options}
+                            isSearchable={true}
+                            defaultValue={[{ value: '', label: 'Chọn chính sách giá' }]}
+                            name="PricePolicyName"
+                            onChange={(selectedOption: any) => {
+                                setValue('PricePolicyName', selectedOption.value);
+                            }}
+                        />
+                        {/* <SelectCustomPolicy name="PricePolicyName" label="" control={control} endpoint="/api/PricePolicy/list" endIcon={DropdownIcon} /> */}
                     </div>
                 </div>
                 <div className="information--cols">
