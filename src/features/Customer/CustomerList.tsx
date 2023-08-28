@@ -7,7 +7,7 @@ import { Box, Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Tab
 import { showErrorToast } from '@store/actions/actionToast';
 import { setCurrentCus } from '@store/customerSlice';
 import { format } from 'date-fns';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import { useDispatch } from 'react-redux';
 import 'react-resizable/css/styles.css';
@@ -28,8 +28,11 @@ import MoreIcon from '@assets/images/customer/more.svg';
 import CheckmarkIcon from '@assets/images/customer/checkmark.svg';
 import ImportIcon from '@assets/images/customer/import.svg';
 import ExportIcon from '@assets/images/customer/export.svg';
-import './customer.scss';
+import FilterIcon from '@assets/images/customer/filter.svg';
 import ImageCustom from '@components/Image';
+import { useSelector } from 'react-redux';
+import { IRootState } from '@store/index';
+import './customer.scss';
 
 const columns: { field: keyof Customer; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -80,6 +83,8 @@ const CustomerList: React.FC = () => {
     const [isOpenMenuFiles, setIsOpenMenuFiles] = useState<boolean>(false);
     const apiUrl = '/api/Customer/list'; // Đường dẫn cụ thể đến API
     const { data } = useApi<CustomerResponse>(apiUrl);
+    const toggleSidebar = useSelector((state: IRootState) => state.themeConfig.sidebar);
+    console.log('toggleSidebar', toggleSidebar);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -179,44 +184,57 @@ const CustomerList: React.FC = () => {
         : [];
     const lastPage = customers ? Math.ceil(customers.length / pageSize) : 0;
 
+    const scrollContainerRef = useRef<any>(null);
+    const tableRef = useRef<any>(null);
+
+    const handleScroll = (e: any) => {
+        if (scrollContainerRef.current && tableRef.current) {
+            const scrollLeft = e.target.scrollLeft;
+            tableRef.current.scrollLeft = scrollLeft;
+        }
+    };
+
     return (
         <>
-            <Box className="btn-add">
-                <Box className="options-files">
-                    <CustomButton
-                        text=""
-                        icon={MoreIcon}
-                        className="btn-more"
-                        backgroundColor="transparent"
-                        backgroundColorHover="transparent"
-                        minWidth={45}
-                        maxWidth={45}
-                        boxShadow="none"
-                        onClick={() => setIsOpenMenuFiles(!isOpenMenuFiles)}
-                    />
+            <Box className="btn-add" style={{ paddingLeft: toggleSidebar ? 25 : 290 }}>
+                <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} />
+                <Box className="btn-add--right">
+                    <Box className="options-files">
+                        <CustomButton
+                            text="Bộ lọc"
+                            icon={FilterIcon}
+                            className="btn-more"
+                            backgroundColor="transparent"
+                            backgroundColorHover="transparent"
+                            minWidth={45}
+                            maxWidth={45}
+                            boxShadow="none"
+                            onClick={() => setIsOpenMenuFiles(!isOpenMenuFiles)}
+                        />
 
-                    {isOpenMenuFiles ? (
-                        <Box className="files">
-                            <CustomButton text="Nhập file" icon={ImportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
-                            <CustomButton text="Xuất file" icon={ExportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
-                        </Box>
-                    ) : null}
+                        {/* {isOpenMenuFiles ? (
+                            <Box className="files">
+                                <CustomButton text="Nhập file" icon={ImportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
+                                <CustomButton text="Xuất file" icon={ExportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
+                            </Box>
+                        ) : null} */}
+                    </Box>
+                    <CustomButton
+                        text="Thêm khách hàng"
+                        maxHeight={45}
+                        minHeight={32}
+                        minWidth={32}
+                        backgroundColor="#007AFF"
+                        backgroundColorHover="#007AFF"
+                        boxShadow='none'
+                        borderRadius="50%"
+                        icon={AddIcon}
+                        className="btn-add-cus"
+                        onClick={handleOnClickAddCus}
+                    />
                 </Box>
-                <CustomButton
-                    text="Thêm khách hàng"
-                    maxHeight={45}
-                    minHeight={32}
-                    minWidth={32}
-                    backgroundColor="#007AFF"
-                    backgroundColorHover="#007AFF"
-                    borderRadius="50%"
-                    icon={AddIcon}
-                    className="btn-add-cus"
-                    onClick={handleOnClickAddCus}
-                />
             </Box>
             <div className="customer-page__list">
-                <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} />
                 <DragDropContext onDragEnd={handleColumnReorder}>
                     <ModelCustom
                         isOpen={isOpenConfig}
@@ -235,7 +253,7 @@ const CustomerList: React.FC = () => {
                     </ModelCustom>
 
                     <div className="customer-page__list__tables">
-                        <TableContainer component={Paper}>
+                        <TableContainer component={Paper} ref={tableRef}>
                             <Table>
                                 <TableHead>
                                     <TableRow>

@@ -26,17 +26,7 @@ const FilterCustomer: React.FC<FilterCustomerProps> = ({ onClick, getValueSearch
             <div className="filters--filter-top">
                 <Search placeholder="Tìm kiếm theo mã khách hàng, tên khách hàng và số điện thoại" onSearch={onSearch} />
             </div>
-            <div className="filters--filter-bottom">
-                {/* <div className="filters--filter-bottom__files">
-                    <div className="file">
-                        <Typography component="p">Nhập file</Typography>
-                        <LazyImage src={ImportIcon} alt="" />
-                    </div>
-                    <div className="file">
-                        <Typography component="p">Xuất file</Typography>
-                        <LazyImage src={ExportIcon} alt="" />
-                    </div>
-                </div> */}
+            {/* <div className="filters--filter-bottom">
                 <div className="filters--filter-bottom__options">
                     <div className="option">
                         <Typography component="p">Nhóm KH</Typography>
@@ -55,7 +45,7 @@ const FilterCustomer: React.FC<FilterCustomerProps> = ({ onClick, getValueSearch
                         <LazyImage src={DropdownIcon} alt="" />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

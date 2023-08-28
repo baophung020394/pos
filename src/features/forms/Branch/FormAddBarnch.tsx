@@ -28,15 +28,19 @@ const FormAddBranch: React.FC<FormAddBranchProps> = ({ onClose, onAddSuccess }) 
     const [loading, setLoading] = useState<boolean>(false);
 
     const onSubmit = async (data: BranchRequest) => {
-        setLoading(true);
-        const url = '/api/Branch/save';
-        const response: any = await axiosClient.post(url, null, { params: data });
-        console.log('response', response);
-        if (response?.data.success) {
-            onClose();
-            setLoading(false);
-            onAddSuccess(response?.data.data);
-            showSuccessToast('Thay đổi thành công');
+        try {
+            setLoading(true);
+            const url = '/api/Branch/add';
+            const response: any = await axiosClient.post(url, data);
+            console.log('response', response);
+            if (response?.data.success) {
+                onClose();
+                setLoading(false);
+                onAddSuccess(response?.data.data);
+                showSuccessToast('Thay đổi thành công');
+            }
+        } catch (error) {
+            console.log({ error });
         }
     };
 
