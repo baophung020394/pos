@@ -3,21 +3,55 @@
 .staff-page {
     width: 100%;
     .btn-add {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        z-index: 1;
         width: 100%;
-        text-align: left;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        max-height: 35px;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+        .btn-more {
+            margin-right: 16px;
+        }
         .btn-add-cus {
             border-radius: 6px;
             font-size: $font-14;
             font-weight: $font-weight-semi-bold;
             text-transform: initial;
             padding: 7px 15px;
-            margin-bottom: 17px;
+
+            &:hover {
+                background-color: $color-0062cc;
+            }
+
+            span {
+                margin-right: 8px;
+            }
+        }
+
+        button {
+            padding: 0;
+            max-height: 35px;
+            box-sizing: border-box;
+            span {
+                margin-right: 0;
+            }
+            &:hover {
+                transform: scale(1);
+            }
         }
     }
+
     &__list {
         background-color: $white;
         border-radius: 6px;
         box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
+        margin-top: 40px;
 
         &__modal {
             .MuiDialog-container {

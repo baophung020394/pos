@@ -127,18 +127,20 @@ const StaffList: React.FC = () => {
         <>
             <Box className="btn-add">
                 <CustomButton
-                    text="Thêm vai trò"
+                    text="Thêm nhân viên"
                     maxHeight={45}
                     minHeight={32}
                     minWidth={32}
                     backgroundColor="#007AFF"
                     backgroundColorHover="#007AFF"
+                    boxShadow='none'
                     borderRadius="50%"
                     icon={AddIcon}
                     className="btn-add-cus"
                     onClick={handleOpenAddStaff}
                 />
             </Box>
+
             <div className="staff-page__list">
                 <DragDropContext onDragEnd={handleColumnReorder}>
                     <ModelCustom isOpen={isOpenAddStaff} onClose={handleCloseAddStaff} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddStaff} className="staff-page__list__modal">

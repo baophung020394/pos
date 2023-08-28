@@ -24,6 +24,11 @@
             font-weight: $font-weight-semi-bold;
             text-transform: initial;
             padding: 7px 15px;
+
+            &:hover {
+                background-color: $color-0062cc;
+            }
+
             span {
                 margin-right: 8px;
             }
@@ -235,18 +240,6 @@
                         }
                     }
                 }
-            }
-        }
-
-        .btn-add {
-            padding: 1rem;
-            .btn-add-cus {
-                border-radius: 6px;
-                font-size: $font-14;
-                font-weight: $font-weight-semi-bold;
-                text-transform: initial;
-                padding: 10px 9px;
-                margin-right: 30px;
             }
         }
     }

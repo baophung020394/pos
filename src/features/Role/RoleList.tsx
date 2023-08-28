@@ -94,6 +94,7 @@ const RoleList: React.FC = () => {
                     minWidth={32}
                     backgroundColor="#007AFF"
                     backgroundColorHover="#007AFF"
+                    boxShadow='none'
                     borderRadius="50%"
                     icon={AddIcon}
                     className="btn-add-cus"
