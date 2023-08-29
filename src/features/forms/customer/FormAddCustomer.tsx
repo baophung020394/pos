@@ -3,6 +3,7 @@ import CloseIcon from '@assets/images/customer/close.svg';
 import DropdownIcon from '@assets/images/customer/dropdown.svg';
 import SaveIcon from '@assets/images/customer/save.svg';
 import CustomButton from '@components/Button';
+import SelectCustomAdvance from '@components/SelectCustomAdvance';
 import Input from '@components/InputFields';
 import SelectFields from '@components/SelectFields';
 import TextareaFields from '@components/TextareaFields';
@@ -145,7 +146,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
                     </div>
                     <div className="information--form-control">
                         <label>Nhóm khách hàng</label>
-                        <Select
+                        {/* <Select
                             options={optionsCusGroups}
                             isSearchable={true}
                             defaultValue={[{ value: '', label: 'Chọn nhóm khách hàng' }]}
@@ -153,6 +154,13 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
                             onChange={(selectedOption: any) => {
                                 setValue('customerGroupName', selectedOption.value);
                             }}
+                        /> */}
+                        <SelectCustomAdvance
+                            options={optionsCusGroups}
+                            onSelect={(selectedOption: Options) => {
+                                setValue('customerGroupName', selectedOption.value);
+                            }}
+                            placeholder="Chọn nhóm khách hàng"
                         />
                         {/* <SelectCustom name="CustomerGroupName" label="" control={control} endpoint="/api/CustomerGroup/list" endIcon={DropdownIcon} /> */}
                     </div>
@@ -170,12 +178,32 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
                 <div className="information--cols">
                     <div className="information--form-control">
                         <label>Tỉnh/Thành Phố</label>
-                        <Select options={options} isSearchable={true} defaultValue={[{ value: '', label: 'Chọn tỉnh/Thành Phố - Quận/Huyện' }]} name="AreaCityId" onChange={handleOptionChangeCity} />
+                        {/* <Select options={options} isSearchable={true} defaultValue={[{ value: '', label: 'Chọn tỉnh/Thành Phố - Quận/Huyện' }]} name="AreaCityId" onChange={handleOptionChangeCity} /> */}
+                        <SelectCustomAdvance
+                            options={options}
+                            onSelect={async (selectedOption: Options) => {
+                                setValue('areaCityId', selectedOption.value);
+                                const dataDistrict = await axiosClient.get(`/api/Area/district/${selectedOption.value}`);
+                                console.log(dataDistrict);
+                                if (dataDistrict) {
+                                    const formattedOptions = dataDistrict.data?.data.reduce((accumulator: any, current: any) => {
+                                        const option = {
+                                            value: current.districtId,
+                                            label: current.districtName,
+                                        };
+                                        accumulator.push(option);
+                                        return accumulator;
+                                    }, []);
+                                    setOptionsDistrict(formattedOptions);
+                                }
+                            }}
+                            placeholder="Chọn tỉnh/Thành Phố - Quận/Huyện"
+                        />
                         {/* <SelectCustomCity name="AreaCityId" label="" control={control} endpoint="/api/Area/cities" endIcon={DropdownIcon} /> */}
                     </div>
                     <div className="information--form-control">
                         <label>Phường xã</label>
-                        <Select
+                        {/* <Select
                             options={optionsDistrict}
                             isSearchable={true}
                             defaultValue={[{ value: '', label: 'Chọn Phường/Xã' }]}
@@ -183,6 +211,13 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
                             onChange={(selectedOption: any) => {
                                 setValue('areaDistrictId', selectedOption.value);
                             }}
+                        /> */}
+                        <SelectCustomAdvance
+                            options={optionsDistrict}
+                            onSelect={(selectedOption: Options) => {
+                                setValue('areaDistrictId', selectedOption.value);
+                            }}
+                            placeholder="Chọn Phường/Xã"
                         />
                         {/* <SelectCustomDistrict name="AreaDistrictId" label="" control={control} endpoint="/api/Area/district/list" endIcon={DropdownIcon} /> */}
                     </div>
