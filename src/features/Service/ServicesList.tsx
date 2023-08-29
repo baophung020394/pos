@@ -1,5 +1,6 @@
 import CustomButton from '@components/Button';
 import LazyImage from '@components/Image';
+import AddIcon from '@assets/images/customer/add.svg';
 import ModelCustom from '@components/ModelCustom';
 import FilterCustomer from '@features/Filters/FilterCustomer';
 import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
@@ -30,7 +31,10 @@ import ColumnConfig from './ColumnConfig';
 import CollapseBlackIcon from '../../assets/images/branch/collapse-black.svg';
 import CollapseBlueIcon from '../../assets/images/branch/collapse-blue.svg';
 import TickIcon from '../../assets/images/branch/tick.svg';
+import FilterIcon from '@assets/images/customer/filter.svg';
 import './service.scss';
+import { useSelector } from 'react-redux';
+import { IRootState } from '@store/index';
 
 const columns: { field: keyof Service; label: string }[] = [
     // { field: 'customerId', label: 'Mã khách hàng' },
@@ -105,6 +109,8 @@ const ServicesList: React.FC = () => {
     const [openCollapse, setOpenCollapse] = useState<{ [key: string]: boolean }>({});
     const apiUrl = '/api/Services/list'; // Đường dẫn cụ thể đến API
     const { data } = useApi<ServiceResponse>(apiUrl);
+    const toggleSidebar = useSelector((state: IRootState) => state.themeConfig.sidebar);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -216,236 +222,275 @@ const ServicesList: React.FC = () => {
     const lastPage = services ? Math.ceil(services.length / pageSize) : 0;
 
     return (
-        <div className="service-page__list">
-            {/* <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} /> */}
-            <DragDropContext onDragEnd={handleColumnReorder}>
-                <ModelCustom
-                    isOpen={isOpenConfig}
-                    onClose={handleCloseConfigColumn}
-                    title=""
-                    okButtonText=""
-                    cancelButtonText=""
-                    onCancel={handleCloseConfigColumn}
-                    className="service-page__list__modal"
-                >
-                    <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
-                </ModelCustom>
+        <>
+            <Box className="btn-add" style={{ paddingLeft: toggleSidebar ? 25 : 290 }}>
+                <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} />
+                <Box className="btn-add--right">
+                    <Box className="options-files">
+                        <CustomButton
+                            text="Bộ lọc"
+                            icon={FilterIcon}
+                            className="btn-more"
+                            backgroundColor="transparent"
+                            backgroundColorHover="transparent"
+                            minWidth={45}
+                            maxWidth={45}
+                            boxShadow="none"
+                            // onClick={() => setIsOpenMenuFiles(!isOpenMenuFiles)}
+                        />
 
-                {/* <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="service-page__list__modal">
+                        {/* {isOpenMenuFiles ? (
+                            <Box className="files">
+                                <CustomButton text="Nhập file" icon={ImportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
+                                <CustomButton text="Xuất file" icon={ExportIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" className="btn-action-file" />
+                            </Box>
+                        ) : null} */}
+                    </Box>
+                    <CustomButton
+                        text="Thêm dịch vụ"
+                        maxHeight={45}
+                        minHeight={32}
+                        minWidth={32}
+                        backgroundColor="#007AFF"
+                        backgroundColorHover="#007AFF"
+                        boxShadow="none"
+                        borderRadius="50%"
+                        icon={AddIcon}
+                        className="btn-add-cus"
+                        onClick={() => navigate('/services/add')}
+                    />
+                </Box>
+            </Box>
+            <div className="service-page__list">
+                {/* <FilterCustomer getValueSearch={handleSearch} onClick={handleOnClick} /> */}
+                <DragDropContext onDragEnd={handleColumnReorder}>
+                    <ModelCustom
+                        isOpen={isOpenConfig}
+                        onClose={handleCloseConfigColumn}
+                        title=""
+                        okButtonText=""
+                        cancelButtonText=""
+                        onCancel={handleCloseConfigColumn}
+                        className="service-page__list__modal"
+                    >
+                        <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
+                    </ModelCustom>
+
+                    {/* <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="service-page__list__modal">
                     <FormAddCustomer handleCloseAddCus={handleCloseAddCus} onAddSuccess={handleAddCustomerSuccess} />
                 </ModelCustom> */}
 
-                <div className="service-page__list__tables">
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell className="custom-cell">
-                                        <CustomButton
-                                            text=""
-                                            width="25px"
-                                            height="25px"
-                                            boxShadow="none"
-                                            borderHover="transparent"
-                                            backgroundColor="transparent"
-                                            backgroundColorHover="transparent"
-                                            borderRadius="50%"
-                                            icon={SettingColIcon}
-                                            className="btn-open-setting"
-                                            onClick={handleOpenConfigColumn}
-                                        />
-                                    </TableCell>
-
-                                    <TableCell className="custom-cell">
-                                        <Checkbox
-                                            checked={selectAll}
-                                            onChange={handleSelectAll}
-                                            icon={<img src={UncheckIcon} alt="" />}
-                                            checkedIcon={<img src={CheckedIcon} alt="" />}
-                                            className="custom-checkbox"
-                                        />
-                                    </TableCell>
-                                    <TableCell></TableCell>
-                                    {visibleColumns.map((column) => (
-                                        <TableCell key={column}>
-                                            <div className="table-head">
-                                                <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
-                                                <button>
-                                                    <img src={SortIcon} alt="" />
-                                                </button>
-                                            </div>
+                    <div className="service-page__list__tables">
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell className="custom-cell">
+                                            <CustomButton
+                                                text=""
+                                                width="25px"
+                                                height="25px"
+                                                boxShadow="none"
+                                                borderHover="transparent"
+                                                backgroundColor="transparent"
+                                                backgroundColorHover="transparent"
+                                                borderRadius="50%"
+                                                icon={SettingColIcon}
+                                                className="btn-open-setting"
+                                                onClick={handleOpenConfigColumn}
+                                            />
                                         </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {visibleServices.map((service) => (
-                                    <React.Fragment key={service.serviceId}>
-                                        <TableRow className={`${isOpenCollapse(service.serviceId) ? 'active-collapse-row' : ''}`}>
-                                            <TableCell className="custom-cell"></TableCell>
-                                            <TableCell className="custom-cell">
-                                                <Checkbox
-                                                    checked={selectedRows.includes(service.serviceId)}
-                                                    onChange={() => handleSelectRow(service.serviceId)}
-                                                    icon={<img src={UncheckIcon} alt="" />}
-                                                    checkedIcon={<img src={CheckedIcon} alt="" />}
-                                                    className="custom-checkbox"
-                                                />
-                                            </TableCell>
-                                            <TableCell>
-                                                <CustomButton
-                                                    text=""
-                                                    backgroundColor="transparent"
-                                                    backgroundColorHover="transparent"
-                                                    boxShadow="none"
-                                                    width={25}
-                                                    height={25}
-                                                    icon={isOpenCollapse(service.serviceId) ? CollapseBlueIcon : CollapseBlackIcon}
-                                                    onClick={() => handleOpenCollapse(service.serviceId)}
-                                                    className="btn-collapse"
-                                                />
-                                            </TableCell>
-                                            {visibleColumns.map((column) => {
-                                                const date = new Date(service['createdDate']);
-                                                const convertDate = format(date, 'dd/MM/yyyy');
-                                                return (
-                                                    <TableCell key={column}>
-                                                        <Box className="table-body">
-                                                            <Typography component="p" className={`${column === 'serviceName' ? 'color-name' : ''}`}>
-                                                                {column === 'image' ? (
-                                                                    <img src={service['image']} alt="" className="img-product" />
-                                                                ) : column === 'createdDate' ? (
-                                                                    convertDate
-                                                                ) : column === 'webSync' ? (
-                                                                    <Switch
-                                                                        checked={service[column]}
-                                                                        color="primary"
-                                                                        onChange={() => handleWebSyncToggle(service.serviceId)}
-                                                                        className="switch-button"
-                                                                    />
-                                                                ) : column === 'reportPrice' ? (
-                                                                    <CustomButton
-                                                                        text=""
-                                                                        width="30px"
-                                                                        height="30px"
-                                                                        boxShadow="none"
-                                                                        borderHover="transparent"
-                                                                        backgroundColor="transparent"
-                                                                        backgroundColorHover="transparent"
-                                                                        borderRadius="50%"
-                                                                        icon={CopyIcon}
-                                                                        className="btn-copy"
-                                                                        // onClick={handleOpenConfigColumn}
-                                                                    />
-                                                                ) : (
-                                                                    service[column]
-                                                                )}
-                                                            </Typography>
-                                                        </Box>
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                        <TableRow className="row-collapse">
-                                            {isOpenCollapse(service.serviceId) ? (
-                                                <TableCell colSpan={7} className="row-collapse--col">
-                                                    <Collapse in={isOpenCollapse(service.serviceId)} timeout="auto" unmountOnExit>
-                                                        <Box className="row-table-collapse">
-                                                            <Table size="small" aria-label="purchases">
-                                                                <TableHead>
-                                                                    <TableRow>
-                                                                        <TableCell>
-                                                                            <Box className="table-head">
-                                                                                <Typography component="p">Ảnh</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-head">
-                                                                                <Typography component="p">Tên linh kiện</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-head">
-                                                                                <Typography component="p">Số lượng</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-head">
-                                                                                <Typography component="p">Đơn giá</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-head">
-                                                                                <Typography component="p">Thành tiền</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                </TableHead>
-                                                                <TableBody>
-                                                                    <TableRow>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p">
-                                                                                    <img src={service['image']} alt="" className="img-product" />
-                                                                                </Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p" className="color-name">
-                                                                                    Kính iPhone 14 Pro Max
-                                                                                </Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p">1</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p">80.000</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p">80.000</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                    </TableRow>
 
-                                                                    <TableRow className="row-total">
-                                                                        <TableCell colSpan={2}>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p">Tổng:</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p">3</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p"></Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                        <TableCell>
-                                                                            <Box className="table-body">
-                                                                                <Typography component="p">139,000</Typography>
-                                                                            </Box>
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                </TableBody>
-                                                            </Table>
-                                                        </Box>
-                                                    </Collapse>
+                                        <TableCell className="custom-cell">
+                                            <Checkbox
+                                                checked={selectAll}
+                                                onChange={handleSelectAll}
+                                                icon={<img src={UncheckIcon} alt="" />}
+                                                checkedIcon={<img src={CheckedIcon} alt="" />}
+                                                className="custom-checkbox"
+                                            />
+                                        </TableCell>
+                                        <TableCell></TableCell>
+                                        {visibleColumns.map((column) => (
+                                            <TableCell key={column}>
+                                                <div className="table-head">
+                                                    <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
+                                                    <button>
+                                                        <img src={SortIcon} alt="" />
+                                                    </button>
+                                                </div>
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {visibleServices.map((service) => (
+                                        <React.Fragment key={service.serviceId}>
+                                            <TableRow className={`${isOpenCollapse(service.serviceId) ? 'active-collapse-row' : ''}`}>
+                                                <TableCell className="custom-cell"></TableCell>
+                                                <TableCell className="custom-cell">
+                                                    <Checkbox
+                                                        checked={selectedRows.includes(service.serviceId)}
+                                                        onChange={() => handleSelectRow(service.serviceId)}
+                                                        icon={<img src={UncheckIcon} alt="" />}
+                                                        checkedIcon={<img src={CheckedIcon} alt="" />}
+                                                        className="custom-checkbox"
+                                                    />
                                                 </TableCell>
-                                            ) : null}
-                                        </TableRow>
-                                    </React.Fragment>
-                                ))}
-                                {/* {visibleServices.map((service) => (
+                                                <TableCell>
+                                                    <CustomButton
+                                                        text=""
+                                                        backgroundColor="transparent"
+                                                        backgroundColorHover="transparent"
+                                                        boxShadow="none"
+                                                        width={25}
+                                                        height={25}
+                                                        icon={isOpenCollapse(service.serviceId) ? CollapseBlueIcon : CollapseBlackIcon}
+                                                        onClick={() => handleOpenCollapse(service.serviceId)}
+                                                        className="btn-collapse"
+                                                    />
+                                                </TableCell>
+                                                {visibleColumns.map((column) => {
+                                                    const date = new Date(service['createdDate']);
+                                                    const convertDate = format(date, 'dd/MM/yyyy');
+                                                    return (
+                                                        <TableCell key={column}>
+                                                            <Box className="table-body">
+                                                                <Typography component="p" className={`${column === 'serviceName' ? 'color-name' : ''}`}>
+                                                                    {column === 'image' ? (
+                                                                        <img src={service['image']} alt="" className="img-product" />
+                                                                    ) : column === 'createdDate' ? (
+                                                                        convertDate
+                                                                    ) : column === 'webSync' ? (
+                                                                        <Switch
+                                                                            checked={service[column]}
+                                                                            color="primary"
+                                                                            onChange={() => handleWebSyncToggle(service.serviceId)}
+                                                                            className="switch-button"
+                                                                        />
+                                                                    ) : column === 'reportPrice' ? (
+                                                                        <CustomButton
+                                                                            text=""
+                                                                            width="30px"
+                                                                            height="30px"
+                                                                            boxShadow="none"
+                                                                            borderHover="transparent"
+                                                                            backgroundColor="transparent"
+                                                                            backgroundColorHover="transparent"
+                                                                            borderRadius="50%"
+                                                                            icon={CopyIcon}
+                                                                            className="btn-copy"
+                                                                            // onClick={handleOpenConfigColumn}
+                                                                        />
+                                                                    ) : (
+                                                                        service[column]
+                                                                    )}
+                                                                </Typography>
+                                                            </Box>
+                                                        </TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                            <TableRow className="row-collapse">
+                                                {isOpenCollapse(service.serviceId) ? (
+                                                    <TableCell colSpan={7} className="row-collapse--col">
+                                                        <Collapse in={isOpenCollapse(service.serviceId)} timeout="auto" unmountOnExit>
+                                                            <Box className="row-table-collapse">
+                                                                <Table size="small" aria-label="purchases">
+                                                                    <TableHead>
+                                                                        <TableRow>
+                                                                            <TableCell>
+                                                                                <Box className="table-head">
+                                                                                    <Typography component="p">Ảnh</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-head">
+                                                                                    <Typography component="p">Tên linh kiện</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-head">
+                                                                                    <Typography component="p">Số lượng</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-head">
+                                                                                    <Typography component="p">Đơn giá</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-head">
+                                                                                    <Typography component="p">Thành tiền</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                        </TableRow>
+                                                                    </TableHead>
+                                                                    <TableBody>
+                                                                        <TableRow>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p">
+                                                                                        <img src={service['image']} alt="" className="img-product" />
+                                                                                    </Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p" className="color-name">
+                                                                                        Kính iPhone 14 Pro Max
+                                                                                    </Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p">1</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p">80.000</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p">80.000</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                        </TableRow>
+
+                                                                        <TableRow className="row-total">
+                                                                            <TableCell colSpan={2}>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p">Tổng:</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p">3</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p"></Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                            <TableCell>
+                                                                                <Box className="table-body">
+                                                                                    <Typography component="p">139,000</Typography>
+                                                                                </Box>
+                                                                            </TableCell>
+                                                                        </TableRow>
+                                                                    </TableBody>
+                                                                </Table>
+                                                            </Box>
+                                                        </Collapse>
+                                                    </TableCell>
+                                                ) : null}
+                                            </TableRow>
+                                        </React.Fragment>
+                                    ))}
+                                    {/* {visibleServices.map((service) => (
                                     <>
                                         <TableRow key={service.serviceId}>
                                             <TableCell className="custom-cell"></TableCell>
@@ -604,82 +649,83 @@ const ServicesList: React.FC = () => {
                                         </TableRow>
                                     </>
                                 ))} */}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </DragDropContext>
-            <div className="service-page__list__pagination">
-                <div className="service-page__list__pagination__select">
-                    <p>
-                        Hiển thị 1 - {services?.length} của {services?.length}
-                    </p>
-                    <Select
-                        className="select-option"
-                        value={pageSize}
-                        onChange={(event) => {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            handlePageSizeChange(event as any);
-                        }}
-                        IconComponent={() => {
-                            return (
-                                <>
-                                    <img src={DropdownIcon} alt="" />
-                                </>
-                            );
-                        }}
-                    >
-                        <MenuItem value={10}>10</MenuItem>
-                        <MenuItem value={20}>20</MenuItem>
-                        <MenuItem value={50}>50</MenuItem>
-                    </Select>
-                </div>
-
-                {data?.success ? (
-                    <div className="service-page__list__pagination__number">
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={FirstPageIcon}
-                            className="btn-first"
-                            onClick={() => setCurrentPage(1)}
-                        />
-                        <Pagination
-                            count={Math.ceil(data?.data.length / pageSize)}
-                            page={currentPage}
-                            onChange={handlePageChange}
-                            className="pagination-list"
-                            renderItem={(item) => {
-                                const isPrevious = item.type === 'previous';
-                                const isNext = item.type === 'next';
-                                const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
-
-                                return <PaginationItem {...item} className={iconClassName} />;
-                            }}
-                        />
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={LastPageIcon}
-                            className="btn-last"
-                            onClick={() => setCurrentPage(lastPage)}
-                        />
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
-                ) : null}
+                </DragDropContext>
+                <div className="service-page__list__pagination">
+                    <div className="service-page__list__pagination__select">
+                        <p>
+                            Hiển thị 1 - {services?.length} của {services?.length}
+                        </p>
+                        <Select
+                            className="select-option"
+                            value={pageSize}
+                            onChange={(event) => {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                handlePageSizeChange(event as any);
+                            }}
+                            IconComponent={() => {
+                                return (
+                                    <>
+                                        <img src={DropdownIcon} alt="" />
+                                    </>
+                                );
+                            }}
+                        >
+                            <MenuItem value={10}>10</MenuItem>
+                            <MenuItem value={20}>20</MenuItem>
+                            <MenuItem value={50}>50</MenuItem>
+                        </Select>
+                    </div>
+
+                    {data?.success ? (
+                        <div className="service-page__list__pagination__number">
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="transparent"
+                                backgroundColorHover="transparent"
+                                borderRadius="50%"
+                                icon={FirstPageIcon}
+                                className="btn-first"
+                                onClick={() => setCurrentPage(1)}
+                            />
+                            <Pagination
+                                count={Math.ceil(data?.data.length / pageSize)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                className="pagination-list"
+                                renderItem={(item) => {
+                                    const isPrevious = item.type === 'previous';
+                                    const isNext = item.type === 'next';
+                                    const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
+
+                                    return <PaginationItem {...item} className={iconClassName} />;
+                                }}
+                            />
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="transparent"
+                                backgroundColorHover="transparent"
+                                borderRadius="50%"
+                                icon={LastPageIcon}
+                                className="btn-last"
+                                onClick={() => setCurrentPage(lastPage)}
+                            />
+                        </div>
+                    ) : null}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

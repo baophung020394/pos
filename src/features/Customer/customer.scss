@@ -53,7 +53,6 @@
             }
         }
         .options-files {
-            // display: none;
             position: relative;
             .files {
                 display: flex;
@@ -241,10 +240,6 @@
         }
 
         &__config-col {
-            // position: fixed;
-            // top: 50%;
-            // left: 50%;
-            // transform: translate(-50%, -50%);
             width: 100%;
             max-width: 1005px;
             margin: 0 auto;

@@ -1,4 +1,15 @@
+import AddIcon from '@assets/images/customer/add.svg';
+import CheckmarkIcon from '@assets/images/customer/checkmark.svg';
+import DropdownIcon from '@assets/images/customer/dropdown.svg';
+import FilterIcon from '@assets/images/customer/filter.svg';
+import FirstPageIcon from '@assets/images/customer/firstpage.svg';
+import LastPageIcon from '@assets/images/customer/lastpage.svg';
+import NextIcon from '@assets/images/customer/next.svg';
+import PrevIcon from '@assets/images/customer/prev.svg';
+import SettingColIcon from '@assets/images/customer/setting-col.svg';
+import SortIcon from '@assets/images/customer/sort.svg';
 import CustomButton from '@components/Button';
+import ImageCustom from '@components/Image';
 import ModelCustom from '@components/ModelCustom';
 import FilterCustomer from '@features/Filters/FilterCustomer';
 import FormAddCustomer from '@features/forms/customer/FormAddCustomer';
@@ -6,32 +17,15 @@ import useApi from '@hooks/useApi';
 import { Box, Checkbox, MenuItem, Pagination, PaginationItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { showErrorToast } from '@store/actions/actionToast';
 import { setCurrentCus } from '@store/customerSlice';
+import { IRootState } from '@store/index';
 import { format } from 'date-fns';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import 'react-resizable/css/styles.css';
 import { useNavigate } from 'react-router-dom';
 import { Customer, CustomerResponse } from 'src/models/customer';
-import CheckedIcon from '@assets/images/customer/checkboxicon.svg';
-import DropdownIcon from '@assets/images/customer/dropdown.svg';
-import FirstPageIcon from '@assets/images/customer/firstpage.svg';
-import LastPageIcon from '@assets/images/customer/lastpage.svg';
-import NextIcon from '@assets/images/customer/next.svg';
-import PrevIcon from '@assets/images/customer/prev.svg';
-import SettingColIcon from '@assets/images/customer/setting-col.svg';
-import SortIcon from '@assets/images/customer/sort.svg';
-import UncheckIcon from '@assets/images/customer/uncheckbox.svg';
 import ColumnConfig from './ColumnConfig';
-import AddIcon from '@assets/images/customer/add.svg';
-import MoreIcon from '@assets/images/customer/more.svg';
-import CheckmarkIcon from '@assets/images/customer/checkmark.svg';
-import ImportIcon from '@assets/images/customer/import.svg';
-import ExportIcon from '@assets/images/customer/export.svg';
-import FilterIcon from '@assets/images/customer/filter.svg';
-import ImageCustom from '@components/Image';
-import { useSelector } from 'react-redux';
-import { IRootState } from '@store/index';
 import './customer.scss';
 
 const columns: { field: keyof Customer; label: string }[] = [
@@ -84,7 +78,6 @@ const CustomerList: React.FC = () => {
     const apiUrl = '/api/Customer/list'; // Đường dẫn cụ thể đến API
     const { data } = useApi<CustomerResponse>(apiUrl);
     const toggleSidebar = useSelector((state: IRootState) => state.themeConfig.sidebar);
-    console.log('toggleSidebar', toggleSidebar);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -226,7 +219,7 @@ const CustomerList: React.FC = () => {
                         minWidth={32}
                         backgroundColor="#007AFF"
                         backgroundColorHover="#007AFF"
-                        boxShadow='none'
+                        boxShadow="none"
                         borderRadius="50%"
                         icon={AddIcon}
                         className="btn-add-cus"

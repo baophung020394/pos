@@ -14,6 +14,7 @@ import DropdownIcon from '@assets/images/customer/dropdown.svg';
 import SaveIcon from '@assets/images/customer/save.svg';
 import Select from 'react-select';
 import './formaddcusgroup.scss';
+import SelectCustomAdvance from '@components/SelectCustomAdvance';
 
 interface FormAddCusGroupProps {
     onClose: () => void;
@@ -55,7 +56,7 @@ const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess
 
     useEffect(() => {
         if (dataPricePolicy.data?.success) {
-            const formattedOptions = dataPricePolicy.data?.data.reduce((accumulator: any, current: any) => {
+            let formattedOptions = dataPricePolicy.data?.data.reduce((accumulator: any, current: any) => {
                 const option = {
                     value: current.pricePolicyId,
                     label: current.pricePolicyName,
@@ -63,6 +64,8 @@ const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess
                 accumulator.push(option);
                 return accumulator;
             }, []);
+            formattedOptions = formattedOptions.filter((val: any) => val?.label !== null);
+            console.log('formattedOptions', formattedOptions);
             setOptions(formattedOptions);
         }
     }, [dataPricePolicy.data?.success]);
@@ -93,16 +96,13 @@ const FormAddCusGroup: React.FC<FormAddCusGroupProps> = ({ onClose, onAddSuccess
                     </div>
                     <div className="information--form-control">
                         <label>Chính sách giá</label>
-                        <Select
+                        <SelectCustomAdvance
                             options={options}
-                            isSearchable={true}
-                            defaultValue={[{ value: '', label: 'Chọn chính sách giá' }]}
-                            name="PricePolicyName"
-                            onChange={(selectedOption: any) => {
+                            onSelect={(selectedOption: Options) => {
                                 setValue('PricePolicyName', selectedOption.value);
                             }}
+                            placeholder="Chọn chính sách giá"
                         />
-                        {/* <SelectCustomPolicy name="PricePolicyName" label="" control={control} endpoint="/api/PricePolicy/list" endIcon={DropdownIcon} /> */}
                     </div>
                 </div>
                 <div className="information--cols">

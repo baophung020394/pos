@@ -1,9 +1,7 @@
 @import '../../assets/styles/app.scss';
+@import '../../assets/styles/scss/mixins';
 
 .service-page {
-    box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
-    border-radius: 6px;
-
     .btn-add {
         position: absolute;
         top: 70px;
@@ -13,12 +11,31 @@
         text-align: right;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
         max-height: 35px;
         box-sizing: border-box;
         margin-bottom: 16px;
+        transition: 0.2s all;
+        &--right {
+            display: flex;
+            align-items: center;
+        }
         .btn-more {
             margin-right: 16px;
+            min-width: 85px;
+            border: 1px solid $color-e9edf5;
+            height: 100%;
+            max-height: 35px;
+            padding: 7px 9px;
+            font-size: $font-14;
+            font-weight: $font-weight-medium;
+            color: $color-007aff;
+            text-transform: capitalize;
+            background-color: $white;
+            border-radius: 6px;
+            &:hover {
+                background-color: $color-f2f2f2;
+            }
         }
         .btn-add-cus {
             border-radius: 6px;
@@ -33,6 +50,35 @@
 
             span {
                 margin-right: 8px;
+            }
+        }
+        .options-files {
+            position: relative;
+            .files {
+                display: flex;
+                flex-direction: column;
+                background-color: $white;
+                box-shadow: 0px 0px 25px 0px rgba(94, 92, 154, 0.1);
+                border-radius: 6px;
+                min-width: 152px;
+                position: relative;
+                position: absolute;
+                top: 40px;
+                left: 50%;
+                z-index: 1;
+                transform: translateX(-55%);
+
+                .btn-action-file {
+                    color: $color-46515f;
+                    font-size: $font-14;
+                    font-weight: $font-weight-medium;
+                    min-height: 50px;
+                    text-transform: capitalize;
+                    .MuiButton-startIcon {
+                        order: 1;
+                        margin-left: 12px;
+                    }
+                }
             }
         }
 
@@ -51,7 +97,9 @@
 
     &__list {
         background-color: $white;
+        box-shadow: -3.062930107116699px -3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05), 3.062930107116699px 3.062930107116699px 7.657325744628906px 0px rgba(0, 0, 0, 0.05);
         border-radius: 6px;
+        margin-top: 40px;
         &__modal {
             .MuiDialog-container {
                 min-width: 750px;
@@ -75,27 +123,43 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-
-            .btn-add-cus {
-                border-radius: 6px;
-                font-size: $font-14;
-                font-weight: $font-weight-semi-bold;
-                text-transform: initial;
-                padding: 10px 9px;
-                margin-right: 30px;
-            }
+            width: 100%;
+            max-width: 50%;
             .filters--filter-top {
-                // margin-bottom: 32px;
                 display: flex;
-                width: 50%;
+                width: 100%;
                 .search-wrapper {
-                    max-width: 70%;
+                    position: relative;
+                    max-width: 592px;
                     width: 100%;
-
+                    max-height: 35px;
+                    box-sizing: border-box;
+                    @include responsive(1440px) {
+                        max-width: 592px;
+                    }
+                    .icon-search {
+                        position: absolute;
+                        top: 50%;
+                        left: 15px;
+                        z-index: 1;
+                        transform: translateY(-50%);
+                    }
                     .MuiInputBase-input {
-                        min-height: 30px;
+                        min-height: 35px;
+                        font-size: $font-14;
+                        color: $color-939393;
+                        font-weight: $font-weight-normal;
+                        max-height: 35px;
+                        box-sizing: border-box;
+                        padding-left: 40px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        background-color: $white;
                         &::placeholder {
                             font-size: $font-14;
+                            color: $color-939393;
+                            font-weight: $font-weight-normal;
                         }
                     }
                 }
@@ -132,7 +196,7 @@
                     display: flex;
                     align-items: center;
                     padding: 14px 17px;
-                    max-height: 45px;
+                    max-height: 35px;
                     box-sizing: border-box;
                     .option {
                         display: flex;
@@ -140,9 +204,10 @@
                         position: relative;
                         padding-right: 12px;
                         padding-left: 12px;
+                        max-height: 35px;
                         cursor: pointer;
                         p {
-                            margin-right: 20px;
+                            margin-right: 10px;
                             color: $color-46515f;
                             font-size: $font-14;
                             font-weight: $font-weight-semi-bold;

@@ -41,7 +41,7 @@ const BranchList: React.FC = () => {
 
     const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
     const [branches, setBranches] = useState<Branch[]>([]);
-    const [staff, setStaff] = useState<Staff[]>([]);
+    const [staff, setStaff] = useState<{ [key: string]: Staff[] }>({});
     const [pageSize, setPageSize] = useState(pageSizeOptions[0]);
     const [isOpenAddPolicy, setIsOpenAddPolicy] = useState<boolean>(false);
     const [isOpenEditBranch, setIsOpenEditBranch] = useState<boolean>(false);
@@ -119,15 +119,16 @@ const BranchList: React.FC = () => {
     };
 
     const callListStaff = async (branchId: string) => {
+        console.log('branchId', branchId);
         const url = '/api/User/list/ByBranch';
-        const response: StaffResponse = await axiosClient.get(url, { params: { BranchId: branchId } });
+        const response: any = await axiosClient.get(url, { params: { BranchId: branchId } });
         console.log('response', response);
-        if (response.success) {
-            alert('Success');
-            setStaff(response.data);
+        if (response?.data.success) {
+            setStaff((prevStaff: any) => ({ ...prevStaff, [branchId]: response?.data.data }));
         }
     };
 
+    console.log('staff', staff);
     // Giả sử bạn có một hàm để cập nhật chi nhánh trong mảng branches
     const updateBranchInArray = (updatedBranch: Branch) => {
         setBranches((prevBranches) => {
@@ -171,7 +172,7 @@ const BranchList: React.FC = () => {
                     minWidth={32}
                     backgroundColor="#007AFF"
                     backgroundColorHover="#007AFF"
-                    boxShadow='none'
+                    boxShadow="none"
                     borderRadius="50%"
                     icon={AddIcon}
                     className="btn-add-cus"
@@ -275,74 +276,25 @@ const BranchList: React.FC = () => {
                                                                         </TableRow>
                                                                     </TableHead>
                                                                     <TableBody>
-                                                                        <TableRow>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Bảo</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">baophung</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Nhân viên</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                        </TableRow>
-                                                                        <TableRow>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Bảo</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">baophung</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Nhân viên</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                        </TableRow>
-                                                                        <TableRow>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Bảo</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">baophung</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Nhân viên</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                        </TableRow>
-                                                                        <TableRow>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Bảo</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">baophung</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                            <TableCell>
-                                                                                <Box className="table-body">
-                                                                                    <Typography component="p">Nhân viên</Typography>
-                                                                                </Box>
-                                                                            </TableCell>
-                                                                        </TableRow>
+                                                                        {staff[branch.branchId]?.map((staff: Staff) => (
+                                                                            <TableRow>
+                                                                                <TableCell>
+                                                                                    <Box className="table-body">
+                                                                                        <Typography component="p">{staff.firstName}</Typography>
+                                                                                    </Box>
+                                                                                </TableCell>
+                                                                                <TableCell>
+                                                                                    <Box className="table-body">
+                                                                                        <Typography component="p">baophung</Typography>
+                                                                                    </Box>
+                                                                                </TableCell>
+                                                                                <TableCell>
+                                                                                    <Box className="table-body">
+                                                                                        <Typography component="p">Nhân viên</Typography>
+                                                                                    </Box>
+                                                                                </TableCell>
+                                                                            </TableRow>
+                                                                        ))}
                                                                     </TableBody>
                                                                 </Table>
                                                             </Box>

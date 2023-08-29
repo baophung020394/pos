@@ -236,178 +236,180 @@ const OrderList: React.FC = () => {
     const lastPage = orders ? Math.ceil(orders.length / pageSize) : 0;
 
     return (
-        <div className="order-page__list">
-            <DragDropContext onDragEnd={handleColumnReorder}>
-                <ModelCustom
-                    isOpen={isOpenConfig}
-                    onClose={handleCloseConfigColumn}
-                    title=""
-                    okButtonText=""
-                    cancelButtonText=""
-                    onCancel={handleCloseConfigColumn}
-                    className="order-page__list__modal"
-                >
-                    <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
-                </ModelCustom>
+        <>
+            <div className="order-page__list">
+                <DragDropContext onDragEnd={handleColumnReorder}>
+                    <ModelCustom
+                        isOpen={isOpenConfig}
+                        onClose={handleCloseConfigColumn}
+                        title=""
+                        okButtonText=""
+                        cancelButtonText=""
+                        onCancel={handleCloseConfigColumn}
+                        className="order-page__list__modal"
+                    >
+                        <ColumnConfig columns={columns} visibleColumns={visibleColumns} onColumnToggle={handleColumnToggle} onColumnReorder={handleColumnReorder} setIsOpen={setIsOpenConfig} />
+                    </ModelCustom>
 
-                {/* <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="order-page__list__modal">
+                    {/* <ModelCustom isOpen={isOpenAddCus} onClose={handleCloseAddCus} title="" okButtonText="" cancelButtonText="" onCancel={handleCloseAddCus} className="order-page__list__modal">
                     <FormAddCustomer handleCloseAddCus={handleCloseAddCus} onAddSuccess={handleAddCustomerSuccess} />
                 </ModelCustom> */}
 
-                <div className="order-page__list__tables">
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell className="custom-cell">
-                                        <CustomButton
-                                            text=""
-                                            width="25px"
-                                            height="25px"
-                                            boxShadow="none"
-                                            borderHover="transparent"
-                                            backgroundColor="transparent"
-                                            backgroundColorHover="transparent"
-                                            borderRadius="50%"
-                                            icon={SettingColIcon}
-                                            className="btn-open-setting"
-                                            onClick={handleOpenConfigColumn}
-                                        />
-                                    </TableCell>
-                                    {visibleColumns.map((column) => (
-                                        <TableCell key={column}>
-                                            <div className="table-head">
-                                                <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
-                                                <button>
-                                                    <img src={SortIcon} alt="" />
-                                                </button>
-                                            </div>
+                    <div className="order-page__list__tables">
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell className="custom-cell">
+                                            <CustomButton
+                                                text=""
+                                                width="25px"
+                                                height="25px"
+                                                boxShadow="none"
+                                                borderHover="transparent"
+                                                backgroundColor="transparent"
+                                                backgroundColorHover="transparent"
+                                                borderRadius="50%"
+                                                icon={SettingColIcon}
+                                                className="btn-open-setting"
+                                                onClick={handleOpenConfigColumn}
+                                            />
                                         </TableCell>
-                                    ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {visibleOrders.map((order) => (
-                                    <TableRow key={order.orderId}>
-                                        <TableCell className="custom-cell"></TableCell>
-                                        {visibleColumns.map((column) => {
-                                            return (
-                                                <TableCell key={column}>
-                                                    <Box className="table-body">
-                                                        <Typography component="p" className={`${column === 'customerName' ? 'color-name' : ''} ${column === 'votes' ? 'color-votes' : ''} `}>
-                                                            {column === 'action' ? (
-                                                                <Box className="actions">
-                                                                    <CustomButton
-                                                                        title=""
-                                                                        icon={EditPenIcon}
-                                                                        width={25}
-                                                                        height={25}
-                                                                        backgroundColor="transparent"
-                                                                        backgroundColorHover="transparent"
-                                                                        boxShadow="none"
-                                                                        className="btn-edit"
-                                                                    />
-                                                                    <CustomButton
-                                                                        title=""
-                                                                        icon={Menu3DotIcon}
-                                                                        width={25}
-                                                                        height={25}
-                                                                        backgroundColor="transparent"
-                                                                        backgroundColorHover="transparent"
-                                                                        boxShadow="none"
-                                                                        className="btn-menu"
-                                                                    />
-                                                                </Box>
-                                                            ) : column === 'statusName' ? (
-                                                                <Typography className={`${statusClassMap[order.statusName]}`} component="span">
-                                                                    {order.statusName}
-                                                                </Typography>
-                                                            ) : (
-                                                                order[column]
-                                                            )}
-                                                        </Typography>
-                                                    </Box>
-                                                </TableCell>
-                                            );
-                                        })}
+                                        {visibleColumns.map((column) => (
+                                            <TableCell key={column}>
+                                                <div className="table-head">
+                                                    <Typography className="p">{columns.find((col) => col.field === column)?.label}</Typography>
+                                                    <button>
+                                                        <img src={SortIcon} alt="" />
+                                                    </button>
+                                                </div>
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </div>
-            </DragDropContext>
-            <div className="order-page__list__pagination">
-                <div className="order-page__list__pagination__select">
-                    <p>
-                        Hiển thị 1 - {orders?.length} của {orders?.length}
-                    </p>
-                    <Select
-                        className="select-option"
-                        value={pageSize}
-                        onChange={(event) => {
-                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                            handlePageSizeChange(event as any);
-                        }}
-                        IconComponent={() => {
-                            return (
-                                <>
-                                    <img src={DropdownIcon} alt="" />
-                                </>
-                            );
-                        }}
-                    >
-                        <MenuItem value={10}>10</MenuItem>
-                        <MenuItem value={20}>20</MenuItem>
-                        <MenuItem value={50}>50</MenuItem>
-                    </Select>
-                </div>
-
-                {data?.success ? (
-                    <div className="order-page__list__pagination__number">
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={FirstPageIcon}
-                            className="btn-first"
-                            onClick={() => setCurrentPage(1)}
-                        />
-                        <Pagination
-                            count={Math.ceil(data?.data.length / pageSize)}
-                            page={currentPage}
-                            onChange={handlePageChange}
-                            className="pagination-list"
-                            renderItem={(item) => {
-                                const isPrevious = item.type === 'previous';
-                                const isNext = item.type === 'next';
-                                const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
-
-                                return <PaginationItem {...item} className={iconClassName} />;
-                            }}
-                        />
-                        <CustomButton
-                            text=""
-                            maxHeight={40}
-                            maxWidth={40}
-                            minHeight={40}
-                            minWidth={40}
-                            backgroundColor="transparent"
-                            backgroundColorHover="transparent"
-                            borderRadius="50%"
-                            icon={LastPageIcon}
-                            className="btn-last"
-                            onClick={() => setCurrentPage(lastPage)}
-                        />
+                                </TableHead>
+                                <TableBody>
+                                    {visibleOrders.map((order) => (
+                                        <TableRow key={order.orderId}>
+                                            <TableCell className="custom-cell"></TableCell>
+                                            {visibleColumns.map((column) => {
+                                                return (
+                                                    <TableCell key={column}>
+                                                        <Box className="table-body">
+                                                            <Typography component="p" className={`${column === 'customerName' ? 'color-name' : ''} ${column === 'votes' ? 'color-votes' : ''} `}>
+                                                                {column === 'action' ? (
+                                                                    <Box className="actions">
+                                                                        <CustomButton
+                                                                            title=""
+                                                                            icon={EditPenIcon}
+                                                                            width={25}
+                                                                            height={25}
+                                                                            backgroundColor="transparent"
+                                                                            backgroundColorHover="transparent"
+                                                                            boxShadow="none"
+                                                                            className="btn-edit"
+                                                                        />
+                                                                        <CustomButton
+                                                                            title=""
+                                                                            icon={Menu3DotIcon}
+                                                                            width={25}
+                                                                            height={25}
+                                                                            backgroundColor="transparent"
+                                                                            backgroundColorHover="transparent"
+                                                                            boxShadow="none"
+                                                                            className="btn-menu"
+                                                                        />
+                                                                    </Box>
+                                                                ) : column === 'statusName' ? (
+                                                                    <Typography className={`${statusClassMap[order.statusName]}`} component="span">
+                                                                        {order.statusName}
+                                                                    </Typography>
+                                                                ) : (
+                                                                    order[column]
+                                                                )}
+                                                            </Typography>
+                                                        </Box>
+                                                    </TableCell>
+                                                );
+                                            })}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </div>
-                ) : null}
+                </DragDropContext>
+                <div className="order-page__list__pagination">
+                    <div className="order-page__list__pagination__select">
+                        <p>
+                            Hiển thị 1 - {orders?.length} của {orders?.length}
+                        </p>
+                        <Select
+                            className="select-option"
+                            value={pageSize}
+                            onChange={(event) => {
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                handlePageSizeChange(event as any);
+                            }}
+                            IconComponent={() => {
+                                return (
+                                    <>
+                                        <img src={DropdownIcon} alt="" />
+                                    </>
+                                );
+                            }}
+                        >
+                            <MenuItem value={10}>10</MenuItem>
+                            <MenuItem value={20}>20</MenuItem>
+                            <MenuItem value={50}>50</MenuItem>
+                        </Select>
+                    </div>
+
+                    {data?.success ? (
+                        <div className="order-page__list__pagination__number">
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="transparent"
+                                backgroundColorHover="transparent"
+                                borderRadius="50%"
+                                icon={FirstPageIcon}
+                                className="btn-first"
+                                onClick={() => setCurrentPage(1)}
+                            />
+                            <Pagination
+                                count={Math.ceil(data?.data.length / pageSize)}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                className="pagination-list"
+                                renderItem={(item) => {
+                                    const isPrevious = item.type === 'previous';
+                                    const isNext = item.type === 'next';
+                                    const iconClassName = isPrevious ? PrevIcon : isNext ? NextIcon : '';
+
+                                    return <PaginationItem {...item} className={iconClassName} />;
+                                }}
+                            />
+                            <CustomButton
+                                text=""
+                                maxHeight={40}
+                                maxWidth={40}
+                                minHeight={40}
+                                minWidth={40}
+                                backgroundColor="transparent"
+                                backgroundColorHover="transparent"
+                                borderRadius="50%"
+                                icon={LastPageIcon}
+                                className="btn-last"
+                                onClick={() => setCurrentPage(lastPage)}
+                            />
+                        </div>
+                    ) : null}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 

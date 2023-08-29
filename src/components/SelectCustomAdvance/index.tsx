@@ -32,12 +32,13 @@ const SelectCustomAdvance: React.FC<SelectCustomAdvanceProps> = ({ options, onSe
     };
 
     const handleSelect = (value: Options) => {
-        setSelectedValue(value.label);
+        setSelectedValue(value?.label);
         onSelect(value);
         handleClose();
     };
 
-    const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(searchTerm.toLowerCase()));
+    console.log('options', options);
+    const filteredOptions = options.filter((option) => option?.label.toLowerCase().includes(searchTerm?.toLowerCase()));
 
     useEffect(() => {
         console.log('anchorEl', anchorEl);
@@ -72,9 +73,9 @@ const SelectCustomAdvance: React.FC<SelectCustomAdvanceProps> = ({ options, onSe
             >
                 <Input placeholder="Search..." onChange={(e) => setSearchTerm(e.target.value)} className="input-search" />
                 <List className="list">
-                    {filteredOptions.map((option) => (
+                    {filteredOptions?.map((option) => (
                         <ListItem className="list__item" button key={option.value} onClick={() => handleSelect(option)}>
-                            <ListItemText primary={option.label} className="list__text" />
+                            <ListItemText primary={option?.label} className="list__text" />
                         </ListItem>
                     ))}
                 </List>

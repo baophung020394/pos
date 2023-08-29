@@ -203,15 +203,7 @@ const FormAddCustomer: React.FC<FormAddCustomerProps> = ({ onAddSuccess, handleC
                     </div>
                     <div className="information--form-control">
                         <label>Phường xã</label>
-                        {/* <Select
-                            options={optionsDistrict}
-                            isSearchable={true}
-                            defaultValue={[{ value: '', label: 'Chọn Phường/Xã' }]}
-                            name="AreaDistrictId"
-                            onChange={(selectedOption: any) => {
-                                setValue('areaDistrictId', selectedOption.value);
-                            }}
-                        /> */}
+
                         <SelectCustomAdvance
                             options={optionsDistrict}
                             onSelect={(selectedOption: Options) => {
