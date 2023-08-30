@@ -231,7 +231,7 @@ const AddServicePage: React.FC<AddServicePageProps> = ({ onClose }) => {
                                         </TableCell>
                                         <TableCell colSpan={2}>
                                             <Box className="table-body">
-                                                <Typography></Typography>
+                                                <Typography>3</Typography>
                                             </Box>
                                         </TableCell>
                                         <TableCell>
@@ -242,6 +242,47 @@ const AddServicePage: React.FC<AddServicePageProps> = ({ onClose }) => {
                                     </TableRow>
                                 </TableBody>
                             </Table>
+                        </Box>
+                    </Box>
+
+                    <Box className="main__card">
+                        <Box className="main__heading">
+                            <Typography variant="h3" component="h3">
+                                Giá dịch vụ
+                            </Typography>
+                            <Typography component="span">
+                                <ImageCustom src={AddMoreIcon} alt="" className="add-more" />
+                                Thêm chính sách giá
+                            </Typography>
+                        </Box>
+
+                        <Box className="main__form main__form--between">
+                            <Box className="main__left">
+                                <Box className="main__form--control">
+                                    <label>Giá vốn</label>
+                                    <Controller name="roleName" control={control} render={({ field }) => <Input type="text" className="input-field input-field--revert" placeholder="" {...field} />} />
+                                </Box>
+                                <Box className="main__form--control">
+                                    <label>Giá bán</label>
+                                    <Controller name="roleName" control={control} render={({ field }) => <Input type="text" className="input-field" placeholder="" {...field} />} />
+                                </Box>
+                            </Box>
+                            <Box className="main__right">
+                                <Box className="main__top">
+                                    <Box className='information'>
+                                        <Typography component="p">Biên lợi nhuận</Typography>
+                                        <Typography component="span">20%</Typography>
+                                    </Box>
+                                    <Box className='information'>
+                                        <Typography component="p">Lợi nhuận</Typography>
+                                        <Typography component="span">500.000đ</Typography>
+                                    </Box>
+                                </Box>
+                                <Box className="main__form--control">
+                                    <label>Giá đại lý</label>
+                                    <Controller name="roleName" control={control} render={({ field }) => <Input type="text" className="input-field" placeholder="" {...field} />} />
+                                </Box>
+                            </Box>
                         </Box>
                     </Box>
                 </Box>

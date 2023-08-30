@@ -1,4 +1,5 @@
 @import '../../assets/styles/app.scss';
+@import '../../assets/styles/scss/mixins';
 
 .form-add-service {
     width: 100%;
@@ -46,20 +47,67 @@
     .main {
         display: flex;
         justify-content: space-between;
+        @include responsive(992px) {
+            flex-direction: column;
+        }
         &__content {
             flex: 1;
             margin-right: 25px;
+            @include responsive(992px) {
+                margin-right: 0;
+            }
         }
 
         &__sidebar {
             width: 100%;
             max-width: 410px;
+            @include responsive(992px) {
+                max-width: 100%;
+            }
         }
 
         &__card {
             box-shadow: 0px 0px 25px 0px rgba(94, 92, 154, 0.1);
             background-color: $white;
             margin-bottom: 25px;
+        }
+
+        &__left {
+            width: 48%;
+        }
+
+        &__right {
+            width: 48%;
+        }
+
+        &__top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+
+            .information {
+                width: 50%;
+
+                &:first-child {
+                    span {
+                        text-align: center;
+                        display: block;
+                        width: 60%;
+                    }
+                }
+
+                p {
+                    color: $color-46515f;
+                    font-size: $font-14;
+                    font-weight: $font-weight-semi-bold;
+                    margin-bottom: 16px;
+                }
+                span {
+                    color: $color-46515f;
+                    font-size: $font-14;
+                    font-weight: $font-weight-semi-bold;
+                }
+            }
         }
 
         &__form {
@@ -75,6 +123,13 @@
                     margin-left: 4px;
                     padding-top: 4px;
                 }
+            }
+
+            .des2 {
+                color: $color-46515f;
+                font-size: $font-14;
+                font-weight: $font-weight-medium;
+                padding: 0 0 23px;
             }
 
             &--control {
@@ -176,7 +231,7 @@
                     max-height: 56px;
                     box-sizing: border-box;
                     th {
-                        // min-width: 200px;
+                        // min-width: 100px;
                         box-sizing: border-box;
                         padding-top: 0 !important;
                         padding-bottom: 0 !important;
@@ -213,6 +268,10 @@
                                 height: 45px;
                                 line-height: 45px;
                                 color: #000000;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                -webkit-line-clamp: 1;
+                                -webkit-box-orient: vertical;
                                 &.col-100 {
                                     min-width: 100px;
                                 }
@@ -237,6 +296,9 @@
                     &:last-child {
                         td {
                             border-bottom: none;
+                            p {
+                                font-weight: $font-weight-semi-bold;
+                            }
                         }
                     }
                     td {
