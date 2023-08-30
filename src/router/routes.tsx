@@ -11,6 +11,8 @@ const AddRolePage = lazy(() => import('../pages/RolePage/AddRolePage'));
 const StaffPage = lazy(() => import('../pages/StaffPage/'));
 const ServicesPage = lazy(() => import('../pages/ServicesPage/'));
 const AddServicePage = lazy(() => import('../pages/ServicesPage/AddServicePage'));
+const ProductsPage = lazy(() => import('../pages/ProductsPage/'));
+const AddProductPage = lazy(() => import('../pages/ProductsPage/AddProductPage'));
 const OrdersPage = lazy(() => import('../pages/OrderPage/'));
 const Customer = lazy(() => import('../features/Customer/Customer'));
 const LoginCover = lazy(() => import('../pages/Authentication/LoginCover'));
@@ -69,6 +71,16 @@ const routes = [
     {
         path: '/services/add',
         element: <PrivateRoute element={<AddServicePage />} />,
+    },
+
+    // service
+    {
+        path: '/products',
+        element: <PrivateRoute element={<ProductsPage />} />,
+    },
+    {
+        path: '/products/add',
+        element: <PrivateRoute element={<AddProductPage />} />,
     },
 
     // order

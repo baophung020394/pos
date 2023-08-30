@@ -56,8 +56,6 @@ const ImageUpload: React.FC<ImageUploadProps> = () => {
                 <Box className="images-upload__button">
                     <input type="file" accept="image/*" multiple onChange={handleImageSelect} style={{ display: 'none' }} ref={fileInputRef} />
                     <CustomButton text="" icon={PlusIcon} backgroundColor="transparent" backgroundColorHover="transparent" boxShadow="none" onClick={handleButtonClick} className="btn-upload" />
-
-                    {/* <button onClick={handleButtonClick}>Thêm hình ảnh</button> */}
                 </Box>
                 {selectedImages.map((image, index) => (
                     <Box className="images-upload__image" key={index}>
