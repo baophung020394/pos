@@ -20,6 +20,7 @@ import useApi from '@hooks/useApi';
 import { useNavigate } from 'react-router-dom';
 import ImageCustom from '@components/Image';
 import SelectCustomAdvance from '@components/SelectCustomAdvance';
+import ImageUpload from '@components/ImageUpload';
 
 interface AddServicePageProps {
     onClose?: () => void;
@@ -143,7 +144,9 @@ const AddServicePage: React.FC<AddServicePageProps> = ({ onClose }) => {
                             <Typography component="span">Xoá tất cả</Typography>
                         </Box>
 
-                        <Box className="main__form"></Box>
+                        <Box className="main__form">
+                            <ImageUpload />
+                        </Box>
                     </Box>
                     <Box className="main__card">
                         <Box className="main__heading">
@@ -269,11 +272,11 @@ const AddServicePage: React.FC<AddServicePageProps> = ({ onClose }) => {
                             </Box>
                             <Box className="main__right">
                                 <Box className="main__top">
-                                    <Box className='information'>
+                                    <Box className="information">
                                         <Typography component="p">Biên lợi nhuận</Typography>
                                         <Typography component="span">20%</Typography>
                                     </Box>
-                                    <Box className='information'>
+                                    <Box className="information">
                                         <Typography component="p">Lợi nhuận</Typography>
                                         <Typography component="span">500.000đ</Typography>
                                     </Box>
